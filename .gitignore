@@ -1,0 +1,12 @@
+*.DS_Store
+*.vagrant
+node_modules
+builtApp
+volume
+content
+distribution
+Thumbs.db
+privateRepository
+webappProxyConfig
+appDeploymentEnvironment\.container/source/containerInstallationNodejs/yarn-error\.log
+yarn-error.log
