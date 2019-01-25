@@ -1,1 +1,1 @@
-buildTool
+./documentation/information.md
