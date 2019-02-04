@@ -1,7 +1,7 @@
 const { execSync, spawn, spawnSync } = require('child_process')
 import path from 'path'
 import filesystem from 'fs'
-import configuration from '../../../../setup/configuration/configuration.js'
+import configuration from '../../../../setup/configuration/configuration.js' // targetApp
 const applicationPath = path.join(configuration.directory.projectPath, 'application')
 const appDeploymentLifecycle = path.join(applicationPath, 'dependency/appDeploymentLifecycle')
 import { parseKeyValuePairSeparatedBySymbolFromArray, combineKeyValueObjectIntoString } from '../utility/parseKeyValuePairSeparatedBySymbol.js'

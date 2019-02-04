@@ -9,7 +9,7 @@ const plugins = require('gulp-load-plugins')({
 const gulp = require('gulp'),
       concat = require('gulp-concat'),
       sourcemaps = require('gulp-sourcemaps'),
-      FragmentIndentation = require('../../utilityModule/fragmentIndentation.gulp.js').FragmentIndentation
+      FragmentIndentation = require('../../utility/fragmentIndentation.gulp.js').FragmentIndentation
 
 export const clientJS = ({ sources, destination, babelPath, includeSourceMap = true, babelConfigFileName }) => () => {
   const babelConfig = require(path.join(babelPath, `/compilerConfiguration/${babelConfigFileName}`))

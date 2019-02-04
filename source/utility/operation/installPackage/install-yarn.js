@@ -1,6 +1,6 @@
 
 
-let config = require('configuration/configuration.js'),
+let config = require('../../../../configuration/configuration.js'),
 	gulp = require('gulp'),
 	plugins = require('gulp-load-plugins')({ camelize: true }),
 	childProcess = require('child_process'),

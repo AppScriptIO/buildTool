@@ -1,6 +1,11 @@
 {
-  "name": "gulp-task",
+  "name": "@dependency/buildTool",
+  "version": "1.0.0",
+  "main": "./source/entrypoint/api/transpilation.entrypoint.js",
+  "scripts": {},
   "dependencies": {
+    "gulp": "next",
+    "gulp-load-plugins": "*",
     "css-slam": "*",
     "gulp": "next",
     "gulp-babel": "next",
@@ -24,5 +29,7 @@
     "sw-precache": "*",
     "type-of-is": "*",
     "vinyl-fs": "*"
-  }
+  },
+  "devDependencies": {}
+
 }

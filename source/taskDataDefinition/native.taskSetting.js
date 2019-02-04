@@ -1,7 +1,8 @@
-import { include, joinPath, source, destination, plugins } from 'gulpfile.js'
+import { include, joinPath, source, destination, plugins } from '../script.js'
 import path from 'path'
-const config = require('configuration/configuration.js') // configuration
-const prefix = config.distribution.clientSide.polyfill.prefix
+const config = require('../../configuration/configuration.js') // configuration
+const prefix = config.distribution.clientSide.native.prefix
+const operationModulePath = path.normalize(__dirname, '../utility/operation')
 
 export const taskAggregationSetting = [
     {
@@ -29,7 +30,7 @@ export const taskSetting = [
     {
         key: `${prefix}:copy:sourceCode`,
         data: {
-            path: path.join(config.TaskModulePath, 'rsync.js'),
+            path: path.join(operationModulePath, 'rsync.js'),
             argument: {
                 source: config.directory.clientSidePath,
                 destination: destination(prefix),
@@ -42,7 +43,7 @@ export const taskSetting = [
     {
         key: `${prefix}:json`,
         data: {
-            path: path.join(config.TaskModulePath, 'assetBuild/json.js'),
+            path: path.join(operationModulePath, 'transformAsset/json.js'),
             argument: {
                 sources: [
                     path.join(config.directory.clientSidePath, '/**/*.json'),
@@ -56,7 +57,7 @@ export const taskSetting = [
     {
         key: `${prefix}:html`,
         data: {
-            path: path.join(config.TaskModulePath, 'assetBuild/html.js'),
+            path: path.join(operationModulePath, 'transformAsset/html.js'),
             module: 'html',
             argument: {
                 sources: [
@@ -65,14 +66,14 @@ export const taskSetting = [
                 ],
                 destination: destination(prefix),
                 babelPath: config.directory.babelPath, 
-                babelConfigFileName: 'polyfillClientSideBuild.BabelConfig.js'
+                babelConfigFileName: 'nativeClientSideBuild.BabelConfig.js'
             },
         }
     },
     {
         key: `${prefix}:stylesheet`,
         data: {
-            path: path.join(config.TaskModulePath, 'assetBuild/stylesheet.js'),
+            path: path.join(operationModulePath, 'transformAsset/stylesheet.js'),
             argument: {
                 sources: [
                     path.join(config.directory.clientSidePath, '/**/*.css'),
@@ -85,7 +86,7 @@ export const taskSetting = [
     {
         key: `${prefix}:javascript`,
         data: {
-            path: path.join(config.TaskModulePath, 'assetBuild/javascript.js'),
+            path: path.join(operationModulePath, 'transformAsset/javascript.js'),
             module: 'clientJS',
             argument: {
 				sources: [
@@ -96,7 +97,7 @@ export const taskSetting = [
                 ],
                 destination: destination(prefix),
                 babelPath: config.directory.babelPath,
-                babelConfigFileName: 'polyfillClientSideBuild.BabelConfig.js',
+                babelConfigFileName: 'nativeClientSideBuild.BabelConfig.js',
                 includeSourceMap: false
             }
         }

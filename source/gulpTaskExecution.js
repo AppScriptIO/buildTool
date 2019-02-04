@@ -1,3 +1,5 @@
+// Execution of tasks from object data supplied.
+
 function gulpTaskExecution(executionType, childTask = [], gulp) {
     let childTaskExecuted = []
     childTask.map((task) => {

@@ -1,7 +1,8 @@
-import { include, joinPath, source, destination, plugins } from 'gulpfile.js'
+import { include, joinPath, source, destination, plugins } from '../script.js'
 import path from 'path'
-const config = require('configuration/configuration.js') // configuration
+const config = require('../../configuration/configuration.js') // configuration
 const prefix = `clientSide`
+const operationModulePath = path.normalize(__dirname, '../utility/operation')
 
 export const taskAggregationSetting = [
     {
@@ -27,7 +28,7 @@ export const taskSetting = [
     {
         key: 'jspm',
         data: {
-            path: path.join(config.TaskModulePath, 'installPackage/jspm.js'),
+            path: path.join(operationModulePath, 'installPackage/jspm.js'),
             argument: {
                 nodejsVersion: process.version,
                 jspmLocation: source('/packageManager/library.browser.jspm')
@@ -37,7 +38,7 @@ export const taskSetting = [
     {
         key: 'webcomponent-yarn',
         data: {
-            path: path.join(config.TaskModulePath, 'installPackage/yarn.js'),
+            path: path.join(operationModulePath, 'installPackage/yarn.js'),
             argument: {
 				yarnPath: source('/packageManager/webcomponent.browser.yarn/')
             }
@@ -46,7 +47,7 @@ export const taskSetting = [
     {
         key: 'library-yarn',
         data: {
-            path: path.join(config.TaskModulePath, 'installPackage/yarn.js'),
+            path: path.join(operationModulePath, 'installPackage/yarn.js'),
             argument: {
 				yarnPath: source('/packageManager/library.browser.yarn/')
             }

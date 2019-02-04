@@ -3,7 +3,9 @@
 import gulp from 'gulp'
 import path from 'path'
 import filesystem from 'fs'
-import config from 'configuration/configuration.js' // configuration
+const moduleSystem = require('module')
+const { execSync, spawn, spawnSync } = require('child_process')
+import config from '../configuration/configuration.js'
 export const include = (file)=> { eval(filesystem.readFileSync(file) + '') } // Execute file code as if written locally.
 export const joinPath = require(path.join(config.UtilityModulePath, 'joinPath.js')).default
 export const source = subpath => { return joinPath(config.directory.SourceCodePath, subpath) }
@@ -11,12 +13,12 @@ export const destination = subpath => { return joinPath(config.directory.Destina
 export const plugins = require('gulp-load-plugins')({ camelize: true })
 const gulpTaskExecution = require(path.join(config.UtilityModulePath, 'gulpTaskExecution.js')).default(gulp)
 
-{	
-	import { taskSetting as clientSideTaskSetting, taskAggregationSetting as clientsideTaskAggregationSetting } from './buildStepDefinition/clientSide.taskSetting.js'
-	import { taskSetting as nativeTaskSetting, taskAggregationSetting as nativeTaskAggregationSetting } from './buildStepDefinition/native.taskSetting.js'
-	import { taskSetting as polyfillTaskSetting, taskAggregationSetting as polyfillTaskAggregationSetting } from './buildStepDefinition/polyfill.taskSetting.js'
-	import { taskSetting as serverSideTaskSetting, taskAggregationSetting as serverSideTaskAggregationSetting } from './buildStepDefinition/serverSide.taskSetting.js'
+import { taskSetting as clientSideTaskSetting, taskAggregationSetting as clientsideTaskAggregationSetting } from './taskDataDefinition/clientSide.taskSetting.js'
+import { taskSetting as nativeTaskSetting, taskAggregationSetting as nativeTaskAggregationSetting } from './taskDataDefinition/native.taskSetting.js'
+import { taskSetting as polyfillTaskSetting, taskAggregationSetting as polyfillTaskAggregationSetting } from './taskDataDefinition/polyfill.taskSetting.js'
+import { taskSetting as serverSideTaskSetting, taskAggregationSetting as serverSideTaskAggregationSetting } from './taskDataDefinition/serverSide.taskSetting.js'
 
+export function build({ targetProject }){
 	// for registring Task functions
 	let taskSetting = Array.prototype.concat(
 		clientSideTaskSetting,
@@ -70,6 +72,6 @@ const gulpTaskExecution = require(path.join(config.UtilityModulePath, 'gulpTaskE
 		);
 
 	});
+
+	gulp.parallel([ 'build' ])() // execute tasks.
 }
-const passedCommandArray /* Array */ = process.argv.slice(2) // this returns array of the passed tasks names.
-gulp.parallel(passedCommandArray)() // execute tasks.

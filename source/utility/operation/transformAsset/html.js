@@ -7,7 +7,7 @@ const plugins = require('gulp-load-plugins')({
 	replaceString: /(?!)/ /* regex that never matches, i.e. don't replace "gulp-" */ 
 })
 const HtmlSplitter = plugins['polymer-build'].HtmlSplitter
-const FragmentIndentation = require('../../utilityModule/fragmentIndentation.gulp.js').FragmentIndentation
+const FragmentIndentation = require('../../utility/fragmentIndentation.gulp.js').FragmentIndentation
 const regex = {
 	js: /\.js$/,
 	css: /\.css$/,

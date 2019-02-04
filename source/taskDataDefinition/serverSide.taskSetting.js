@@ -1,7 +1,8 @@
-import { include, joinPath, source, destination, plugins } from 'gulpfile.js'
+import { include, joinPath, source, destination, plugins } from '../script.js'
 import path from 'path'
-const config = require('configuration/configuration.js') // configuration
+const config = require('../../configuration/configuration.js') // configuration
 const prefix = 'serverSide'
+const operationModulePath = path.normalize(__dirname, '../utility/operation')
 
 export const taskAggregationSetting = [
     {
@@ -43,7 +44,7 @@ export const taskSetting = [
     {
         key: `${prefix}:install:yarn`,
         data: {
-            path: path.join(config.TaskModulePath, 'installPackage/yarn.js'),
+            path: path.join(operationModulePath, 'installPackage/yarn.js'),
             argument: {
 				yarnPath: source('/packageManager/library.server.yarn/')
             }
@@ -52,7 +53,7 @@ export const taskSetting = [
     {
         key: `${prefix}:copy:serverSide`,
         data: {
-            path: path.join(config.TaskModulePath, 'rsync.js'),
+            path: path.join(operationModulePath, 'rsync.js'),
             argument: {
                 source: config.directory.serverSidePath,
                 destination: destination(prefix),
@@ -64,7 +65,7 @@ export const taskSetting = [
     {
         key: `${prefix}:copy:databaseData`,
         data: {
-            path: path.join(config.TaskModulePath, 'rsync.js'),
+            path: path.join(operationModulePath, 'rsync.js'),
             argument: {
                 source: source('databaseData'),
                 destination: destination(),
@@ -76,7 +77,7 @@ export const taskSetting = [
     {
         key: `${prefix}:transpile:databaseData`,
         data: {
-            path: path.join(config.TaskModulePath, 'assetBuild/javascript.js'),
+            path: path.join(operationModulePath, 'assetBuild/javascript.js'),
             module: 'serverJS',
             argument: {
                 sources: [
@@ -91,7 +92,7 @@ export const taskSetting = [
     {
         key: `${prefix}:transpile:serverSide`,
         data: {
-            path: path.join(config.TaskModulePath, 'assetBuild/javascript.js'),
+            path: path.join(operationModulePath, 'assetBuild/javascript.js'),
             module: 'serverJS',
             argument: {
                 sources: [
@@ -106,7 +107,7 @@ export const taskSetting = [
     {
         key: `${prefix}:transpile:appscript`,
         data: {
-            path: path.join(config.TaskModulePath, 'assetBuild/javascript.js'),
+            path: path.join(operationModulePath, 'assetBuild/javascript.js'),
             module: 'serverJS',
             argument: {
                 sources: [
