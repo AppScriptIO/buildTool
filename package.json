@@ -4,11 +4,10 @@
   "main": "./source/entrypoint/api/transpilation.entrypoint.js",
   "scripts": {},
   "dependencies": {
-    "gulp": "next",
+    "gulp": "*",
     "gulp-load-plugins": "*",
     "css-slam": "*",
-    "gulp": "next",
-    "gulp-babel": "next",
+    "gulp-babel": "*",
     "css-slam": "*",
     "gulp-clean-css": "*",
     "gulp-concat": "*",
