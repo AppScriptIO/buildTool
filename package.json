@@ -4,24 +4,22 @@
   "main": "./source/entrypoint/api/transpilation.entrypoint.js",
   "scripts": {},
   "dependencies": {
+    "css-slam": "*",
     "gulp": "*",
-    "gulp-load-plugins": "*",
-    "css-slam": "*",
     "gulp-babel": "*",
-    "css-slam": "*",
     "gulp-clean-css": "*",
     "gulp-concat": "*",
     "gulp-debug": "*",
     "gulp-htmlmin": "*",
     "gulp-if": "*",
-    "gulp-size": "*",
     "gulp-jsonminify": "*",
     "gulp-load-plugins": "*",
     "gulp-plumber": "*",
     "gulp-rsync": "*",
+    "gulp-size": "^3.0.0",
     "gulp-sourcemaps": "*",
     "html-minifier": "*",
-    "merge-stream": "*",
+    "merge-stream": "^1.0.1",
     "mkdirp": "*",
     "polymer-build": "*",
     "rsync": "*",
@@ -30,5 +28,4 @@
     "vinyl-fs": "*"
   },
   "devDependencies": {}
-
 }

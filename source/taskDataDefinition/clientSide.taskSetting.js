@@ -1,6 +1,6 @@
-import { include, joinPath, source, destination, plugins } from '../script.js'
 import path from 'path'
-const config = require('../../configuration/configuration.js') // configuration
+import { include, joinPath, source, destination, plugins } from '../script.js'
+const config = require('../../configuration')
 const prefix = `clientSide`
 const operationModulePath = path.normalize(__dirname, '../utility/operation')
 
@@ -21,7 +21,6 @@ export const taskAggregationSetting = [
             { label: `${prefix}:install:dependencies` },
         ]
     },
-
 ]
 
 export const taskSetting = [
@@ -53,5 +52,4 @@ export const taskSetting = [
             }
         }
     },
-
 ]
