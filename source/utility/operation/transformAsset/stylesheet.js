@@ -1,11 +1,8 @@
-
-
-import gulp from 'gulp'
-const plugins = require('gulp-load-plugins')({ 
-	pattern: ['*'],
-	camelize: false, 
-	replaceString: /(?!)/ /* regex that never matches, i.e. don't replace "gulp-" */ 
-})
+import plumber from 'gulp-plumber'
+import size from 'gulp-size'
+import cleanCss from 'gulp-clean-css'
+const cssSlam = require('css-slam')
+import autoprefixer from 'gulp-autoprefixer'
 
 // Other browesers configuration :
 // var AUTOPREFIXER_BROWSERS = ['last 2 versions', '> 1%', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'];
@@ -21,17 +18,22 @@ let AUTOPREFIXER_BROWSERS = [
   'bb >= 10'
 ];
 
-export default ({ sources, destination }) => () => {
-  return gulp.src(sources)
-    .pipe(plugins['gulp-plumber']())
-    // .pipe(plugins.autoprefixer({
+export const cssFileRegex = /\.css$/
+
+export const fragmentPipeline = [
+  cssSlam.gulp(),
+  cleanCss(),
+]
+
+export function pipeline() {
+  return [
+    plumber(),
+    // autoprefixer({
     //   browsers: AUTOPREFIXER_BROWSERS,
     //   cascade: false
-    // }))
-    .pipe(plugins['css-slam'].gulp())
-    .pipe(plugins['gulp-clean-css']())
-    .pipe(gulp.dest(destination))
-    .pipe(plugins['gulp-size']({
-      title: 'CSS'
-    }))
+    // }),
+    ...fragmentPipeline,
+    size({ title: 'CSS' })
+
+  ]
 }

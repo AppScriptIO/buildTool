@@ -1,19 +1,13 @@
-const gulp = require('gulp')
-const plugins = require('gulp-load-plugins')({ 
-	pattern: ['*'],
-	camelize: false, 
-	replaceString: /(?!)/ /* regex that never matches, i.e. don't replace "gulp-" */ 
-})
+import size from 'gulp-size'
+import imagemin from 'gulp-imagemin'
 
-export default ({ src, dest }) => () => {
-  return gulp.src(src)
-  .pipe(plugins.imagemin({
-    progressive: true,
-    interlaced: true
-  }))
-  .pipe(gulp.dest(dest))
-  .pipe(plugins['gulp-size']({
-    title: 'imageOptimizeTask'
-  }))
+export const fragmentPipeline = [
+  imagemin({ progressive: true, interlaced: true })
+]
 
+export function pipeline() {
+  return [
+    ...fragmentPipeline,
+    size({ title: 'imageOptimizeTask' }),
+  ]
 }

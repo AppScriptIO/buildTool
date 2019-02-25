@@ -1,56 +1,62 @@
 
 
 import path from 'path'
-const plugins = require('gulp-load-plugins')({ 
-	pattern: ['*'],
-	camelize: false, 
-	replaceString: /(?!)/ /* regex that never matches, i.e. don't replace "gulp-" */ 
-})
-const gulp = require('gulp'),
-      concat = require('gulp-concat'),
-      sourcemaps = require('gulp-sourcemaps'),
-      FragmentIndentation = require('../../utility/fragmentIndentation.gulp.js').FragmentIndentation
+import sourcemaps from 'gulp-sourcemaps'
+import concat from 'gulp-concat'
+import { FragmentIndentation } from '../../fragmentIndentation.gulp.js'
+import babel from 'gulp-babel'
+import debug from 'gulp-debug'
+import size from 'gulp-size'
+import jsMinify from 'gulp-uglify'
+import { getBabelConfig } from '@dependency/javascriptTranspilation'
 
-export const clientJS = ({ sources, destination, babelPath, includeSourceMap = true, babelConfigFileName }) => () => {
-  const babelConfig = require(path.join(babelPath, `/compilerConfiguration/${babelConfigFileName}`))
-  let stream;
-  stream = gulp.src(sources)
-    .pipe(plugins['gulp-debug']({title: 'clientJS:'}))
-    .pipe(FragmentIndentation.TransformToFragmentKeys())
-  if(includeSourceMap) stream = stream
-    .pipe(sourcemaps.init())
-  stream = stream
-    .pipe(plugins['gulp-babel']({
-      "presets": babelConfig.presets,
-      "plugins": babelConfig.plugins,
+export const jsFileRegex = /\.js$/
+
+export function fragmentPipeline({ 
+  babelPreset, babelPlugin, // babel configurations
+  shouldSourceMap = true
+}) {
+  let pipeline = [
+    babel({
+      "presets": babelPreset,
+      "plugins": babelPlugin,
       "babelrc": false
-    })).on('error', function(e) { console.log('>>> ERROR', e); this.emit('end'); })
-  if(includeSourceMap) stream = stream
-    .pipe(sourcemaps.write('.'))
-  return stream // IMPORTANT: return must be appended here, as later addition will not work for some reason.
-    .pipe(FragmentIndentation.TransformBackToFragment())
-    .pipe(gulp.dest(destination))
-    .pipe(plugins['gulp-size']({ // doesn't work in this case for some reason
-      title: `JAVASCRIPT - clientJS using ${babelConfigFileName}`
-    }))
+    }), 
+    jsMinify() // In additional to babel minify preset.
+  ]
+
+  if(shouldSourceMap) {
+    pipeline.unshift(
+      sourcemaps.init()
+    )
+    pipeline.push(
+      sourcemaps.write('.')
+    )
+  }
+
+  return pipeline
 }
 
-export const serverJS = ({ sources, destination, babelPath }) => () => {
-    const babelConfig = require(path.join(babelPath, `/compilerConfiguration/serverBuild.BabelConfig.js`))
-    return gulp.src(sources /*, { cwd: babelPath }*/) // Apparently process.cwd is changed in gulp pipeline and babel uses it for node_modules search.
-        // NOTE: if babel settings aren't specified. babelrc in the source path would be used, and throw an error because node_modules aren't yet installed.
-        // Therefore, babel settings need to be configured here.
-        .pipe(sourcemaps.init())
-        .pipe(plugins['gulp-babel']({
-            "presets": babelConfig.presets,
-            "plugins": babelConfig.plugins,
-            "babelrc": false
-        }))
-        .on('error', console.error.bind(console))
-        .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest(destination))
-        .pipe(plugins['gulp-size']({
-          title: 'Javascript - serverJS'
-        }))
-    
+export function clientJSPipeline({ 
+  babelConfigFileName = 'nativeClientSideBuild.BabelConfig.js'
+} = {}) {
+  const babelConfig = getBabelConfig(babelConfigFileName)
+  let pipeline = [
+    debug({ title: 'clientJS:' }),
+    FragmentIndentation.TransformToFragmentKeys(),
+    ...fragmentPipeline({ babelPreset: babelConfig.presets, babelPlugin: babelConfig.plugins, shouldSourceMap: true }), // previous error handling - .pipe().on('error', function(e) { console.log('>>> ERROR', e); this.emit('end'); })
+    FragmentIndentation.TransformBackToFragment(),
+    size({ title: `JAVASCRIPT - clientJS using ${babelConfigFileName}` })
+  ]
+  return pipeline
+}
+
+export function serverJSPipeline({
+  babelConfigFileName = 'serverBuild.BabelConfig.js'
+} = {}) {
+    const babelConfig = getBabelConfig(babelConfigFileName)
+    return [
+      ...fragmentPipeline({ babelPreset: babelConfig.presets, babelPlugin: babelConfig.plugins, shouldSourceMap: true }),
+      size({ title: 'Javascript - serverJS' })
+    ]
 }
