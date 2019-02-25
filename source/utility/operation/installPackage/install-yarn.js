@@ -1,13 +1,6 @@
 
 
-let config = require('../../../../configuration/configuration.js'),
-	gulp = require('gulp'),
-	plugins = require('gulp-load-plugins')({ camelize: true }),
-	childProcess = require('child_process'),
-	path = require("path"),
-	joinPath = require(path.join(config.UtilityModulePath, 'joinPath.js')).default,
-	source = subpath => { return joinPath(config.directory.SourceCodePath, subpath) },
-	destination = subpath => { return joinPath(config.directory.DestinationPath, subpath) }
+import childProcess from 'child_process'
 
 export default ({ yarnPath }) => async ()=> {
 		// In gulp 4, you can return a child process to signal task completion
