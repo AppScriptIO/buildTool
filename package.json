@@ -4,6 +4,7 @@
   "main": "./source/entrypoint/api/transpilation.entrypoint.js",
   "scripts": {},
   "dependencies": {
+    "@dependency/fragmentIndentationObjectStream": "https://github.com/AppScriptIO/fragmentIndentationObjectStream",
     "@dependency/javascriptTranspilation": "https://github.com/AppScriptIO/javascriptTranspilation",
     "css-slam": "*",
     "globby": "^9.0.0",

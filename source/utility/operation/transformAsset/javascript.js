@@ -3,7 +3,7 @@
 import path from 'path'
 import sourcemaps from 'gulp-sourcemaps'
 import concat from 'gulp-concat'
-import { FragmentIndentation } from '../../fragmentIndentation.gulp.js'
+import { FragmentIndentation } from '@dependency/fragmentIndentationObjectStream'
 import babel from 'gulp-babel'
 import debug from 'gulp-debug'
 import size from 'gulp-size'

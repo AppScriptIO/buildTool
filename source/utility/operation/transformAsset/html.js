@@ -5,7 +5,7 @@ import merge from 'merge-stream'
 import size from 'gulp-size'
 import htmlmin from 'gulp-htmlmin'
 import { HtmlSplitter } from 'polymer-build'
-import { FragmentIndentation } from '../../fragmentIndentation.gulp.js'
+import { FragmentIndentation } from '@dependency/fragmentIndentationObjectStream'
 import { pipeline as _cssPipeline, cssFileRegex } from './stylesheet.js'
 import { clientJSPipeline, jsFileRegex } from './javascript.js'
 
