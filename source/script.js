@@ -2,14 +2,13 @@
 
 import path from 'path'
 import filesystem from 'fs'
-import moduleSystem from 'module'
 import util from 'util'
 import stream from 'stream'
 const pipeline = util.promisify(stream.pipeline);
-import { execSync, spawn, spawnSync } from 'child_process'
-import ownConfiguration from '../configuration'
-import { src as readFileAsObjectStream, dest as writeFileFromObjectStream } from 'vinyl-fs'
 import mergeStream from 'merge-stream'
+import { src as readFileAsObjectStream, dest as writeFileFromObjectStream } from 'vinyl-fs'
+import wildcardPathnameMatcher from 'globby'
+import ownConfiguration from '../configuration'
 // export const include = (file)=> { eval(filesystem.readFileSync(file) + '') } // Execute file code as if written locally.
 // export const joinPath = require(path.join(config.UtilityModulePath, 'joinPath.js')).default
 // export const source = subpath => { return joinPath(config.directory.SourceCodePath, subpath) }
@@ -29,19 +28,27 @@ import { pipeline as htmlPipeline } from './utility/operation/transformAsset/htm
 export async function build({ targetProject }){
     const targetProjectRoot = targetProject.configuration.rootPath
 
-	// const mergedFiles = mergeStream(sources, dependencies)
-	// execute stream pipes instead of tasks.
+	let cssFileArray = await wildcardPathnameMatcher(path.join(targetProjectRoot, '*.css')),
+		jsFileArray = await wildcardPathnameMatcher(path.join(targetProjectRoot, '*.js')),
+		htmlFileArray = await wildcardPathnameMatcher(path.join(targetProjectRoot, '*.html'))
+	const destinationPath = path.join(targetProjectRoot, 'output')
 
 	await pipeline(
-		readFileAsObjectStream([path.join(targetProjectRoot, '*.css')]),
+		readFileAsObjectStream(cssFileArray),
 		...cssPipeline(),
-		writeFileFromObjectStream(path.join(targetProjectRoot, 'output'))
+		writeFileFromObjectStream(destinationPath)
 	)
 
 	await pipeline(
-		readFileAsObjectStream([path.join(targetProjectRoot, '*.js')])
+		readFileAsObjectStream(jsFileArray),
 		...serverJSPipeline(),
-		writeFileFromObjectStream(path.join(targetProjectRoot, 'output'))
+		writeFileFromObjectStream(destinationPath)
+	)
+
+	await pipeline(
+		readFileAsObjectStream(htmlFileArray),
+		...htmlPipeline(),
+		writeFileFromObjectStream(destinationPath)
 	)
 
 	// // for registring Task functions

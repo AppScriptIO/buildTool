@@ -6,7 +6,7 @@
   "dependencies": {
     "@dependency/javascriptTranspilation": "https://github.com/AppScriptIO/javascriptTranspilation",
     "css-slam": "*",
-    "globber": "^0.1.2",
+    "globby": "^9.0.0",
     "gulp": "*",
     "gulp-autoprefixer": "^6.0.0",
     "gulp-babel": "*",
