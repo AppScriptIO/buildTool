@@ -20,7 +20,7 @@ let AUTOPREFIXER_BROWSERS = [
 
 export const cssFileRegex = /\.css$/
 
-export const fragmentPipeline = [
+export const fragmentPipeline = () => [ // wrapped with function to produce a separate instance on invocation
   cssSlam.gulp(),
   cleanCss(),
 ]
@@ -32,7 +32,7 @@ export function pipeline() {
     //   browsers: AUTOPREFIXER_BROWSERS,
     //   cascade: false
     // }),
-    ...fragmentPipeline,
+    ...fragmentPipeline(),
     size({ title: 'CSS' })
 
   ]

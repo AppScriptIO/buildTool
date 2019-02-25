@@ -20,7 +20,7 @@ const fragmentRegex = {
 export const htmlFileRegex = /\.html$/
 
 // for html fragments only, without css and js parts.
-export const fragmentPipeline = [
+export const fragmentPipeline = () => [
 	htmlmin({
 		collapseWhitespace: true,
 		removeComments: true,
@@ -36,7 +36,7 @@ export function pipeline({
 	// array of file object streams (vinyl transformers)
 	jsPipeline = clientJSPipeline(), 
 	cssPipeline = _cssPipeline(), 
-	htmlPipeline = fragmentPipeline
+	htmlPipeline = fragmentPipeline()
 } = {}) {
 	const sourcesHtmlSplitter = new HtmlSplitter()
 	

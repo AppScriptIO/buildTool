@@ -22,7 +22,7 @@ export function fragmentPipeline({
       "plugins": babelPlugin,
       "babelrc": false
     }), 
-    jsMinify() // In additional to babel minify preset.
+    // jsMinify() // causes issues with some non-native syntax. Using babel minify preset instead.
   ]
 
   if(shouldSourceMap) {
