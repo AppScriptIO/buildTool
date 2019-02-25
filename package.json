@@ -30,7 +30,7 @@
     "rsync": "*",
     "sw-precache": "*",
     "type-of-is": "*",
-    "vinyl-fs": "*"
+    "vinyl-fs": "^3.0.3"
   },
   "devDependencies": {}
 }
