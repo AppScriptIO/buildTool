@@ -1,26 +1,24 @@
 
 
-let gulp = require('gulp');
-let plugins = require('gulp-load-plugins')({ camelize: true });
-let filesystem = require('fs');
+import filesystem from 'fs'
 
 /** Ensure Files
  * @param {Array<string>} files
  * @param {Function} cb
  */
-export default (files, cb) => {
-  var missingFiles = files.reduce(function(prev, filePath) {
+export function ensureFile(files, cb) {
+  var missingFiles = files.reduce(function(accumulator, filePath) {
     var fileFound = false;
 
     try {
       fileFound = filesystem.statSync(filePath).isFile();
-    } catch (e) { }
+    } catch (e) { /* ignore */ }
 
     if (!fileFound) {
-      prev.push(filePath + ' Not Found');
+      accumulator.push(filePath + ' Not Found');
     }
 
-    return prev;
+    return accumulator;
   }, []);
 
   if (missingFiles.length) {
