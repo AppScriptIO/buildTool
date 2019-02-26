@@ -9,11 +9,9 @@ import mergeStream from 'merge-stream'
 import { src as readFileAsObjectStream, dest as writeFileFromObjectStream } from 'vinyl-fs'
 import wildcardPathnameMatcher from 'globby'
 import ownConfiguration from '../configuration'
-// export const include = (file)=> { eval(filesystem.readFileSync(file) + '') } // Execute file code as if written locally.
-// export const joinPath = require(path.join(config.UtilityModulePath, 'joinPath.js')).default
+
 // export const source = subpath => { return joinPath(config.directory.SourceCodePath, subpath) }
 // export const destination = subpath => { return joinPath(config.directory.DestinationPath, subpath) }
-// export const plugins = require('gulp-load-plugins')({ camelize: true })
 // const gulpTaskExecution = require(path.join(config.UtilityModulePath, 'gulpTaskExecution.js')).default(gulp)
 
 // import { taskSetting as clientSideTaskSetting, taskAggregationSetting as clientsideTaskAggregationSetting } from './taskDataDefinition/clientSide.taskSetting.js'
@@ -24,6 +22,8 @@ import ownConfiguration from '../configuration'
 import { pipeline as cssPipeline } from './utility/operation/transformAsset/stylesheet.js'
 import { serverJSPipeline } from './utility/operation/transformAsset/javascript.js'
 import { pipeline as htmlPipeline } from './utility/operation/transformAsset/html.js'
+import { installNpm } from './utility/operation/installPackage/install-npm.js'
+import { recursivelySyncFile } from './utility/operation/manipulateFile/synchronizeFile.js'
 
 export async function build({ targetProject }){
     const targetProjectRoot = targetProject.configuration.rootPath
@@ -33,23 +33,32 @@ export async function build({ targetProject }){
 		htmlFileArray = await wildcardPathnameMatcher(path.join(targetProjectRoot, '*.html'))
 	const destinationPath = path.join(targetProjectRoot, 'output')
 
-	await pipeline(
-		readFileAsObjectStream(cssFileArray),
-		...cssPipeline(),
-		writeFileFromObjectStream(destinationPath)
-	)
+	// await pipeline(
+	// 	readFileAsObjectStream(cssFileArray),
+	// 	...cssPipeline(),
+	// 	writeFileFromObjectStream(destinationPath)
+	// )
 
-	await pipeline(
-		readFileAsObjectStream(jsFileArray),
-		...serverJSPipeline(),
-		writeFileFromObjectStream(destinationPath)
-	)
+	// await pipeline(
+	// 	readFileAsObjectStream(jsFileArray),
+	// 	...serverJSPipeline(),
+	// 	writeFileFromObjectStream(destinationPath)
+	// )
 
-	await pipeline(
-		readFileAsObjectStream(htmlFileArray),
-		...htmlPipeline(),
-		writeFileFromObjectStream(destinationPath)
-	)
+	// await pipeline(
+	// 	readFileAsObjectStream(htmlFileArray),
+	// 	...htmlPipeline(),
+	// 	writeFileFromObjectStream(destinationPath)
+	// )
+
+	// await installNpm({ npmPath: path.join(targetProjectRoot, 'input/') })
+
+	// await recursivelySyncFile({
+	// 	source: path.join(targetProjectRoot, 'input'),
+	// 	destination: path.join(targetProjectRoot, 'output/rsync2'),
+	// 	copyContentOnly: true
+	// })
+
 
 	// // for registring Task functions
 	// let taskSetting = Array.prototype.concat(

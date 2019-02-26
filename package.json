@@ -6,6 +6,7 @@
   "dependencies": {
     "@dependency/fragmentIndentationObjectStream": "https://github.com/AppScriptIO/fragmentIndentationObjectStream",
     "@dependency/javascriptTranspilation": "https://github.com/AppScriptIO/javascriptTranspilation",
+    "command-exists": "^1.2.8",
     "css-slam": "*",
     "globby": "^9.0.0",
     "gulp": "*",
