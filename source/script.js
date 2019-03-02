@@ -14,10 +14,10 @@ import ownConfiguration from '../configuration'
 // export const destination = subpath => { return joinPath(config.directory.DestinationPath, subpath) }
 // const gulpTaskExecution = require(path.join(config.UtilityModulePath, 'gulpTaskExecution.js')).default(gulp)
 
-// import { taskSetting as clientSideTaskSetting, taskAggregationSetting as clientsideTaskAggregationSetting } from './taskDataDefinition/clientSide.taskSetting.js'
-// import { taskSetting as nativeTaskSetting, taskAggregationSetting as nativeTaskAggregationSetting } from './taskDataDefinition/native.taskSetting.js'
-// import { taskSetting as polyfillTaskSetting, taskAggregationSetting as polyfillTaskAggregationSetting } from './taskDataDefinition/polyfill.taskSetting.js'
-// import { taskSetting as serverSideTaskSetting, taskAggregationSetting as serverSideTaskAggregationSetting } from './taskDataDefinition/serverSide.taskSetting.js'
+// import {dataItem as clientSideDataItem, node as clientsideNode } from './taskDataDefinition/clientSide.taskSetting.js'
+// import {dataItem as nativeDataItem, node as nativeNode } from './taskDataDefinition/native.taskSetting.js'
+// import {dataItem as polyfillDataItem, node as polyfillNode } from './taskDataDefinition/polyfill.taskSetting.js'
+// import {dataItem as serverSideDataItem, node as serverSideNode } from './taskDataDefinition/serverSide.taskSetting.js'
 
 import { pipeline as cssPipeline } from './utility/operation/transformAsset/stylesheet.js'
 import { serverJSPipeline } from './utility/operation/transformAsset/javascript.js'
@@ -61,18 +61,18 @@ export async function build({ targetProject }){
 
 
 	// // for registring Task functions
-	// let taskSetting = Array.prototype.concat(
-	// 	clientSideTaskSetting,
-	// 	nativeTaskSetting,
-	// 	polyfillTaskSetting,
-	// 	serverSideTaskSetting
+	// letdataItem = Array.prototype.concat(
+	// 	clientSideDataItem,
+	// 	nativeDataItem,
+	// 	polyfillDataItem,
+	// 	serverSideDataItem
 	// )
 	// // for executing task chain/aggregation
-	// let taskAggregationSetting = Array.prototype.concat(
-	// 	clientsideTaskAggregationSetting,
-	// 	nativeTaskAggregationSetting,
-	// 	polyfillTaskAggregationSetting,
-	// 	serverSideTaskAggregationSetting,
+	// let node = Array.prototype.concat(
+	// 	clientsideNode,
+	// 	nativeNode,
+	// 	polyfillNode,
+	// 	serverSideNode,
 	// 	[{
 	// 		name: 'build',
 	// 		executionType: 'series',
@@ -93,7 +93,7 @@ export async function build({ targetProject }){
 	// 	}]
 	// )
 
-	// gulpTaskExecution({ taskSetting, taskAggregationSetting }) // register tasks.
+	// gulpTaskExecution({dataItem, node }) // register tasks.
 
 	// gulp.parallel([ 'build' ])() // execute tasks.
 }

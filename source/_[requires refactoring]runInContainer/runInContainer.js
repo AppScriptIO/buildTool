@@ -59,8 +59,8 @@ switch (process.argv[0]) {
     default: {
         let serviceName = 'nodejs'
         let debugCommand = (process.argv.includes('debug')) ? 
-        `--inspect${ process.argv.includes('break')?'-brk':'' }=0.0.0.0:9229`: 
-        '';
+            `--inspect${ process.argv.includes('break')?'-brk':'' }=0.0.0.0:9229`: 
+            '';
         let gulpTask = namedArgs.task || 'build'
         let appEntrypointPath = `${appDeploymentLifecycle}/entrypoint/build/`
         let containerCommand = `node ${debugCommand} ${appEntrypointPath} ${gulpTask}`
