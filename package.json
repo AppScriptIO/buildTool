@@ -1,11 +1,11 @@
 {
   "name": "@dependency/buildTool",
   "version": "1.0.0",
-  "main": "./source/entrypoint/api/transpilation.entrypoint.js",
+  "main": "./entrypoint/programmaticAPI",
   "scripts": {},
   "dependencies": {
     "@dependency/fragmentIndentationObjectStream": "https://github.com/AppScriptIO/fragmentIndentationObjectStream",
-    "@dependency/javascriptTranspilation": "https://github.com/AppScriptIO/javascriptTranspilation",
+    "@dependency/javascriptTranspilation": "https://github.com/AppScriptIO/javascriptTranspilation#semver:^1.x.x",
     "command-exists": "^1.2.8",
     "css-slam": "*",
     "globby": "^9.0.0",
@@ -35,7 +35,7 @@
     "vinyl-fs": "^3.0.3"
   },
   "devDependencies": {
-    "@dependency/javascriptStaticAnalysis": "https://github.com/AppScriptIO/javascriptStaticAnalysis",
+    "@dependency/javascriptStaticAnalysis": "https://github.com/AppScriptIO/javascriptStaticAnalysis#semver:^1.x.x",
     "typescript": "^3.3.3333"
   }
 }
