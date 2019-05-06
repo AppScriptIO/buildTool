@@ -1,62 +1,76 @@
+"use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-import path from 'path'
-import sourcemaps from 'gulp-sourcemaps'
-import concat from 'gulp-concat'
-import { FragmentIndentation } from '@dependency/fragmentIndentationObjectStream'
-import babel from 'gulp-babel'
-import debug from 'gulp-debug'
-import size from 'gulp-size'
-import jsMinify from 'gulp-uglify'
-import { getBabelConfig } from '@dependency/javascriptTranspilation'
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.fragmentPipeline = fragmentPipeline;
+exports.clientJSPipeline = clientJSPipeline;
+exports.serverJSPipeline = serverJSPipeline;
+exports.jsFileRegex = void 0;
 
-export const jsFileRegex = /\.js$/
+var _gulpSourcemaps = _interopRequireDefault(require("gulp-sourcemaps"));
 
-export function fragmentPipeline({ 
-  babelPreset, babelPlugin, // babel configurations
+var _fragmentIndentationObjectStream = require("@dependency/fragmentIndentationObjectStream");
+
+var _gulpBabel = _interopRequireDefault(require("gulp-babel"));
+
+var _gulpDebug = _interopRequireDefault(require("gulp-debug"));
+
+var _gulpSize = _interopRequireDefault(require("gulp-size"));
+
+var _javascriptTranspilation = require("@dependency/javascriptTranspilation");
+
+const jsFileRegex = /\.js$/;
+exports.jsFileRegex = jsFileRegex;
+
+function fragmentPipeline({
+  babelPreset,
+  babelPlugin,
+  // babel configurations
   shouldSourceMap = true
 }) {
-  let pipeline = [
-    babel({
-      "presets": babelPreset,
-      "plugins": babelPlugin,
-      "babelrc": false
-    }), 
-    // jsMinify() // causes issues with some non-native syntax. Using babel minify preset instead.
-  ]
+  let pipeline = [(0, _gulpBabel.default)({
+    "presets": babelPreset,
+    "plugins": babelPlugin,
+    "babelrc": false
+  })];
 
-  if(shouldSourceMap) {
-    pipeline.unshift(
-      sourcemaps.init()
-    )
-    pipeline.push(
-      sourcemaps.write('.')
-    )
+  if (shouldSourceMap) {
+    pipeline.unshift(_gulpSourcemaps.default.init());
+    pipeline.push(_gulpSourcemaps.default.write('.'));
   }
 
-  return pipeline
+  return pipeline;
 }
 
-export function clientJSPipeline({ 
+function clientJSPipeline({
   babelConfigFileName = 'nativeClientSideBuild.BabelConfig.js'
 } = {}) {
-  const babelConfig = getBabelConfig(babelConfigFileName)
-  let pipeline = [
-    debug({ title: 'clientJS:' }),
-    FragmentIndentation.TransformToFragmentKeys(),
-    ...fragmentPipeline({ babelPreset: babelConfig.presets, babelPlugin: babelConfig.plugins, shouldSourceMap: true }), // previous error handling - .pipe().on('error', function(e) { console.log('>>> ERROR', e); this.emit('end'); })
-    FragmentIndentation.TransformBackToFragment(),
-    size({ title: `JAVASCRIPT - clientJS using ${babelConfigFileName}` })
-  ]
-  return pipeline
+  const babelConfig = (0, _javascriptTranspilation.getBabelConfig)(babelConfigFileName);
+  let pipeline = [(0, _gulpDebug.default)({
+    title: 'clientJS:'
+  }), _fragmentIndentationObjectStream.FragmentIndentation.TransformToFragmentKeys(), ...fragmentPipeline({
+    babelPreset: babelConfig.presets,
+    babelPlugin: babelConfig.plugins,
+    shouldSourceMap: true
+  }), // previous error handling - .pipe().on('error', function(e) { console.log('>>> ERROR', e); this.emit('end'); })
+  _fragmentIndentationObjectStream.FragmentIndentation.TransformBackToFragment(), (0, _gulpSize.default)({
+    title: `JAVASCRIPT - clientJS using ${babelConfigFileName}`
+  })];
+  return pipeline;
 }
 
-export function serverJSPipeline({
+function serverJSPipeline({
   babelConfigFileName = 'serverBuild.BabelConfig.js'
 } = {}) {
-    const babelConfig = getBabelConfig(babelConfigFileName)
-    return [
-      ...fragmentPipeline({ babelPreset: babelConfig.presets, babelPlugin: babelConfig.plugins, shouldSourceMap: true }),
-      size({ title: 'Javascript - serverJS' })
-    ]
+  const babelConfig = (0, _javascriptTranspilation.getBabelConfig)(babelConfigFileName);
+  return [...fragmentPipeline({
+    babelPreset: babelConfig.presets,
+    babelPlugin: babelConfig.plugins,
+    shouldSourceMap: true
+  }), (0, _gulpSize.default)({
+    title: 'Javascript - serverJS'
+  })];
 }
