@@ -9,90 +9,48 @@ import mergeStream from 'merge-stream'
 import { src as readFileAsObjectStream, dest as writeFileFromObjectStream } from 'vinyl-fs'
 import wildcardPathnameMatcher from 'globby'
 import ownConfiguration from '../configuration'
-
-// export const source = subpath => { return joinPath(config.directory.SourceCodePath, subpath) }
-// export const destination = subpath => { return joinPath(config.directory.DestinationPath, subpath) }
-// const gulpTaskExecution = require(path.join(config.UtilityModulePath, 'gulpTaskExecution.js')).default(gulp)
-
-// import {dataItem as clientSideDataItem, node as clientsideNode } from './taskDataDefinition/clientSide.taskSetting.js'
-// import {dataItem as nativeDataItem, node as nativeNode } from './taskDataDefinition/native.taskSetting.js'
-// import {dataItem as polyfillDataItem, node as polyfillNode } from './taskDataDefinition/polyfill.taskSetting.js'
-// import {dataItem as serverSideDataItem, node as serverSideNode } from './taskDataDefinition/serverSide.taskSetting.js'
-
-import { pipeline as cssPipeline } from './utility/operation/transformAsset/stylesheet.js'
-import { serverJSPipeline } from './utility/operation/transformAsset/javascript.js'
-import { pipeline as htmlPipeline } from './utility/operation/transformAsset/html.js'
-import { installNpm } from './utility/operation/installPackage/install-npm.js'
-import { recursivelySyncFile } from './utility/operation/manipulateFile/synchronizeFile.js'
+import { Graph as GraphModule, Context as ContextModule } from '@dependency/graphTraversal'
+const { Graph } = GraphModule
+const { Context } = ContextModule
+import { pipeline as cssPipeline } from './transformPipeline/stylesheet.js'
+import { serverJSPipeline } from './transformPipeline/javascript.js'
+import { pipeline as htmlPipeline } from './transformPipeline/html.js'
+import { installNpm } from '@dependency/deploymentScript/script/provisionOS/installESModule/install-npm.js'
+import { recursivelySyncFile } from '@dependency/deploymentScript/source/utility/filesystemOperation/synchronizeFile.js'
 
 export async function build({ targetProject }) {
   const targetProjectRoot = targetProject.configuration.rootPath
-
-  let cssFileArray = await wildcardPathnameMatcher(path.join(targetProjectRoot, '*.css')),
-    jsFileArray = await wildcardPathnameMatcher(path.join(targetProjectRoot, '*.js')),
-    htmlFileArray = await wildcardPathnameMatcher(path.join(targetProjectRoot, '*.html'))
   const destinationPath = path.join(targetProjectRoot, 'output')
+  const ignoreNodeModuleMatcher = `!node_modules/**/*`
 
-  // await pipeline(
-  // 	readFileAsObjectStream(cssFileArray),
-  // 	...cssPipeline(),
-  // 	writeFileFromObjectStream(destinationPath)
-  // )
+  // pass variables through the context object.
+  let contextInstance = new Context.clientInterface({ x: '"hello from x"' })
+  let configuredGraph = Graph.clientInterface({ parameter: [{ concreteBehaviorList: [contextInstance] }] })
+  let graph = new configuredGraph({})
 
-  // await pipeline(
-  // 	readFileAsObjectStream(jsFileArray),
-  // 	...serverJSPipeline(),
-  // 	writeFileFromObjectStream(destinationPath)
-  // )
+  // add data processing implementation callback
+  const implementationName = 'transformPipeline'
+  graph.traversal.processData[implementationName] = ({ node, graphInstance }) => {
+    console.log(`transpile html in ${targetProjectRoot} using node data: ${node} and graphInstance: ${graphInstance.context.x}`)
+  }
 
-  // await pipeline(
-  // 	readFileAsObjectStream(htmlFileArray),
-  // 	...htmlPipeline(),
-  // 	writeFileFromObjectStream(destinationPath)
-  // )
+  try {
+    let result = await graph.traverse({ nodeKey: '1', implementationKey: { processData: implementationName } })
+    console.log(result)
+  } catch (error) {
+    await graph.database.driverInstance.close()
+  }
+  // let result = graph.traverse({ nodeKey: '9160338f-6990-4957-9506-deebafdb6e29' })
+  await graph.database.driverInstance.close()
+}
 
-  // await installNpm({ npmPath: path.join(targetProjectRoot, 'input/') })
-
-  // await recursivelySyncFile({
-  // 	source: path.join(targetProjectRoot, 'input'),
-  // 	destination: path.join(targetProjectRoot, 'output/rsync2'),
-  // 	copyContentOnly: true
-  // })
-
-  // // for registring Task functions
-  // letdataItem = Array.prototype.concat(
-  // 	clientSideDataItem,
-  // 	nativeDataItem,
-  // 	polyfillDataItem,
-  // 	serverSideDataItem
-  // )
-  // // for executing task chain/aggregation
-  // let node = Array.prototype.concat(
-  // 	clientsideNode,
-  // 	nativeNode,
-  // 	polyfillNode,
-  // 	serverSideNode,
-  // 	[{
-  // 		name: 'build',
-  // 		executionType: 'series',
-  // 		childTask: [
-  // 			{
-  // 				label: 'serverSide:build'
-  // 			},
-  // 			{
-  // 				label: 'clientSide:build'
-  // 			},
-  // 			{
-  // 				label: 'nativeClientSide:build'
-  // 			},
-  // 			{
-  // 				label: 'polyfillClientSide:build'
-  // 			},
-  // 		]
-  // 	}]
-  // )
-
-  // gulpTaskExecution({dataItem, node }) // register tasks.
-
-  // gulp.parallel([ 'build' ])() // execute tasks.
+async function b() {
+  let cssFileArray = await wildcardPathnameMatcher([path.join(targetProjectRoot, 'source', '**/*.css')])
+  let jsFileArray = await wildcardPathnameMatcher([path.join(targetProjectRoot, 'source', '**/*.js')])
+  let htmlFileArray = await wildcardPathnameMatcher([path.join(targetProjectRoot, 'source', '**/*.html')])
+  if (cssFileArray.length) await pipeline(readFileAsObjectStream(cssFileArray), ...cssPipeline(), writeFileFromObjectStream(destinationPath))
+  if (jsFileArray.length) await pipeline(readFileAsObjectStream(jsFileArray), ...serverJSPipeline(), writeFileFromObjectStream(destinationPath))
+  if (htmlFileArray.length) await pipeline(readFileAsObjectStream(htmlFileArray), ...htmlPipeline(), writeFileFromObjectStream(destinationPath))
+  await installNpm({ npmPath: path.join(targetProjectRoot, 'input/') })
+  await recursivelySyncFile({ source: path.join(targetProjectRoot, 'input'), destination: path.join(targetProjectRoot, 'output/rsync2'), copyContentOnly: true })
 }

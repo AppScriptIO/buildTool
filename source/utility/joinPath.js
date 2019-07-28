@@ -1,19 +1,8 @@
 const checktype = require('type-of-is')
 const path = require('path')
 
-export default function joinPath(mainpath, subpath) {
-  if (typeof subpath === 'undefined') subpath = null
-
-  if (subpath == null) {
-    return mainpath
-  } else {
-    if (checktype(subpath, String)) {
-      return path.join(mainpath, subpath)
-    } else {
-      let combined = subpath.map(value => {
-        return path.join(mainpath, value)
-      })
-      return combined
-    }
-  }
+export default function joinPath(mainpath: String, subpath: [String]) {
+  if (subpath == null || typeof subpath === 'undefined') return mainpath
+  if (checktype(subpath, String)) return path.join(mainpath, subpath)
+  else return subpath.map(value => path.join(mainpath, value))
 }

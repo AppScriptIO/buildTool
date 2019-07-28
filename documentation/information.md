@@ -1,5 +1,5 @@
-gulp_buildTool.js
-Gulp - task runner, used in this context as a build tool for source code.
+Build tool - Source code transformation tool.
+Gulp - task runner, used in this context as a build tool for source code. 
 
 ___
 [TODO list](/documentation/TODO.md)

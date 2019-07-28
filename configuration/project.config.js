@@ -1,4 +1,5 @@
 const path = require('path')
+const { script } = require('./script.config.js')
 
 const ownConfiguration = {
   directory: {
@@ -23,6 +24,7 @@ const ownConfiguration = {
       return getBabelConfig(ownConfiguration.transpilation.babelConfigKey, { configType: 'json' })
     },
   },
+  script,
 }
 
 module.exports = Object.assign({}, ownConfiguration)
