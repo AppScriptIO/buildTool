@@ -44,7 +44,7 @@ export function clientJSPipeline({ babelConfigFileName = 'nativeClientSideBuild.
   return pipeline
 }
 
-export function serverJSPipeline({ babelConfigFileName = 'serverBuild.BabelConfig.js' } = {}) {
+export function serverJSPipeline({ babelConfigFileName = 'serverBuild.BabelConfig.js', includeSourceMap = true } = {}) {
   const babelConfig = getBabelConfig(babelConfigFileName)
-  return [...fragmentPipeline({ babelPreset: babelConfig.presets, babelPlugin: babelConfig.plugins, shouldSourceMap: true }), size({ title: 'Javascript - serverJS' })]
+  return [...fragmentPipeline({ babelPreset: babelConfig.presets, babelPlugin: babelConfig.plugins, shouldSourceMap: includeSourceMap }), size({ title: 'Javascript - serverJS' })]
 }

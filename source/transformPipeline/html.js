@@ -34,10 +34,12 @@ export const fragmentPipeline = () => [
 
 export function pipeline({
   // array of file object streams (vinyl transformers)
-  jsPipeline = clientJSPipeline(),
+  jsPipeline,
   cssPipeline = _cssPipeline(),
   htmlPipeline = fragmentPipeline(),
+  babelConfigFileName,
 } = {}) {
+  jsPipeline ||= clientJSPipeline({ babelConfigFileName })
   const sourcesHtmlSplitter = new HtmlSplitter()
 
   return [
