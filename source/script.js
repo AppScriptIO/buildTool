@@ -30,7 +30,9 @@ export async function build({ targetProject }) {
 
   // add data processing implementation callback
   const implementationName = 'transformPipeline'
-  graph.traversal.processData[implementationName] = ({ node, graphInstance }) => {}
+  graph.traversal.processData[implementationName] = ({ node, graphInstance }) => {
+    if (node.properties.name) console.log(`node data: ${node} and graphInstance: ${graphInstance.context}`)
+  }
 
   try {
     let result = await graph.traverse({ nodeKey: '58c15cc8-6f40-4d0b-815a-0b8594aeb972', implementationKey: { processData: implementationName } })
