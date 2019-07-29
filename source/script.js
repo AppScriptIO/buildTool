@@ -24,20 +24,19 @@ export async function build({ targetProject }) {
   const ignoreNodeModuleMatcher = `!node_modules/**/*`
 
   // pass variables through the context object.
-  let contextInstance = new Context.clientInterface({ x: '"hello from x"' })
+  let contextInstance = new Context.clientInterface({})
   let configuredGraph = Graph.clientInterface({ parameter: [{ concreteBehaviorList: [contextInstance] }] })
   let graph = new configuredGraph({})
 
   // add data processing implementation callback
   const implementationName = 'transformPipeline'
-  graph.traversal.processData[implementationName] = ({ node, graphInstance }) => {
-    console.log(`transpile html in ${targetProjectRoot} using node data: ${node} and graphInstance: ${graphInstance.context.x}`)
-  }
+  graph.traversal.processData[implementationName] = ({ node, graphInstance }) => {}
 
   try {
-    let result = await graph.traverse({ nodeKey: '1', implementationKey: { processData: implementationName } })
+    let result = await graph.traverse({ nodeKey: '58c15cc8-6f40-4d0b-815a-0b8594aeb972', implementationKey: { processData: implementationName } })
     console.log(result)
   } catch (error) {
+    console.error(error)
     await graph.database.driverInstance.close()
   }
   // let result = graph.traverse({ nodeKey: '9160338f-6990-4957-9506-deebafdb6e29' })
