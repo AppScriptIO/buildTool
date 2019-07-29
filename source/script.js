@@ -10,6 +10,12 @@ const { Graph } = GraphModule
 const { Context } = ContextModule
 import * as task from './task.js'
 
+/** Performance measurment */
+const observer = new PerformanceObserver(list => {
+  const entry = list.getEntries()[0]
+  console.log(`Done '${entry.name}'`, entry.duration)
+})
+observer.observe({ entryTypes: ['measure'], buffered: false })
 //Creating the async hook here to piggyback on async calls
 const hookContext = new Map()
 const hook = AsyncHooks.createHook({
@@ -28,12 +34,6 @@ const hook = AsyncHooks.createHook({
   },
 })
 hook.enable()
-//The performance observer is not changed
-const observer = new PerformanceObserver(list => {
-  const entry = list.getEntries()[0]
-  console.log(`Done '${entry.name}'`, entry.duration)
-})
-observer.observe({ entryTypes: ['measure'], buffered: false })
 
 export async function build({ targetProject }) {
   const targetProjectRoot = targetProject.configuration.rootPath
@@ -59,15 +59,15 @@ export async function build({ targetProject }) {
       let resourceNode = resourceRelation.destination
       let taskName = resourceNode.properties.functionName || throw new Error(`• Task resource must have a "functionName" - ${resourceNode.properties.functionName}`)
       let taskFunction = task[taskName] || throw new Error(`• reference task name doesn't exist.`)
-      await taskFunction(targetProject.configuration.configuration)
+      // await taskFunction(targetProject.configuration.configuration)
     }
 
     performance.mark('end' + id)
-    performance.measure(node.properties.name || 'NodeID-' + node.properties.id, 'start' + id, 'end' + id)
+    performance.measure(node.properties.name || 'Node ID: ' + node.identity, 'start' + id, 'end' + id)
   }
 
   try {
-    let result = await graph.traverse({ nodeKey: '5a7c4139-2ce8-4f3b-89e2-47a5f3286e60', implementationKey: { processData: implementationName } })
+    let result = await graph.traverse({ nodeKey: '58c15cc8-6f40-4d0b-815a-0b8594aeb972', implementationKey: { processData: implementationName } })
     console.log(result)
   } catch (error) {
     console.error(error)
