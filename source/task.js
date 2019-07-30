@@ -17,6 +17,8 @@ import { pipeline as imagePipeline } from './transformPipeline/image.js'
 import { clientJSPipeline, serverJSPipeline } from './transformPipeline/javascript.js'
 import { pipeline as jsonPipeline } from './transformPipeline/json.js'
 import { pipeline as stylesheetPipeline } from './transformPipeline/stylesheet.js'
+const ignorePackageDependency = '!' + '**/@package/**/*',
+  ignoreNodeModule = '!' + '**/node_modules/**/*'
 
 /**
  * Maps a key to a callback to a task function
@@ -50,12 +52,12 @@ export const nativeClientSide_copySourceCode = async targetProjectConfig =>
   })
 
 export const nativeClientSide_json = async targetProjectConfig => {
-  let fileArray = await wildcardPathnameMatcher([path.join(targetProjectConfig.directory.clientSide, '/**/*.json'), '!' + path.join(targetProjectConfig.directory.clientSide, '**/@package/**/*.json')])
+  let fileArray = await wildcardPathnameMatcher([path.join(targetProjectConfig.directory.clientSide, '/**/*.json'), ignorePackageDependency])
   if (fileArray.length) await pipeline(readFileAsObjectStream(fileArray), ...jsonPipeline(), writeFileFromObjectStream(targetProjectConfig.distribution.clientSide.native))
 }
 
 export const nativeClientSide_html = async targetProjectConfig => {
-  let fileArray = await wildcardPathnameMatcher([path.join(targetProjectConfig.directory.clientSide, '/**/*.html'), '!' + path.join(targetProjectConfig.directory.clientSide, '**/@package/**/*.html')])
+  let fileArray = await wildcardPathnameMatcher([path.join(targetProjectConfig.directory.clientSide, '/**/*.html'), ignorePackageDependency])
   if (fileArray.length)
     await pipeline(
       readFileAsObjectStream(fileArray),
@@ -65,16 +67,17 @@ export const nativeClientSide_html = async targetProjectConfig => {
 }
 
 export const nativeClientSide_stylesheet = async targetProjectConfig => {
-  let fileArray = await wildcardPathnameMatcher([path.join(targetProjectConfig.directory.clientSide, '/**/*.css'), '!' + path.join(targetProjectConfig.directory.clientSide, '**/@package/**/*.css')])
+  let fileArray = await wildcardPathnameMatcher([path.join(targetProjectConfig.directory.clientSide, '/**/*.css'), ignorePackageDependency])
   if (fileArray.length) await pipeline(readFileAsObjectStream(fileArray), ...stylesheetPipeline(), writeFileFromObjectStream(targetProjectConfig.distribution.clientSide.native))
 }
 
 export const nativeClientSide_javascript = async targetProjectConfig => {
   let fileArray = await wildcardPathnameMatcher([
     path.join(targetProjectConfig.directory.clientSide, '/**/*.js'), // including package js to allow named import path transformation.
-    '!' + path.join(targetProjectConfig.directory.clientSide, '/**/@package/**/*.js'),
-    path.join(targetProjectConfig.directory.clientSide, '/**/webcomponent/@package/@polymer/**/*.js'),
-    '!' + path.join(targetProjectConfig.directory.clientSide, '/**/webcomponent/@package/@polymer/**/bower_components/**/*.js'), // polymer 3 contains a bower_components folder.
+    ignorePackageDependency,
+    // include compoennt in specific case
+    // path.join(targetProjectConfig.directory.clientSide, '/**/webcomponent/@package/@polymer/**/*.js'),
+    // '!' + path.join(targetProjectConfig.directory.clientSide, '/**/webcomponent/@package/@polymer/**/bower_components/**/*.js'), // polymer 3 contains a bower_components folder.
   ])
   if (fileArray.length)
     await pipeline(
@@ -96,12 +99,12 @@ export const polyfillClientSide_copySourceCode = targetProjectConfig =>
   recursivelySyncFile({ source: targetProjectConfig.directory.clientSide, destination: targetProjectConfig.distribution.clientSide.polyfill, copyContentOnly: true })
 
 export const polyfillClientSide_json = async targetProjectConfig => {
-  let fileArray = await wildcardPathnameMatcher([path.join(targetProjectConfig.directory.clientSide, '/**/*.json'), '!' + path.join(targetProjectConfig.directory.clientSide, '**/@package/**/*.json')])
+  let fileArray = await wildcardPathnameMatcher([path.join(targetProjectConfig.directory.clientSide, '/**/*.json'), ignorePackageDependency])
   if (fileArray.length) await pipeline(readFileAsObjectStream(fileArray), ...jsonPipeline(), writeFileFromObjectStream(targetProjectConfig.distribution.clientSide.polyfill))
 }
 
 export const polyfillClientSide_html = async targetProjectConfig => {
-  let fileArray = await wildcardPathnameMatcher([path.join(targetProjectConfig.directory.clientSide, '/**/*.html'), '!' + path.join(targetProjectConfig.directory.clientSide, '**/@package/**/*.html')])
+  let fileArray = await wildcardPathnameMatcher([path.join(targetProjectConfig.directory.clientSide, '/**/*.html'), ignorePackageDependency])
   if (fileArray.length)
     await pipeline(
       readFileAsObjectStream(fileArray),
@@ -111,16 +114,17 @@ export const polyfillClientSide_html = async targetProjectConfig => {
 }
 
 export const polyfillClientSide_stylesheet = async targetProjectConfig => {
-  let fileArray = await wildcardPathnameMatcher([path.join(targetProjectConfig.directory.clientSide, '/**/*.css'), '!' + path.join(targetProjectConfig.directory.clientSide, '**/@package/**/*.css')])
+  let fileArray = await wildcardPathnameMatcher([path.join(targetProjectConfig.directory.clientSide, '/**/*.css'), ignorePackageDependency])
   if (fileArray.length) await pipeline(readFileAsObjectStream(fileArray), ...stylesheetPipeline(), writeFileFromObjectStream(targetProjectConfig.distribution.clientSide.polyfill))
 }
 
 export const polyfillClientSide_javascript = async targetProjectConfig => {
   let fileArray = await wildcardPathnameMatcher([
     path.join(targetProjectConfig.directory.clientSide, '/**/*.js'), // including package js to allow named import path transformation.
-    '!' + path.join(targetProjectConfig.directory.clientSide, '/**/@package/**/*.js'),
-    path.join(targetProjectConfig.directory.clientSide, '/**/webcomponent/@package/@polymer/**/*.js'),
-    '!' + path.join(targetProjectConfig.directory.clientSide, '/**/webcomponent/@package/@polymer/**/bower_components/**/*.js'), // polymer 3 contains a bower_components folder.
+    ignorePackageDependency,
+    // include compoennt in specific case
+    // path.join(targetProjectConfig.directory.clientSide, '/**/webcomponent/@package/@polymer/**/*.js'),
+    // '!' + path.join(targetProjectConfig.directory.clientSide, '/**/webcomponent/@package/@polymer/**/bower_components/**/*.js'), // polymer 3 contains a bower_components folder.
   ])
   if (fileArray.length)
     await pipeline(
@@ -150,10 +154,7 @@ export const serverSide_copyDatabaseData = async targetProjectConfig =>
   })
 
 export const serverSide_transpileDatabaseData = async targetProjectConfig => {
-  let fileArray = await wildcardPathnameMatcher([
-    path.join(targetProjectConfig.directory.source, 'databaseData/**/*.js'),
-    '!' + path.join(targetProjectConfig.directory.source, 'databaseData/node_modules/**/*.js'),
-  ])
+  let fileArray = await wildcardPathnameMatcher([path.join(targetProjectConfig.directory.source, 'databaseData/**/*.js'), ignoreNodeModule])
   if (fileArray.length)
     await pipeline(
       readFileAsObjectStream(fileArray),
@@ -163,7 +164,7 @@ export const serverSide_transpileDatabaseData = async targetProjectConfig => {
 }
 
 export const serverSide_transpileServerSide = async targetProjectConfig => {
-  let fileArray = await wildcardPathnameMatcher([path.join(targetProjectConfig.directory.serverSide, '**/*.js'), '!' + path.join(targetProjectConfig.directory.serverSide, '/node_modules/**/*.js')])
+  let fileArray = await wildcardPathnameMatcher([path.join(targetProjectConfig.directory.serverSide, '**/*.js'), ignoreNodeModule])
   if (fileArray.length)
     await pipeline(
       readFileAsObjectStream(fileArray),

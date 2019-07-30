@@ -35,7 +35,12 @@ const hook = AsyncHooks.createHook({
 })
 hook.enable()
 
-export async function build({ targetProject }) {
+// make un-handled promise rejections throw and end Nodejs process.
+process.on('unhandledRejection', error => {
+  throw error
+})
+
+export async function build({ entrtNodeKey = '58c15cc8-6f40-4d0b-815a-0b8594aeb972', targetProject /*passed through scriptManager*/ }) {
   const targetProjectRoot = targetProject.configuration.rootPath
 
   // pass variables through the context object.
@@ -44,16 +49,15 @@ export async function build({ targetProject }) {
   })
   let configuredGraph = Graph.clientInterface({ parameter: [{ concreteBehaviorList: [contextInstance] }] })
   let graph = new configuredGraph({})
-
-  // add data processing implementation callback
-  graph.traversal.processData['executeTaskReference'] = executeTaskReference
+  graph.traversal.processData['executeTaskReference'] = executeTaskReference // add data processing implementation callback
 
   try {
-    let result = await graph.traverse({ nodeKey: '58c15cc8-6f40-4d0b-815a-0b8594aeb972', implementationKey: { processData: 'executeTaskReference' } })
+    let result = await graph.traverse({ nodeKey: entrtNodeKey, implementationKey: { processData: 'executeTaskReference' } })
     console.log(result)
   } catch (error) {
     console.error(error)
     await graph.database.driverInstance.close()
+    process.exit()
   }
   // let result = graph.traverse({ nodeKey: '9160338f-6990-4957-9506-deebafdb6e29' })
   await graph.database.driverInstance.close()
@@ -78,7 +82,11 @@ async function executeTaskReference({ node, resourceRelation, graphInstance }) {
     let resourceNode = resourceRelation.destination
     let taskName = resourceNode.properties.functionName || throw new Error(`• Task resource must have a "functionName" - ${resourceNode.properties.functionName}`)
     let taskFunction = task[taskName] || throw new Error(`• reference task name doesn't exist.`)
-    await taskFunction(targetProjectConfiguration)
+    try {
+      await taskFunction(targetProjectConfiguration)
+    } catch (error) {
+      console.error(error) && process.exit()
+    }
   }
 
   performance.mark('end' + id)
