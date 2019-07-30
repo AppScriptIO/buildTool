@@ -37,37 +37,19 @@ hook.enable()
 
 export async function build({ targetProject }) {
   const targetProjectRoot = targetProject.configuration.rootPath
-  const destinationPath = path.join(targetProjectRoot, 'output')
-  const ignoreNodeModuleMatcher = `!node_modules/**/*`
 
   // pass variables through the context object.
-  let contextInstance = new Context.clientInterface({})
+  let contextInstance = new Context.clientInterface({
+    targetProjectConfiguration: targetProject.configuration.configuration,
+  })
   let configuredGraph = Graph.clientInterface({ parameter: [{ concreteBehaviorList: [contextInstance] }] })
   let graph = new configuredGraph({})
 
   // add data processing implementation callback
-  const implementationName = 'transformPipeline'
-  graph.traversal.processData[implementationName] = async ({ node, resourceRelation, graphInstance }) => {
-    const id = AsyncHooks.executionAsyncId() // this returns the current asynchronous context's id
-    hookContext.set(id, node)
-    performance.mark('start' + id)
-
-    if (resourceRelation) {
-      assert(resourceRelation?.connection.properties?.context == 'applicationReference', `• Unsupported resourceRelation context property.`)
-      assert(resourceRelation.destination.labels.includes('Task'), `• Unsupported Node type for resource connection.`)
-
-      let resourceNode = resourceRelation.destination
-      let taskName = resourceNode.properties.functionName || throw new Error(`• Task resource must have a "functionName" - ${resourceNode.properties.functionName}`)
-      let taskFunction = task[taskName] || throw new Error(`• reference task name doesn't exist.`)
-      // await taskFunction(targetProject.configuration.configuration)
-    }
-
-    performance.mark('end' + id)
-    performance.measure(node.properties.name || 'Node ID: ' + node.identity, 'start' + id, 'end' + id)
-  }
+  graph.traversal.processData['executeTaskReference'] = executeTaskReference
 
   try {
-    let result = await graph.traverse({ nodeKey: '58c15cc8-6f40-4d0b-815a-0b8594aeb972', implementationKey: { processData: implementationName } })
+    let result = await graph.traverse({ nodeKey: '58c15cc8-6f40-4d0b-815a-0b8594aeb972', implementationKey: { processData: 'executeTaskReference' } })
     console.log(result)
   } catch (error) {
     console.error(error)
@@ -75,4 +57,30 @@ export async function build({ targetProject }) {
   }
   // let result = graph.traverse({ nodeKey: '9160338f-6990-4957-9506-deebafdb6e29' })
   await graph.database.driverInstance.close()
+}
+
+/**
+ * `processData` implementation of `graphTraversal` module
+ * Requires `context.targetProjectConfiguration` property to be passed.
+ * Executes tasks through a string reference from the database that match the key of the application task context object (task.js exported object).
+ */
+async function executeTaskReference({ node, resourceRelation, graphInstance }) {
+  const id = AsyncHooks.executionAsyncId() // this returns the current asynchronous context's id
+  hookContext.set(id, node)
+  performance.mark('start' + id)
+
+  let targetProjectConfiguration = graphInstance.context.targetProjectConfiguration
+  assert(targetProjectConfiguration, `• Context "targetProjectConfiguration" variable is required to run project dependent tasks.`)
+
+  if (resourceRelation) {
+    assert(resourceRelation?.connection.properties?.context == 'applicationReference', `• Unsupported resourceRelation context property.`)
+    assert(resourceRelation.destination.labels.includes('Task'), `• Unsupported Node type for resource connection.`)
+    let resourceNode = resourceRelation.destination
+    let taskName = resourceNode.properties.functionName || throw new Error(`• Task resource must have a "functionName" - ${resourceNode.properties.functionName}`)
+    let taskFunction = task[taskName] || throw new Error(`• reference task name doesn't exist.`)
+    await taskFunction(targetProjectConfiguration)
+  }
+
+  performance.mark('end' + id)
+  performance.measure(node.properties.name || 'Node ID: ' + node.identity, 'start' + id, 'end' + id)
 }
