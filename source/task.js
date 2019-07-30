@@ -6,8 +6,10 @@ import stream from 'stream'
 import ownConfiguration from '../configuration'
 const pipeline = util.promisify(stream.pipeline)
 import mergeStream from 'merge-stream'
+// https://github.com/gulpjs/vinyl-fs#destfolder-options & https://gulpjs.com/docs/en/api/src
 import { src as readFileAsObjectStream, dest as writeFileFromObjectStream } from 'vinyl-fs'
-import wildcardPathnameMatcher from 'globby'
+import original_wildcardPathnameMatcher from 'glob' // Alternative modules - `globby`, `glob`, `glob-stream`
+const wildcardPathnameMatcher = util.promisify(original_wildcardPathnameMatcher)
 import { installJspm } from '@dependency/deploymentScript/script/provisionOS/installESModule/install-jspm.js'
 import { installYarn } from '@dependency/deploymentScript/script/provisionOS/installESModule/install-yarn.js'
 import { installNpm } from '@dependency/deploymentScript/script/provisionOS/installESModule/install-npm.js'
@@ -17,8 +19,8 @@ import { pipeline as imagePipeline } from './transformPipeline/image.js'
 import { clientJSPipeline, serverJSPipeline } from './transformPipeline/javascript.js'
 import { pipeline as jsonPipeline } from './transformPipeline/json.js'
 import { pipeline as stylesheetPipeline } from './transformPipeline/stylesheet.js'
-const ignorePackageDependency = '!' + '**/@package/**/*',
-  ignoreNodeModule = '!' + '**/node_modules/**/*'
+const packageDependencyPatternMatch = '**/@package/**/*',
+  nodeModulePatternMatch = '**/node_modules/**/*'
 
 /**
  * Maps a key to a callback to a task function
@@ -52,36 +54,49 @@ export const nativeClientSide_copySourceCode = async targetProjectConfig =>
   })
 
 export const nativeClientSide_json = async targetProjectConfig => {
-  let fileArray = await wildcardPathnameMatcher([path.join(targetProjectConfig.directory.clientSide, '/**/*.json'), ignorePackageDependency])
-  if (fileArray.length) await pipeline(readFileAsObjectStream(fileArray), ...jsonPipeline(), writeFileFromObjectStream(targetProjectConfig.distribution.clientSide.native))
+  let basePath = targetProjectConfig.directory.clientSide
+  let fileArray = await wildcardPathnameMatcher('**/*.json', { cwd: basePath, absolute: true /*always receive absolute paths*/, ignore: packageDependencyPatternMatch })
+  if (fileArray.length) await pipeline(readFileAsObjectStream(fileArray, { base: basePath }), ...jsonPipeline(), writeFileFromObjectStream(targetProjectConfig.distribution.clientSide.native))
 }
 
 export const nativeClientSide_html = async targetProjectConfig => {
-  let fileArray = await wildcardPathnameMatcher([path.join(targetProjectConfig.directory.clientSide, '/**/*.html'), ignorePackageDependency])
+  let basePath = targetProjectConfig.directory.clientSide
+  let fileArray = await wildcardPathnameMatcher('**/*.html', { cwd: basePath, absolute: true /*always receive absolute paths*/, ignore: packageDependencyPatternMatch })
   if (fileArray.length)
     await pipeline(
-      readFileAsObjectStream(fileArray),
+      readFileAsObjectStream(fileArray, { base: basePath }),
       ...htmlPipeline({ babelConfigFileName: 'nativeClientSideBuild.BabelConfig.js' }),
       writeFileFromObjectStream(targetProjectConfig.distribution.clientSide.native),
     )
 }
 
 export const nativeClientSide_stylesheet = async targetProjectConfig => {
-  let fileArray = await wildcardPathnameMatcher([path.join(targetProjectConfig.directory.clientSide, '/**/*.css'), ignorePackageDependency])
-  if (fileArray.length) await pipeline(readFileAsObjectStream(fileArray), ...stylesheetPipeline(), writeFileFromObjectStream(targetProjectConfig.distribution.clientSide.native))
+  let basePath = targetProjectConfig.directory.clientSide
+  let fileArray = await wildcardPathnameMatcher('**/*.css', { cwd: basePath, absolute: true /*always receive absolute paths*/, ignore: packageDependencyPatternMatch })
+  if (fileArray.length) await pipeline(readFileAsObjectStream(fileArray, { base: basePath }), ...stylesheetPipeline(), writeFileFromObjectStream(targetProjectConfig.distribution.clientSide.native))
 }
 
 export const nativeClientSide_javascript = async targetProjectConfig => {
-  let fileArray = await wildcardPathnameMatcher([
-    path.join(targetProjectConfig.directory.clientSide, '/**/*.js'), // including package js to allow named import path transformation.
-    ignorePackageDependency,
-    // include compoennt in specific case
-    // path.join(targetProjectConfig.directory.clientSide, '/**/webcomponent/@package/@polymer/**/*.js'),
-    // '!' + path.join(targetProjectConfig.directory.clientSide, '/**/webcomponent/@package/@polymer/**/bower_components/**/*.js'), // polymer 3 contains a bower_components folder.
-  ])
+  let basePath = targetProjectConfig.directory.clientSide
+  let fileArray = await wildcardPathnameMatcher(
+    [
+      '**/*.js',
+      // include compoennt in specific case
+      // path.join(targetProjectConfig.directory.clientSide, '/**/webcomponent/@package/@polymer/**/*.js'),
+    ],
+    {
+      cwd: basePath,
+      absolute: true /*always receive absolute paths*/,
+      ignore: [
+        packageDependencyPatternMatch,
+        // '/**/webcomponent/@package/@polymer/**/bower_components/**/*.js', // polymer 3 contains a bower_components folder.
+      ],
+    },
+  )
+
   if (fileArray.length)
     await pipeline(
-      readFileAsObjectStream(fileArray),
+      readFileAsObjectStream(fileArray, { base: basePath }),
       ...serverJSPipeline({ babelConfigFileName: 'nativeClientSideBuild.BabelConfig.js', includeSourceMap: false }),
       writeFileFromObjectStream(targetProjectConfig.distribution.clientSide.native),
     )
@@ -99,36 +114,48 @@ export const polyfillClientSide_copySourceCode = targetProjectConfig =>
   recursivelySyncFile({ source: targetProjectConfig.directory.clientSide, destination: targetProjectConfig.distribution.clientSide.polyfill, copyContentOnly: true })
 
 export const polyfillClientSide_json = async targetProjectConfig => {
-  let fileArray = await wildcardPathnameMatcher([path.join(targetProjectConfig.directory.clientSide, '/**/*.json'), ignorePackageDependency])
-  if (fileArray.length) await pipeline(readFileAsObjectStream(fileArray), ...jsonPipeline(), writeFileFromObjectStream(targetProjectConfig.distribution.clientSide.polyfill))
+  let basePath = targetProjectConfig.directory.clientSide
+  let fileArray = await wildcardPathnameMatcher('**/*.json', { cwd: basePath, absolute: true /*always receive absolute paths*/, ignore: packageDependencyPatternMatch })
+  if (fileArray.length) await pipeline(readFileAsObjectStream(fileArray, { base: basePath }), ...jsonPipeline(), writeFileFromObjectStream(targetProjectConfig.distribution.clientSide.polyfill))
 }
 
 export const polyfillClientSide_html = async targetProjectConfig => {
-  let fileArray = await wildcardPathnameMatcher([path.join(targetProjectConfig.directory.clientSide, '/**/*.html'), ignorePackageDependency])
+  let basePath = targetProjectConfig.directory.clientSide
+  let fileArray = await wildcardPathnameMatcher('**/*.html', { cwd: basePath, absolute: true /*always receive absolute paths*/, ignore: packageDependencyPatternMatch })
   if (fileArray.length)
     await pipeline(
-      readFileAsObjectStream(fileArray),
+      readFileAsObjectStream(fileArray, { base: basePath }),
       ...htmlPipeline({ babelConfigFileName: 'polyfillClientSideBuild.BabelConfig.js' }),
       writeFileFromObjectStream(targetProjectConfig.distribution.clientSide.polyfill),
     )
 }
 
 export const polyfillClientSide_stylesheet = async targetProjectConfig => {
-  let fileArray = await wildcardPathnameMatcher([path.join(targetProjectConfig.directory.clientSide, '/**/*.css'), ignorePackageDependency])
-  if (fileArray.length) await pipeline(readFileAsObjectStream(fileArray), ...stylesheetPipeline(), writeFileFromObjectStream(targetProjectConfig.distribution.clientSide.polyfill))
+  let basePath = targetProjectConfig.directory.clientSide
+  let fileArray = await wildcardPathnameMatcher('**/*.css', { cwd: basePath, absolute: true /*always receive absolute paths*/, ignore: packageDependencyPatternMatch })
+  if (fileArray.length) await pipeline(readFileAsObjectStream(fileArray, { base: basePath }), ...stylesheetPipeline(), writeFileFromObjectStream(targetProjectConfig.distribution.clientSide.polyfill))
 }
 
 export const polyfillClientSide_javascript = async targetProjectConfig => {
-  let fileArray = await wildcardPathnameMatcher([
-    path.join(targetProjectConfig.directory.clientSide, '/**/*.js'), // including package js to allow named import path transformation.
-    ignorePackageDependency,
-    // include compoennt in specific case
-    // path.join(targetProjectConfig.directory.clientSide, '/**/webcomponent/@package/@polymer/**/*.js'),
-    // '!' + path.join(targetProjectConfig.directory.clientSide, '/**/webcomponent/@package/@polymer/**/bower_components/**/*.js'), // polymer 3 contains a bower_components folder.
-  ])
+  let basePath = targetProjectConfig.directory.clientSide
+  let fileArray = await wildcardPathnameMatcher(
+    [
+      '**/*.js',
+      // include compoennt in specific case
+      // path.join(targetProjectConfig.directory.clientSide, '/**/webcomponent/@package/@polymer/**/*.js'),
+    ],
+    {
+      cwd: basePath,
+      absolute: true /*always receive absolute paths*/,
+      ignore: [
+        packageDependencyPatternMatch,
+        // '/**/webcomponent/@package/@polymer/**/bower_components/**/*.js', // polymer 3 contains a bower_components folder.
+      ],
+    },
+  )
   if (fileArray.length)
     await pipeline(
-      readFileAsObjectStream(fileArray),
+      readFileAsObjectStream(fileArray, { base: basePath }),
       ...serverJSPipeline({ babelConfigFileName: 'polyfillClientSideBuild.BabelConfig.js', includeSourceMap: false }),
       writeFileFromObjectStream(targetProjectConfig.distribution.clientSide.polyfill),
     )
@@ -144,7 +171,7 @@ export const polyfillClientSide_javascript = async targetProjectConfig => {
 export const serverSide_installYarn = targetProjectConfig => installYarn({ yarnPath: path.join(targetProjectConfig.directory.source, '/packageManager/library.server.yarn/') })
 
 export const serverSide_copyServerSide = async targetProjectConfig =>
-  await recursivelySyncFile({ source: targetProjectConfig.directory.source.serverSide, destination: targetProjectConfig.distribution.serverSide, copyContentOnly: true })
+  await recursivelySyncFile({ source: targetProjectConfig.directory.serverSide, destination: targetProjectConfig.distribution.serverSide, copyContentOnly: true })
 
 export const serverSide_copyDatabaseData = async targetProjectConfig =>
   await recursivelySyncFile({
@@ -154,34 +181,23 @@ export const serverSide_copyDatabaseData = async targetProjectConfig =>
   })
 
 export const serverSide_transpileDatabaseData = async targetProjectConfig => {
-  let fileArray = await wildcardPathnameMatcher([path.join(targetProjectConfig.directory.source, 'databaseData/**/*.js'), ignoreNodeModule])
+  let basePath = targetProjectConfig.directory.source
+  let fileArray = await wildcardPathnameMatcher('databaseData/**/*.js', { cwd: basePath, absolute: true /*always receive absolute paths*/, ignore: nodeModulePatternMatch })
   if (fileArray.length)
     await pipeline(
-      readFileAsObjectStream(fileArray),
+      readFileAsObjectStream(fileArray, { base: basePath }),
       ...serverJSPipeline({ babelConfigFileName: 'serverBuild.BabelConfig.js', includeSourceMap: false }),
       writeFileFromObjectStream(path.join(targetProjectConfig.directory.distribution, 'databaseData/')),
     )
 }
 
 export const serverSide_transpileServerSide = async targetProjectConfig => {
-  let fileArray = await wildcardPathnameMatcher([path.join(targetProjectConfig.directory.serverSide, '**/*.js'), ignoreNodeModule])
+  let basePath = targetProjectConfig.directory.serverSide
+  let fileArray = await wildcardPathnameMatcher('**/*.js', { cwd: basePath, absolute: true /*always receive absolute paths*/, ignore: nodeModulePatternMatch })
   if (fileArray.length)
     await pipeline(
-      readFileAsObjectStream(fileArray),
+      readFileAsObjectStream(fileArray, { base: basePath }),
       ...serverJSPipeline({ babelConfigFileName: 'serverBuild.BabelConfig.js', includeSourceMap: false }),
       writeFileFromObjectStream(targetProjectConfig.distribution.serverSide),
-    )
-}
-
-export const serverSide_transpileAppscript = async targetProjectConfig => {
-  let fileArray = await wildcardPathnameMatcher([
-    path.join(targetProjectConfig.directory.serverSide, 'node_modules/appscript/**/*.js'),
-    '!' + path.join(targetProjectConfig.directory.serverSide, 'node_modules/appscript/node_modules/**/*.js'),
-  ])
-  if (fileArray.length)
-    await pipeline(
-      readFileAsObjectStream(fileArray),
-      ...serverJSPipeline({ babelConfigFileName: 'serverBuild.BabelConfig.js', includeSourceMap: false }),
-      writeFileFromObjectStream(path.join(targetProjectConfig.distribution.serverSide, 'node_modules/appscript')),
     )
 }

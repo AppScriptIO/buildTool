@@ -53,7 +53,6 @@ export async function build({ entrtNodeKey = '58c15cc8-6f40-4d0b-815a-0b8594aeb9
 
   try {
     let result = await graph.traverse({ nodeKey: entrtNodeKey, implementationKey: { processData: 'executeTaskReference' } })
-    console.log(result)
   } catch (error) {
     console.error(error)
     await graph.database.driverInstance.close()

@@ -2,13 +2,17 @@
   "name": "@dependency/buildTool",
   "version": "1.0.1",
   "main": "./entrypoint/programmaticAPI",
-  "scripts": {},
+  "scripts": {
+    "exportGraphData": "yarn run scriptManager shouldCompileScript=true graphDatabase/exportGraphData \".exportGraphData({targetPath: './resource',fileName: 'taskSequence.graphData.json'})\""
+  },
   "dependencies": {
     "@dependency/fragmentIndentationObjectStream": "https://github.com/AppScriptIO/fragmentIndentationObjectStream#semver:^1.x.x",
     "@dependency/graph": "https://github.com/AppScriptIO/graph#semver:^1.x.x",
     "@dependency/javascriptTranspilation": "https://github.com/AppScriptIO/javascriptTranspilation#semver:^1.x.x",
     "command-exists": "^1.2.8",
     "css-slam": "*",
+    "glob": "^7.1.4",
+    "glob-stream": "^6.1.0",
     "globby": "^9.0.0",
     "gulp": "*",
     "gulp-autoprefixer": "^6.0.0",
