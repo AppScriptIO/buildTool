@@ -19,8 +19,9 @@ import { pipeline as imagePipeline } from './transformPipeline/image.js'
 import { clientJSPipeline, serverJSPipeline } from './transformPipeline/javascript.js'
 import { pipeline as jsonPipeline } from './transformPipeline/json.js'
 import { pipeline as stylesheetPipeline } from './transformPipeline/stylesheet.js'
-const packageDependencyPatternMatch = '**/@package/**/*',
+const packageDependencyPatternMatch = '**/@package*/**/*', // `@package/...` `@package-x/...`
   nodeModulePatternMatch = '**/node_modules/**/*'
+const convertArrayToMultiplePatternGlob = array => (array.length > 1 ? array.join(',') |> (multiplePatternString => `{${multiplePatternString}}`) : array[0]) // Multiple patterns are represented in globs as `{pattern1, pattern2, pattern3}`
 
 /**
  * Maps a key to a callback to a task function
@@ -83,7 +84,7 @@ export const nativeClientSide_javascript = async targetProjectConfig => {
       '**/*.js',
       // include compoennt in specific case
       // path.join(targetProjectConfig.directory.clientSide, '/**/webcomponent/@package/@polymer/**/*.js'),
-    ],
+    ] |> convertArrayToMultiplePatternGlob, // as the first argument must be a string.
     {
       cwd: basePath,
       absolute: true /*always receive absolute paths*/,
@@ -93,7 +94,6 @@ export const nativeClientSide_javascript = async targetProjectConfig => {
       ],
     },
   )
-
   if (fileArray.length)
     await pipeline(
       readFileAsObjectStream(fileArray, { base: basePath }),
@@ -143,7 +143,7 @@ export const polyfillClientSide_javascript = async targetProjectConfig => {
       '**/*.js',
       // include compoennt in specific case
       // path.join(targetProjectConfig.directory.clientSide, '/**/webcomponent/@package/@polymer/**/*.js'),
-    ],
+    ] |> convertArrayToMultiplePatternGlob,
     {
       cwd: basePath,
       absolute: true /*always receive absolute paths*/,
