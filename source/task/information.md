@@ -1,0 +1,1 @@
+Task modules - maps a key (exported key) to a task function callback, that could be referenced in the database as strings.

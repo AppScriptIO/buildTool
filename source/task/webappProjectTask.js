@@ -3,7 +3,7 @@ import filesystem from 'fs'
 import assert from 'assert'
 import util from 'util'
 import stream from 'stream'
-import ownConfiguration from '../configuration'
+import ownConfiguration from '../../configuration'
 const pipeline = util.promisify(stream.pipeline)
 import mergeStream from 'merge-stream'
 // https://github.com/gulpjs/vinyl-fs#destfolder-options & https://gulpjs.com/docs/en/api/src
@@ -14,14 +14,14 @@ import { installJspm } from '@dependency/deploymentScript/script/provisionOS/ins
 import { installYarn } from '@dependency/deploymentScript/script/provisionOS/installESModule/install-yarn.js'
 import { installNpm } from '@dependency/deploymentScript/script/provisionOS/installESModule/install-npm.js'
 import { recursivelySyncFile } from '@dependency/deploymentScript/source/utility/filesystemOperation/synchronizeFile.js'
-import { pipeline as htmlPipeline } from './transformPipeline/html.js'
-import { pipeline as imagePipeline } from './transformPipeline/image.js'
-import { clientJSPipeline, serverJSPipeline } from './transformPipeline/javascript.js'
-import { pipeline as jsonPipeline } from './transformPipeline/json.js'
-import { pipeline as stylesheetPipeline } from './transformPipeline/stylesheet.js'
+import { pipeline as htmlPipeline } from '../transformPipeline/html.js'
+import { pipeline as imagePipeline } from '../transformPipeline/image.js'
+import { clientJSPipeline, serverJSPipeline } from '../transformPipeline/javascript.js'
+import { pipeline as jsonPipeline } from '../transformPipeline/json.js'
+import { pipeline as stylesheetPipeline } from '../transformPipeline/stylesheet.js'
+import { convertArrayToMultiplePatternGlob } from '../utility/convertArrayToMultiplePatternGlob.js'
 const packageDependencyPatternMatch = '**/@package*/**/*', // `@package/...` `@package-x/...`
   nodeModulePatternMatch = '**/node_modules/**/*'
-const convertArrayToMultiplePatternGlob = array => (array.length > 1 ? array.join(',') |> (multiplePatternString => `{${multiplePatternString}}`) : array[0]) // Multiple patterns are represented in globs as `{pattern1, pattern2, pattern3}`
 
 /**
  * Maps a key to a callback to a task function

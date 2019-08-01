@@ -8,7 +8,7 @@ import ownConfiguration from '../configuration'
 import { Graph as GraphModule, Context as ContextModule } from '@dependency/graphTraversal'
 const { Graph } = GraphModule
 const { Context } = ContextModule
-import * as task from './task.js'
+// NOTE: tasks are imported on runtime.
 
 /** Performance measurment */
 const observer = new PerformanceObserver(list => {
@@ -40,19 +40,21 @@ process.on('unhandledRejection', error => {
   throw error
 })
 
-export async function build({ entrtNodeKey = '58c15cc8-6f40-4d0b-815a-0b8594aeb972', targetProject /*passed through scriptManager*/ }) {
+export async function build({ entryNodeKey, taskContextName /*The object of tasks to use as reference from database graph*/, targetProject /*passed through scriptManager*/ }) {
+  assert(entryNodeKey, `• No entryNodeKey for graph traversal was passed.`)
   const targetProjectRoot = targetProject.configuration.rootPath
 
   // pass variables through the context object.
   let contextInstance = new Context.clientInterface({
     targetProjectConfiguration: targetProject.configuration.configuration,
+    taskContext: require('./task/' + taskContextName),
   })
   let configuredGraph = Graph.clientInterface({ parameter: [{ concreteBehaviorList: [contextInstance] }] })
   let graph = new configuredGraph({})
   graph.traversal.processData['executeTaskReference'] = executeTaskReference // add data processing implementation callback
 
   try {
-    let result = await graph.traverse({ nodeKey: entrtNodeKey, implementationKey: { processData: 'executeTaskReference' } })
+    let result = await graph.traverse({ nodeKey: entryNodeKey, implementationKey: { processData: 'executeTaskReference' } })
   } catch (error) {
     console.error(error)
     await graph.database.driverInstance.close()
@@ -73,14 +75,16 @@ async function executeTaskReference({ node, resourceRelation, graphInstance }) {
   performance.mark('start' + id)
 
   let targetProjectConfiguration = graphInstance.context.targetProjectConfiguration
+  let taskContext = graphInstance.context.taskContext
   assert(targetProjectConfiguration, `• Context "targetProjectConfiguration" variable is required to run project dependent tasks.`)
+  assert(taskContext, `• Context "taskContext" variable is required to reference tasks from graph database strings.`)
 
   if (resourceRelation) {
     assert(resourceRelation?.connection.properties?.context == 'applicationReference', `• Unsupported resourceRelation context property.`)
     assert(resourceRelation.destination.labels.includes('Task'), `• Unsupported Node type for resource connection.`)
     let resourceNode = resourceRelation.destination
     let taskName = resourceNode.properties.functionName || throw new Error(`• Task resource must have a "functionName" - ${resourceNode.properties.functionName}`)
-    let taskFunction = task[taskName] || throw new Error(`• reference task name doesn't exist.`)
+    let taskFunction = taskContext[taskName] || throw new Error(`• reference task name doesn't exist.`)
     try {
       await taskFunction(targetProjectConfiguration)
     } catch (error) {
