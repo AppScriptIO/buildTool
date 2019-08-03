@@ -24,3 +24,19 @@ const packageDependencyPatternMatch = '**/@package*/**/*', // `@package/...` `@p
   nodeModulePatternMatch = '**/node_modules/**/*'
 
 export const module_installYarn = targetProjectConfig => installYarn({ yarnPath: path.join(targetProjectConfig.directory.source) })
+
+export const removeDistributionFolder = targetProjectConfig => console.log(targetProjectConfig.directory.distribution)
+
+export const transpilePackageDependency = targetProjectConfig => console.log(targetProjectConfig.directory.distribution)
+
+export const copyYarnLockfile = targetProjectConfig => console.log(targetProjectConfig.directory.distribution)
+
+export const transpileSource = targetProjectConfig => console.log(targetProjectConfig.directory.distribution)
+
+export const transpileScript = targetProjectConfig => console.log(targetProjectConfig.directory.distribution)
+
+export const transpileTest = targetProjectConfig => console.log(targetProjectConfig.directory.distribution)
+
+export const entrypointProgrammaticAPI = targetProjectConfig => console.log(targetProjectConfig.directory.distribution)
+
+export const entryointCLI = targetProjectConfig => console.log(targetProjectConfig.directory.distribution)
