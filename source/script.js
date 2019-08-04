@@ -53,9 +53,10 @@ export async function build({ entryNodeKey, taskContextName /*The object of task
   })
   let graph = new configuredGraph({})
   graph.traversal.processData['executeTaskReference'] = executeTaskReference // add data processing implementation callback
+  graph.traversal.evaluatePosition['evaluationExecution'] = evaluationExecution
 
   try {
-    let result = await graph.traverse({ nodeKey: entryNodeKey, implementationKey: { processData: 'executeTaskReference' } })
+    let result = await graph.traverse({ nodeKey: entryNodeKey, implementationKey: { processData: 'executeTaskReference', evaluatePosition: 'evaluationExecution' } })
   } catch (error) {
     console.error(error)
     await graph.database.driverInstance.close()
@@ -95,4 +96,10 @@ async function executeTaskReference({ node, resourceRelation, graphInstance }) {
 
   performance.mark('end' + id)
   performance.measure(node.properties.name || 'Node ID: ' + node.identity, 'start' + id, 'end' + id)
+}
+
+async function evaluationExecution({ node, evaluationNode, executeNode, graphInstance }) {
+  let context = graphInstance.context
+  console.log(executeNode)
+  return false
 }
