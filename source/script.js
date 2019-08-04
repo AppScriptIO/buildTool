@@ -45,18 +45,18 @@ export async function build({ entryNodeKey, taskContextName /*The object of task
   const targetProjectRoot = targetProject.configuration.rootPath
   // pass variables through the context object.
   let contextInstance = new Context.clientInterface({
-    targetProjectConfiguration: targetProject.configuration.configuration,
-    taskContext: require('./task/' + taskContextName),
+    targetProjectConfig: targetProject.configuration.configuration,
+    functionContext: require('./function/' + taskContextName), // tasks context object
+    conditionContext: require('./function/condition.js'),
   })
   let configuredGraph = Graph.clientInterface({
     parameter: [{ concreteBehaviorList: [contextInstance] }],
   })
   let graph = new configuredGraph({})
-  graph.traversal.processData['executeTaskReference'] = executeTaskReference // add data processing implementation callback
-  graph.traversal.evaluatePosition['evaluationExecution'] = evaluationExecution
+  graph.traversal.processData['executeFunctionReference'] = measurePerformanceProxy(graph.traversal.processData['executeFunctionReference']) // manipulate processing implementation callback
 
   try {
-    let result = await graph.traverse({ nodeKey: entryNodeKey, implementationKey: { processData: 'executeTaskReference', evaluatePosition: 'evaluationExecution' } })
+    let result = await graph.traverse({ nodeKey: entryNodeKey, implementationKey: { processData: 'executeFunctionReference', evaluatePosition: 'evaluateConditionReference' } })
   } catch (error) {
     console.error(error)
     await graph.database.driverInstance.close()
@@ -66,40 +66,20 @@ export async function build({ entryNodeKey, taskContextName /*The object of task
   await graph.database.driverInstance.close()
 }
 
-/**
- * `processData` implementation of `graphTraversal` module
- * Requires `context.targetProjectConfiguration` property to be passed.
- * Executes tasks through a string reference from the database that match the key of the application task context object (task.js exported object).
- */
-async function executeTaskReference({ node, resourceRelation, graphInstance }) {
-  const id = AsyncHooks.executionAsyncId() // this returns the current asynchronous context's id
-  hookContext.set(id, node)
-  performance.mark('start' + id)
+const measurePerformanceProxy = callback =>
+  new Proxy(callback, {
+    async apply(target, thisArg, argumentList) {
+      let { node } = argumentList[0]
 
-  let targetProjectConfiguration = graphInstance.context.targetProjectConfiguration
-  let taskContext = graphInstance.context.taskContext
-  assert(targetProjectConfiguration, `• Context "targetProjectConfiguration" variable is required to run project dependent tasks.`)
-  assert(taskContext, `• Context "taskContext" variable is required to reference tasks from graph database strings.`)
+      const id = AsyncHooks.executionAsyncId() // this returns the current asynchronous context's id
+      hookContext.set(id, node)
+      performance.mark('start' + id)
 
-  if (resourceRelation) {
-    assert(resourceRelation?.connection.properties?.context == 'applicationReference', `• Unsupported resourceRelation context property.`)
-    assert(resourceRelation.destination.labels.includes('Task'), `• Unsupported Node type for resource connection.`)
-    let resourceNode = resourceRelation.destination
-    let taskName = resourceNode.properties.functionName || throw new Error(`• Task resource must have a "functionName" - ${resourceNode.properties.functionName}`)
-    let taskFunction = taskContext[taskName] || throw new Error(`• reference task name doesn't exist.`)
-    try {
-      await taskFunction(targetProjectConfiguration)
-    } catch (error) {
-      console.error(error) && process.exit()
-    }
-  }
+      let result = await Reflect.apply(...arguments)
 
-  performance.mark('end' + id)
-  performance.measure(node.properties.name || 'Node ID: ' + node.identity, 'start' + id, 'end' + id)
-}
+      performance.mark('end' + id)
+      performance.measure(node.properties.name || 'Node ID: ' + node.identity, 'start' + id, 'end' + id)
 
-async function evaluationExecution({ node, evaluationNode, executeNode, graphInstance }) {
-  let context = graphInstance.context
-  console.log(executeNode)
-  return false
-}
+      return result
+    },
+  })

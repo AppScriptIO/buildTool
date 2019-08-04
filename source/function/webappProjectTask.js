@@ -34,11 +34,11 @@ const packageDependencyPatternMatch = '**/@package*/**/*', // `@package/...` `@p
   | (__| | |  __/ | | | |_ ___) | | (_| |  __/
    \___|_|_|\___|_| |_|\__|____/|_|\__,_|\___|
 */
-export const clientSide_jspm = targetProjectConfig => installJspm({ jspmPath: path.join(targetProjectConfig.directory.source, '/packageManager/library.browser.jspm') })
+export const clientSide_jspm = ({ node, context }) => installJspm({ jspmPath: path.join(targetProjectConfig.directory.source, '/packageManager/library.browser.jspm') })
 
-export const clientSide_webcomponentYarn = targetProjectConfig => installYarn({ yarnPath: path.join(targetProjectConfig.directory.source, '/packageManager/webcomponent.browser.yarn/') })
+export const clientSide_webcomponentYarn = ({ node, context }) => installYarn({ yarnPath: path.join(targetProjectConfig.directory.source, '/packageManager/webcomponent.browser.yarn/') })
 
-export const clientSide_libraryYarn = targetProjectConfig => installYarn({ yarnPath: path.join(targetProjectConfig.directory.source, '/packageManager/library.browser.yarn/') })
+export const clientSide_libraryYarn = ({ node, context }) => installYarn({ yarnPath: path.join(targetProjectConfig.directory.source, '/packageManager/library.browser.yarn/') })
 
 /*
                  _   _            ____ _ _            _   ____  _     _      
@@ -47,20 +47,27 @@ export const clientSide_libraryYarn = targetProjectConfig => installYarn({ yarnP
     | | | | (_| | |_| |\ V /  __/ |___| | |  __/ | | | |_ ___) | | (_| |  __/
     |_| |_|\__,_|\__|_| \_/ \___|\____|_|_|\___|_| |_|\__|____/|_|\__,_|\___|
 */
-export const nativeClientSide_copySourceCode = async targetProjectConfig =>
+export const nativeClientSide_copySourceCode = async ({ node, context }) => {
+  let targetProjectConfig = context.targetProjectConfig
+  assert(targetProjectConfig, `• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
   await recursivelySyncFile({
     source: targetProjectConfig.directory.clientSide,
     destination: targetProjectConfig.distribution.clientSide.native,
     copyContentOnly: true,
   })
+}
 
-export const nativeClientSide_json = async targetProjectConfig => {
+export const nativeClientSide_json = async ({ node, context }) => {
+  let targetProjectConfig = context.targetProjectConfig
+  assert(targetProjectConfig, `• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
   let basePath = targetProjectConfig.directory.clientSide
   let fileArray = await wildcardPathnameMatcher('**/*.json', { cwd: basePath, absolute: true /*always receive absolute paths*/, ignore: packageDependencyPatternMatch })
   if (fileArray.length) await pipeline(readFileAsObjectStream(fileArray, { base: basePath }), ...jsonPipeline(), writeFileFromObjectStream(targetProjectConfig.distribution.clientSide.native))
 }
 
-export const nativeClientSide_html = async targetProjectConfig => {
+export const nativeClientSide_html = async ({ node, context }) => {
+  let targetProjectConfig = context.targetProjectConfig
+  assert(targetProjectConfig, `• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
   let basePath = targetProjectConfig.directory.clientSide
   let fileArray = await wildcardPathnameMatcher('**/*.html', { cwd: basePath, absolute: true /*always receive absolute paths*/, ignore: packageDependencyPatternMatch })
   if (fileArray.length)
@@ -71,13 +78,17 @@ export const nativeClientSide_html = async targetProjectConfig => {
     )
 }
 
-export const nativeClientSide_stylesheet = async targetProjectConfig => {
+export const nativeClientSide_stylesheet = async ({ node, context }) => {
+  let targetProjectConfig = context.targetProjectConfig
+  assert(targetProjectConfig, `• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
   let basePath = targetProjectConfig.directory.clientSide
   let fileArray = await wildcardPathnameMatcher('**/*.css', { cwd: basePath, absolute: true /*always receive absolute paths*/, ignore: packageDependencyPatternMatch })
   if (fileArray.length) await pipeline(readFileAsObjectStream(fileArray, { base: basePath }), ...stylesheetPipeline(), writeFileFromObjectStream(targetProjectConfig.distribution.clientSide.native))
 }
 
-export const nativeClientSide_javascript = async targetProjectConfig => {
+export const nativeClientSide_javascript = async ({ node, context }) => {
+  let targetProjectConfig = context.targetProjectConfig
+  assert(targetProjectConfig, `• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
   let basePath = targetProjectConfig.directory.clientSide
   let fileArray = await wildcardPathnameMatcher(
     [
@@ -110,16 +121,23 @@ export const nativeClientSide_javascript = async targetProjectConfig => {
     | .__/ \___/|_|\__, |_| |_|_|_|\____|_|_|\___|_| |_|\__|____/|_|\__,_|\___|
     |_|            |___/                                                       
 */
-export const polyfillClientSide_copySourceCode = targetProjectConfig =>
+export const polyfillClientSide_copySourceCode = ({ node, context }) => {
+  let targetProjectConfig = context.targetProjectConfig
+  assert(targetProjectConfig, `• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
   recursivelySyncFile({ source: targetProjectConfig.directory.clientSide, destination: targetProjectConfig.distribution.clientSide.polyfill, copyContentOnly: true })
+}
 
-export const polyfillClientSide_json = async targetProjectConfig => {
+export const polyfillClientSide_json = async ({ node, context }) => {
+  let targetProjectConfig = context.targetProjectConfig
+  assert(targetProjectConfig, `• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
   let basePath = targetProjectConfig.directory.clientSide
   let fileArray = await wildcardPathnameMatcher('**/*.json', { cwd: basePath, absolute: true /*always receive absolute paths*/, ignore: packageDependencyPatternMatch })
   if (fileArray.length) await pipeline(readFileAsObjectStream(fileArray, { base: basePath }), ...jsonPipeline(), writeFileFromObjectStream(targetProjectConfig.distribution.clientSide.polyfill))
 }
 
-export const polyfillClientSide_html = async targetProjectConfig => {
+export const polyfillClientSide_html = async ({ node, context }) => {
+  let targetProjectConfig = context.targetProjectConfig
+  assert(targetProjectConfig, `• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
   let basePath = targetProjectConfig.directory.clientSide
   let fileArray = await wildcardPathnameMatcher('**/*.html', { cwd: basePath, absolute: true /*always receive absolute paths*/, ignore: packageDependencyPatternMatch })
   if (fileArray.length)
@@ -130,13 +148,17 @@ export const polyfillClientSide_html = async targetProjectConfig => {
     )
 }
 
-export const polyfillClientSide_stylesheet = async targetProjectConfig => {
+export const polyfillClientSide_stylesheet = async ({ node, context }) => {
+  let targetProjectConfig = context.targetProjectConfig
+  assert(targetProjectConfig, `• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
   let basePath = targetProjectConfig.directory.clientSide
   let fileArray = await wildcardPathnameMatcher('**/*.css', { cwd: basePath, absolute: true /*always receive absolute paths*/, ignore: packageDependencyPatternMatch })
   if (fileArray.length) await pipeline(readFileAsObjectStream(fileArray, { base: basePath }), ...stylesheetPipeline(), writeFileFromObjectStream(targetProjectConfig.distribution.clientSide.polyfill))
 }
 
-export const polyfillClientSide_javascript = async targetProjectConfig => {
+export const polyfillClientSide_javascript = async ({ node, context }) => {
+  let targetProjectConfig = context.targetProjectConfig
+  assert(targetProjectConfig, `• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
   let basePath = targetProjectConfig.directory.clientSide
   let fileArray = await wildcardPathnameMatcher(
     [
@@ -168,19 +190,31 @@ export const polyfillClientSide_javascript = async targetProjectConfig => {
     \__ \  __/ |   \ V /  __/ |   ___) | | (_| |  __/
     |___/\___|_|    \_/ \___|_|  |____/|_|\__,_|\___|
 */
-export const serverSide_installYarn = targetProjectConfig => installYarn({ yarnPath: path.join(targetProjectConfig.directory.source, '/packageManager/library.server.yarn/') })
+export const serverSide_installYarn = ({ node, context }) => {
+  let targetProjectConfig = context.targetProjectConfig
+  assert(targetProjectConfig, `• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
+  installYarn({ yarnPath: path.join(targetProjectConfig.directory.source, '/packageManager/library.server.yarn/') })
+}
 
-export const serverSide_copyServerSide = async targetProjectConfig =>
+export const serverSide_copyServerSide = async ({ node, context }) => {
+  let targetProjectConfig = context.targetProjectConfig
+  assert(targetProjectConfig, `• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
   await recursivelySyncFile({ source: targetProjectConfig.directory.serverSide, destination: targetProjectConfig.distribution.serverSide, copyContentOnly: true })
+}
 
-export const serverSide_copyDatabaseData = async targetProjectConfig =>
+export const serverSide_copyDatabaseData = async ({ node, context }) => {
+  let targetProjectConfig = context.targetProjectConfig
+  assert(targetProjectConfig, `• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
   await recursivelySyncFile({
     source: path.join(targetProjectConfig.directory.source, 'databaseData'),
     destination: targetProjectConfig.directory.distribution,
     copyContentOnly: false,
   })
+}
 
-export const serverSide_transpileDatabaseData = async targetProjectConfig => {
+export const serverSide_transpileDatabaseData = async ({ node, context }) => {
+  let targetProjectConfig = context.targetProjectConfig
+  assert(targetProjectConfig, `• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
   let basePath = targetProjectConfig.directory.source
   let fileArray = await wildcardPathnameMatcher('databaseData/**/*.js', { cwd: basePath, absolute: true /*always receive absolute paths*/, ignore: nodeModulePatternMatch })
   if (fileArray.length)
@@ -191,7 +225,9 @@ export const serverSide_transpileDatabaseData = async targetProjectConfig => {
     )
 }
 
-export const serverSide_transpileServerSide = async targetProjectConfig => {
+export const serverSide_transpileServerSide = async ({ node, context }) => {
+  let targetProjectConfig = context.targetProjectConfig
+  assert(targetProjectConfig, `• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
   let basePath = targetProjectConfig.directory.serverSide
   let fileArray = await wildcardPathnameMatcher('**/*.js', { cwd: basePath, absolute: true /*always receive absolute paths*/, ignore: nodeModulePatternMatch })
   if (fileArray.length)
