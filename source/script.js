@@ -40,11 +40,15 @@ process.on('unhandledRejection', error => {
   throw error
 })
 
-export async function build({ entryNodeKey, taskContextName /*The object of tasks to use as reference from database graph*/, targetProject /*passed through scriptManager*/ }) {
+export async function build(
+  { entryNodeKey, taskContextName /*The object of tasks to use as reference from database graph*/, targetProject /*passed through scriptManager*/ },
+  argumentObject, // second argument holds parameters that maybe used in the node execution functions.
+) {
   assert(entryNodeKey, `• No entryNodeKey for graph traversal was passed.`)
   const targetProjectRoot = targetProject.configuration.rootPath
   // pass variables through the context object.
   let contextInstance = new Context.clientInterface({
+    argumentObject,
     targetProjectConfig: targetProject.configuration.configuration,
     functionContext: require('./function/' + taskContextName), // tasks context object
     conditionContext: require('./function/condition.js'),

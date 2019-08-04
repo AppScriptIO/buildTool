@@ -27,14 +27,12 @@ const packageDependencyPatternMatch = '**/@package*/**/*', // `@package/...` `@p
   nodeModulePatternMatch = '**/node_modules/**/*'
 
 export const module_installYarn = ({ node, context }) => {
-  let targetProjectConfig = context.targetProjectConfig
-  assert(targetProjectConfig, `• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
+  let targetProjectConfig = context.targetProjectConfig || throw new Error(`• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
   installYarn({ yarnPath: path.join(targetProjectConfig.directory.source) })
 }
 
 export const removeDistributionFolder = async ({ node, context }) => {
-  let targetProjectConfig = context.targetProjectConfig
-  assert(targetProjectConfig, `• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
+  let targetProjectConfig = context.targetProjectConfig || throw new Error(`• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
   // https://pubs.opengroup.org/onlinepubs/9699919799/functions/rmdir.html
   // https://www.unix.com/man-page/posix/3posix/rmdir/
   let fileStat = await filesystem.lstat(targetProjectConfig.directory.distribution).catch(error => (error.code == 'ENOENT' ? false : console.error(error)))
@@ -44,44 +42,26 @@ export const removeDistributionFolder = async ({ node, context }) => {
 }
 
 export const copyYarnLockfile = async ({ node, context }) => {
-  let targetProjectConfig = context.targetProjectConfig
-  assert(targetProjectConfig, `• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
+  let targetProjectConfig = context.targetProjectConfig || throw new Error(`• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
   let filePath = path.join(targetProjectConfig.directory.root, 'yarn.lock')
   let fileStat = await filesystem.lstat(filePath).catch(error => (error.code == 'ENOENT' ? false : console.error(error)))
   if (fileStat && fileStat.isFile()) await copyFileAndSymlink({ source: filePath, destination: targetProjectConfig.directory.distribution })
 }
 
 export const transpilePackageDependency = async ({ node, context }) => {
-  let targetProjectConfig = context.targetProjectConfig
-  assert(targetProjectConfig, `• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
+  let targetProjectConfig = context.targetProjectConfig || throw new Error(`• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
   let sourceRelativePath = './package.json'
   return await transpileSourcePath({ source: sourceRelativePath, destination: targetProjectConfig.directory.distribution, basePath: targetProjectConfig.directory.root })
 }
 
-export const transpileSource = async ({ node, context }) => {
-  let targetProjectConfig = context.targetProjectConfig
-  assert(targetProjectConfig, `• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
-  let sourceRelativePath = './source'
-  return await transpileSourcePath({ source: sourceRelativePath, destination: targetProjectConfig.directory.distribution, basePath: targetProjectConfig.directory.root })
-}
-
-export const transpileScript = async ({ node, context }) => {
-  let targetProjectConfig = context.targetProjectConfig
-  assert(targetProjectConfig, `• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
-  let sourceRelativePath = './script'
-  return await transpileSourcePath({ source: sourceRelativePath, destination: targetProjectConfig.directory.distribution, basePath: targetProjectConfig.directory.root })
-}
-
-export const transpileTest = async ({ node, context }) => {
-  let targetProjectConfig = context.targetProjectConfig
-  assert(targetProjectConfig, `• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
-  let sourceRelativePath = './test'
+export const transpileTarget = async ({ node, context }) => {
+  let targetProjectConfig = context.targetProjectConfig || throw new Error(`• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
+  let sourceRelativePath = node.properties?.relativePath || throw new Error(`• relativePath must exist on stage node that uses this condition for evaluation.`)
   return await transpileSourcePath({ source: sourceRelativePath, destination: targetProjectConfig.directory.distribution, basePath: targetProjectConfig.directory.root })
 }
 
 export const entrypointProgrammaticAPI = async ({ node, context }) => {
-  let targetProjectConfig = context.targetProjectConfig
-  assert(targetProjectConfig, `• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
+  let targetProjectConfig = context.targetProjectConfig || throw new Error(`• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
 
   let enrtypointKey = 'programmaticAPI'
   if (!targetProjectConfig.entrypoint[enrtypointKey]) return
@@ -102,8 +82,7 @@ export const entrypointProgrammaticAPI = async ({ node, context }) => {
 }
 
 export const entryointCLI = async ({ node, context }) => {
-  let targetProjectConfig = context.targetProjectConfig
-  assert(targetProjectConfig, `• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
+  let targetProjectConfig = context.targetProjectConfig || throw new Error(`• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
 
   let enrtypointKey = 'cli'
   if (!targetProjectConfig.entrypoint[enrtypointKey]) return
