@@ -35,6 +35,7 @@
     "merge-stream": "^1.0.1",
     "mkdirp": "*",
     "polymer-build": "*",
+    "rimraf": "^2.6.3",
     "rsync": "*",
     "sw-precache": "*",
     "type-of-is": "*",

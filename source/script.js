@@ -43,13 +43,14 @@ process.on('unhandledRejection', error => {
 export async function build({ entryNodeKey, taskContextName /*The object of tasks to use as reference from database graph*/, targetProject /*passed through scriptManager*/ }) {
   assert(entryNodeKey, `• No entryNodeKey for graph traversal was passed.`)
   const targetProjectRoot = targetProject.configuration.rootPath
-
   // pass variables through the context object.
   let contextInstance = new Context.clientInterface({
     targetProjectConfiguration: targetProject.configuration.configuration,
     taskContext: require('./task/' + taskContextName),
   })
-  let configuredGraph = Graph.clientInterface({ parameter: [{ concreteBehaviorList: [contextInstance] }] })
+  let configuredGraph = Graph.clientInterface({
+    parameter: [{ concreteBehaviorList: [contextInstance] }],
+  })
   let graph = new configuredGraph({})
   graph.traversal.processData['executeTaskReference'] = executeTaskReference // add data processing implementation callback
 
