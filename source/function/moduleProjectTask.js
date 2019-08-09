@@ -66,7 +66,7 @@ export const entrypointProgrammaticAPI = async ({ node, context }) => {
   let targetProjectConfig = context.targetProjectConfig || throw new Error(`• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
 
   let enrtypointKey = 'programmaticAPI'
-  if (!targetProjectConfig.entrypoint[enrtypointKey]) return
+  if (!targetProjectConfig?.entrypoint || !targetProjectConfig?.entrypoint[enrtypointKey]) return
 
   let scriptTargetFile = path.join(targetProjectConfig.directory.source, targetProjectConfig.entrypoint[enrtypointKey])
   let entrypointFolder = path.join(targetProjectConfig.directory.root, `./entrypoint/${enrtypointKey}`)
@@ -87,7 +87,7 @@ export const entryointCLI = async ({ node, context }) => {
   let targetProjectConfig = context.targetProjectConfig || throw new Error(`• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
 
   let enrtypointKey = 'cli'
-  if (!targetProjectConfig.entrypoint[enrtypointKey]) return
+  if (!targetProjectConfig?.entrypoint || !targetProjectConfig?.entrypoint[enrtypointKey]) return
 
   let scriptTargetFile = path.join(targetProjectConfig.directory.source, targetProjectConfig.entrypoint[enrtypointKey])
   let entrypointFolder = path.join(targetProjectConfig.directory.root, `./entrypoint/${enrtypointKey}`)
