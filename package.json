@@ -6,11 +6,10 @@
     "exportGraphData": "yarn run scriptManager shouldCompileScript=true graphDatabase/exportGraphData \".exportGraphData({targetPath: './resource',fileName: 'taskSequence.graphData.json'})\"",
     "loadGraphData": "yarn run scriptManager shouldCompileScript=true graphDatabase/exportGraphData \".loadGraphDataFromFile({ shouldClearDatabase: true, graphDataFilePath: './resource/taskSequence.graphData.json' })\"",
     "buildAndRelease": "yarn run scriptManager shouldCompileScript=true JSProject/buildAndRelease \".moduleProject({})\""
-
   },
   "dependencies": {
     "@dependency/fragmentIndentationObjectStream": "https://github.com/AppScriptIO/fragmentIndentationObjectStream#semver:^1.x.x",
-    "@dependency/graph": "https://github.com/AppScriptIO/graph#semver:^1.x.x",
+    "@dependency/graphTraversal": "https://github.com/AppScriptIO/graphTraversal#semver:^1.x.x",
     "@dependency/javascriptTranspilation": "https://github.com/AppScriptIO/javascriptTranspilation#semver:^1.x.x",
     "command-exists": "^1.2.8",
     "css-slam": "*",
