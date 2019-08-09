@@ -48,11 +48,12 @@ export const copyYarnLockfile = async ({ node, context }) => {
   if (fileStat && fileStat.isFile()) await copyFileAndSymlink({ source: filePath, destination: targetProjectConfig.directory.distribution })
 }
 
-// TODO: - remove dev dependencies from package.json.
 export const transpilePackageDependency = async ({ node, context }) => {
   let targetProjectConfig = context.targetProjectConfig || throw new Error(`• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
   let sourceRelativePath = './package.json'
-  return await transpileSourcePath({ source: sourceRelativePath, destination: targetProjectConfig.directory.distribution, basePath: targetProjectConfig.directory.root })
+  await transpileSourcePath({ source: sourceRelativePath, destination: targetProjectConfig.directory.distribution, basePath: targetProjectConfig.directory.root })
+  // remove dev dependenices
+  // TODO: - remove dev dependencies from package.json.
 }
 
 export const transpileTarget = async ({ node, context }) => {
