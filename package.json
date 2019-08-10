@@ -5,7 +5,8 @@
   "scripts": {
     "exportGraphData": "yarn run scriptManager shouldCompileScript=true graphDatabase/exportGraphData \".exportGraphData({targetPath: './resource',fileName: 'taskSequence.graphData.json'})\"",
     "loadGraphData": "yarn run scriptManager shouldCompileScript=true graphDatabase/exportGraphData \".loadGraphDataFromFile({ shouldClearDatabase: true, graphDataFilePath: './resource/taskSequence.graphData.json' })\"",
-    "buildAndRelease": "yarn run scriptManager shouldCompileScript=true JSProject/buildAndRelease \".moduleProject({})\""
+    "buildAndRelease": "yarn run scriptManager shouldCompileScript=true JSProject/buildAndRelease \".moduleProject({})\"",
+    "build": "yarn run scriptManager shouldCompileScript=true JSProject/buildSourceCode \".moduleProject({}, {compile:[/**'./test'*/]})\""
   },
   "dependencies": {
     "@dependency/fragmentIndentationObjectStream": "https://github.com/AppScriptIO/fragmentIndentationObjectStream#semver:^1.x.x",
