@@ -3,7 +3,6 @@ import { promises as filesystem } from 'fs'
 import assert from 'assert'
 import util from 'util'
 import stream from 'stream'
-import ownConfiguration from '../../configuration'
 const pipeline = util.promisify(stream.pipeline)
 import mergeStream from 'merge-stream'
 import rimrafCallback from 'rimraf'

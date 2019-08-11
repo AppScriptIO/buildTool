@@ -4,7 +4,6 @@ import path from 'path'
 import assert from 'assert'
 import { PerformanceObserver, performance } from 'perf_hooks'
 import AsyncHooks from 'async_hooks'
-import ownConfiguration from '../configuration'
 import { Graph as GraphModule, Context as ContextModule } from '@dependency/graphTraversal'
 const { Graph } = GraphModule
 const { Context } = ContextModule

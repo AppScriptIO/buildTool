@@ -3,7 +3,6 @@ import filesystem from 'fs'
 import assert from 'assert'
 import util from 'util'
 import stream from 'stream'
-import ownConfiguration from '../../configuration'
 const pipeline = util.promisify(stream.pipeline)
 import mergeStream from 'merge-stream'
 // https://github.com/gulpjs/vinyl-fs#destfolder-options & https://gulpjs.com/docs/en/api/src
