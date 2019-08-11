@@ -984,8 +984,8 @@
   resolved "https://github.com/AppScriptIO/fragmentIndentationObjectStream#10ad6baa61e53f6da6951614c05c00ee059924fb"
 
 "@dependency/graphTraversal@https://github.com/AppScriptIO/graphTraversal#semver:^1.x.x":
-  version "1.2.3"
-  resolved "https://github.com/AppScriptIO/graphTraversal#44768e53b9b6662c420c352f596ddda97c56c64a"
+  version "1.2.4"
+  resolved "https://github.com/AppScriptIO/graphTraversal#a51614511cdbd1b5b6e9e47df508f4d46ae8a44b"
   dependencies:
     "@dependency/classMixin" "https://github.com/AppScriptIO/classMixin#semver:^1.x.x"
     "@dependency/commonPattern" "https://github.com/AppScriptIO/commonPattern#semver:^1.x.x"
