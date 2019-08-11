@@ -16,6 +16,9 @@ const ownConfig = {
     get script() {
       return path.join(ownConfig.directory.root, './script')
     },
+    get resource() {
+      return path.join(ownConfig.directory.root, './resource')
+    },
   },
   get script() {
     return [...script, ...[{ type: 'directory', path: ownConfig.directory.script }]]
@@ -32,11 +35,7 @@ const ownConfig = {
   },
   build: {
     get compile() {
-      return [
-        path.relative(ownConfig.directory.root, ownConfig.directory.source),
-        // path.relative(ownConfig.directory.root, ownConfig.directory.test),
-        // path.relative(ownConfig.directory.root, ownConfig.directory.script),
-      ]
+      return [path.relative(ownConfig.directory.root, ownConfig.directory.source), path.relative(ownConfig.directory.root, ownConfig.directory.resource)]
     },
     repositoryURL: 'https://github.com/AppScriptIO/buildTool',
   },
