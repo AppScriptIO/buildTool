@@ -909,8 +909,8 @@
   resolved "https://github.com/AppScriptIO/addModuleResolutionPath#9f062f7412b3767a559973cf6c1e103b978e89a3"
 
 "@dependency/buildTool@https://github.com/AppScriptIO/buildTool#semver:^1.x.x":
-  version "1.0.2"
-  resolved "https://github.com/AppScriptIO/buildTool#ba57769102f794d9fccf57e8cd1c9750d6f1c986"
+  version "1.0.3"
+  resolved "https://github.com/AppScriptIO/buildTool#b5bea0ee04992044a9b8a7e7b35377370672660c"
   dependencies:
     "@dependency/fragmentIndentationObjectStream" "https://github.com/AppScriptIO/fragmentIndentationObjectStream#semver:^1.x.x"
     "@dependency/graphTraversal" "https://github.com/AppScriptIO/graphTraversal#semver:^1.x.x"
@@ -969,8 +969,8 @@
     "@dependency/namedCurry" "https://github.com/AppScriptIO/namedCurry#semver:^1.x.x"
 
 "@dependency/deploymentScript@https://github.com/AppScriptIO/deploymentScript#semver:^1.x.x":
-  version "1.1.7"
-  resolved "https://github.com/AppScriptIO/deploymentScript#a124ffaefe453be09c3500ff783b3b9e2b2cbf2d"
+  version "1.1.8"
+  resolved "https://github.com/AppScriptIO/deploymentScript#1384ce41514414b11f887957efc831247a7dc18e"
   dependencies:
     "@dependency/buildTool" "https://github.com/AppScriptIO/buildTool#semver:^1.x.x"
     "@dependency/javascriptTestRunner" "git+https://github.com/AppScriptIO/javascriptTestRunner.git#semver:^1.x.x"
