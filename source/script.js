@@ -1,88 +1,88 @@
-// 😄 This file is used to define Gulp tasks with source path and destination path. While gulp_includeNodeModules.js is used to save the functions for the build.
+"use strict";var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.build = build;
 
-import path from 'path'
-import assert from 'assert'
-import { PerformanceObserver, performance } from 'perf_hooks'
-import AsyncHooks from 'async_hooks'
-import { Graph as GraphModule, Context as ContextModule } from '@dependency/graphTraversal'
-const { Graph } = GraphModule
-const { Context } = ContextModule
-// NOTE: tasks are imported on runtime.
 
-/** Performance measurment */
-const observer = new PerformanceObserver(list => {
-  const entry = list.getEntries()[0]
-  console.log(`Done '${entry.name}'`, entry.duration)
-})
-observer.observe({ entryTypes: ['measure'], buffered: false })
-//Creating the async hook here to piggyback on async calls
-const hookContext = new Map()
-const hook = AsyncHooks.createHook({
+var _assert = _interopRequireDefault(require("assert"));
+var _perf_hooks = require("perf_hooks");
+var _async_hooks = _interopRequireDefault(require("async_hooks"));
+var _graphTraversal = require("@dependency/graphTraversal");
+const { Graph } = _graphTraversal.Graph;
+const { Context } = _graphTraversal.Context;
+
+
+
+const observer = new _perf_hooks.PerformanceObserver(list => {
+  const entry = list.getEntries()[0];
+  console.log(`Done '${entry.name}'`, entry.duration);
+});
+observer.observe({ entryTypes: ['measure'], buffered: false });
+
+const hookContext = new Map();
+const hook = _async_hooks.default.createHook({
   init(asyncId, type, triggerAsyncId) {
-    // each time a resource is init, if the parent resource was associated with a context,
-    // we associate the child resource to the same context
+
+
     if (hookContext.has(triggerAsyncId)) {
-      hookContext.set(asyncId, hookContext.get(triggerAsyncId))
+      hookContext.set(asyncId, hookContext.get(triggerAsyncId));
     }
   },
   destroy(asyncId) {
-    // this prevents memory leaks
+
     if (hookContext.has(asyncId)) {
-      hookContext.delete(asyncId)
+      hookContext.delete(asyncId);
     }
-  },
-})
-hook.enable()
+  } });
 
-// make un-handled promise rejections throw and end Nodejs process.
+hook.enable();
+
+
 process.on('unhandledRejection', error => {
-  throw error
-})
+  throw error;
+});
 
-export async function build(
-  { entryNodeKey, taskContextName /*The object of tasks to use as reference from database graph*/, targetProject /*passed through scriptManager*/ },
-  argumentObject, // second argument holds parameters that maybe used in the node execution functions.
-) {
-  assert(entryNodeKey, `• No entryNodeKey for graph traversal was passed.`)
-  const targetProjectRoot = targetProject.configuration.rootPath
-  // pass variables through the context object.
+async function build(
+{ entryNodeKey, taskContextName, targetProject },
+argumentObject)
+{
+  (0, _assert.default)(entryNodeKey, `• No entryNodeKey for graph traversal was passed.`);
+  const targetProjectRoot = targetProject.configuration.rootPath;
+
   let contextInstance = new Context.clientInterface({
     argumentObject,
     targetProjectConfig: targetProject.configuration.configuration,
-    functionContext: require('./function/' + taskContextName), // tasks context object
-    conditionContext: require('./function/condition.js'),
-  })
+    functionContext: require('./function/' + taskContextName),
+    conditionContext: require('./function/condition.js') });
+
   let configuredGraph = Graph.clientInterface({
-    parameter: [{ concreteBehaviorList: [contextInstance] }],
-  })
-  let graph = new configuredGraph({})
-  graph.traversal.processData['executeFunctionReference'] = measurePerformanceProxy(graph.traversal.processData['executeFunctionReference']) // manipulate processing implementation callback
+    parameter: [{ concreteBehaviorList: [contextInstance] }] });
+
+  let graph = new configuredGraph({});
+  graph.traversal.processData['executeFunctionReference'] = measurePerformanceProxy(graph.traversal.processData['executeFunctionReference']);
 
   try {
-    let result = await graph.traverse({ nodeKey: entryNodeKey, implementationKey: { processData: 'executeFunctionReference', evaluatePosition: 'evaluateConditionReference' } })
+    let result = await graph.traverse({ nodeKey: entryNodeKey, implementationKey: { processData: 'executeFunctionReference', evaluatePosition: 'evaluateConditionReference' } });
   } catch (error) {
-    console.error(error)
-    await graph.database.driverInstance.close()
-    process.exit()
+    console.error(error);
+    await graph.database.driverInstance.close();
+    process.exit();
   }
-  // let result = graph.traverse({ nodeKey: '9160338f-6990-4957-9506-deebafdb6e29' })
-  await graph.database.driverInstance.close()
+
+  await graph.database.driverInstance.close();
 }
 
-const measurePerformanceProxy = callback =>
-  new Proxy(callback, {
-    async apply(target, thisArg, argumentList) {
-      let { node } = argumentList[0]
+const measurePerformanceProxy = (callback) =>
+new Proxy(callback, {
+  async apply(target, thisArg, argumentList) {
+    let { node } = argumentList[0];
 
-      const id = AsyncHooks.executionAsyncId() // this returns the current asynchronous context's id
-      hookContext.set(id, node)
-      performance.mark('start' + id)
+    const id = _async_hooks.default.executionAsyncId();
+    hookContext.set(id, node);
+    _perf_hooks.performance.mark('start' + id);
 
-      let result = await Reflect.apply(...arguments)
+    let result = await Reflect.apply(...arguments);
 
-      performance.mark('end' + id)
-      performance.measure(node.properties.name || 'Node ID: ' + node.identity, 'start' + id, 'end' + id)
+    _perf_hooks.performance.mark('end' + id);
+    _perf_hooks.performance.measure(node.properties.name || 'Node ID: ' + node.identity, 'start' + id, 'end' + id);
 
-      return result
-    },
-  })
+    return result;
+  } });
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uLy4uL3NvdXJjZS9zY3JpcHQuanMiXSwibmFtZXMiOlsiR3JhcGgiLCJHcmFwaE1vZHVsZSIsIkNvbnRleHQiLCJDb250ZXh0TW9kdWxlIiwib2JzZXJ2ZXIiLCJQZXJmb3JtYW5jZU9ic2VydmVyIiwibGlzdCIsImVudHJ5IiwiZ2V0RW50cmllcyIsImNvbnNvbGUiLCJsb2ciLCJuYW1lIiwiZHVyYXRpb24iLCJvYnNlcnZlIiwiZW50cnlUeXBlcyIsImJ1ZmZlcmVkIiwiaG9va0NvbnRleHQiLCJNYXAiLCJob29rIiwiQXN5bmNIb29rcyIsImNyZWF0ZUhvb2siLCJpbml0IiwiYXN5bmNJZCIsInR5cGUiLCJ0cmlnZ2VyQXN5bmNJZCIsImhhcyIsInNldCIsImdldCIsImRlc3Ryb3kiLCJkZWxldGUiLCJlbmFibGUiLCJwcm9jZXNzIiwib24iLCJlcnJvciIsImJ1aWxkIiwiZW50cnlOb2RlS2V5IiwidGFza0NvbnRleHROYW1lIiwidGFyZ2V0UHJvamVjdCIsImFyZ3VtZW50T2JqZWN0IiwidGFyZ2V0UHJvamVjdFJvb3QiLCJjb25maWd1cmF0aW9uIiwicm9vdFBhdGgiLCJjb250ZXh0SW5zdGFuY2UiLCJjbGllbnRJbnRlcmZhY2UiLCJ0YXJnZXRQcm9qZWN0Q29uZmlnIiwiZnVuY3Rpb25Db250ZXh0IiwicmVxdWlyZSIsImNvbmRpdGlvbkNvbnRleHQiLCJjb25maWd1cmVkR3JhcGgiLCJwYXJhbWV0ZXIiLCJjb25jcmV0ZUJlaGF2aW9yTGlzdCIsImdyYXBoIiwidHJhdmVyc2FsIiwicHJvY2Vzc0RhdGEiLCJtZWFzdXJlUGVyZm9ybWFuY2VQcm94eSIsInJlc3VsdCIsInRyYXZlcnNlIiwibm9kZUtleSIsImltcGxlbWVudGF0aW9uS2V5IiwiZXZhbHVhdGVQb3NpdGlvbiIsImRhdGFiYXNlIiwiZHJpdmVySW5zdGFuY2UiLCJjbG9zZSIsImV4aXQiLCJjYWxsYmFjayIsIlByb3h5IiwiYXBwbHkiLCJ0YXJnZXQiLCJ0aGlzQXJnIiwiYXJndW1lbnRMaXN0Iiwibm9kZSIsImlkIiwiZXhlY3V0aW9uQXN5bmNJZCIsInBlcmZvcm1hbmNlIiwibWFyayIsIlJlZmxlY3QiLCJhcmd1bWVudHMiLCJtZWFzdXJlIiwicHJvcGVydGllcyIsImlkZW50aXR5Il0sIm1hcHBpbmdzIjoiOzs7QUFHQTtBQUNBO0FBQ0E7QUFDQTtBQUNBLE1BQU0sRUFBRUEsS0FBRixLQUFZQyxxQkFBbEI7QUFDQSxNQUFNLEVBQUVDLE9BQUYsS0FBY0MsdUJBQXBCOzs7O0FBSUEsTUFBTUMsUUFBUSxHQUFHLElBQUlDLCtCQUFKLENBQXdCQyxJQUFJLElBQUk7QUFDL0MsUUFBTUMsS0FBSyxHQUFHRCxJQUFJLENBQUNFLFVBQUwsR0FBa0IsQ0FBbEIsQ0FBZDtBQUNBQyxFQUFBQSxPQUFPLENBQUNDLEdBQVIsQ0FBYSxTQUFRSCxLQUFLLENBQUNJLElBQUssR0FBaEMsRUFBb0NKLEtBQUssQ0FBQ0ssUUFBMUM7QUFDRCxDQUhnQixDQUFqQjtBQUlBUixRQUFRLENBQUNTLE9BQVQsQ0FBaUIsRUFBRUMsVUFBVSxFQUFFLENBQUMsU0FBRCxDQUFkLEVBQTJCQyxRQUFRLEVBQUUsS0FBckMsRUFBakI7O0FBRUEsTUFBTUMsV0FBVyxHQUFHLElBQUlDLEdBQUosRUFBcEI7QUFDQSxNQUFNQyxJQUFJLEdBQUdDLHFCQUFXQyxVQUFYLENBQXNCO0FBQ2pDQyxFQUFBQSxJQUFJLENBQUNDLE9BQUQsRUFBVUMsSUFBVixFQUFnQkMsY0FBaEIsRUFBZ0M7OztBQUdsQyxRQUFJUixXQUFXLENBQUNTLEdBQVosQ0FBZ0JELGNBQWhCLENBQUosRUFBcUM7QUFDbkNSLE1BQUFBLFdBQVcsQ0FBQ1UsR0FBWixDQUFnQkosT0FBaEIsRUFBeUJOLFdBQVcsQ0FBQ1csR0FBWixDQUFnQkgsY0FBaEIsQ0FBekI7QUFDRDtBQUNGLEdBUGdDO0FBUWpDSSxFQUFBQSxPQUFPLENBQUNOLE9BQUQsRUFBVTs7QUFFZixRQUFJTixXQUFXLENBQUNTLEdBQVosQ0FBZ0JILE9BQWhCLENBQUosRUFBOEI7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QUF1RixRQUFRQSxFQUEvRjs7QUFFQSxXQUFPaEIsTUFBUDtBQUNELEdBZGlCLEVBQXBCLENBREYiLCJzb3VyY2VzQ29udGVudCI6WyIvLyDwn5iEIFRoaXMgZmlsZSBpcyB1c2VkIHRvIGRlZmluZSBHdWxwIHRhc2tzIHdpdGggc291cmNlIHBhdGggYW5kIGRlc3RpbmF0aW9uIHBhdGguIFdoaWxlIGd1bHBfaW5jbHVkZU5vZGVNb2R1bGVzLmpzIGlzIHVzZWQgdG8gc2F2ZSB0aGUgZnVuY3Rpb25zIGZvciB0aGUgYnVpbGQuXHJcblxyXG5pbXBvcnQgcGF0aCBmcm9tICdwYXRoJ1xyXG5pbXBvcnQgYXNzZXJ0IGZyb20gJ2Fzc2VydCdcclxuaW1wb3J0IHsgUGVyZm9ybWFuY2VPYnNlcnZlciwgcGVyZm9ybWFuY2UgfSBmcm9tICdwZXJmX2hvb2tzJ1xyXG5pbXBvcnQgQXN5bmNIb29rcyBmcm9tICdhc3luY19ob29rcydcclxuaW1wb3J0IHsgR3JhcGggYXMgR3JhcGhNb2R1bGUsIENvbnRleHQgYXMgQ29udGV4dE1vZHVsZSB9IGZyb20gJ0BkZXBlbmRlbmN5L2dyYXBoVHJhdmVyc2FsJ1xyXG5jb25zdCB7IEdyYXBoIH0gPSBHcmFwaE1vZHVsZVxyXG5jb25zdCB7IENvbnRleHQgfSA9IENvbnRleHRNb2R1bGVcclxuLy8gTk9URTogdGFza3MgYXJlIGltcG9ydGVkIG9uIHJ1bnRpbWUuXHJcblxyXG4vKiogUGVyZm9ybWFuY2UgbWVhc3VybWVudCAqL1xyXG5jb25zdCBvYnNlcnZlciA9IG5ldyBQZXJmb3JtYW5jZU9ic2VydmVyKGxpc3QgPT4ge1xyXG4gIGNvbnN0IGVudHJ5ID0gbGlzdC5nZXRFbnRyaWVzKClbMF1cclxuICBjb25zb2xlLmxvZyhgRG9uZSAnJHtlbnRyeS5uYW1lfSdgLCBlbnRyeS5kdXJhdGlvbilcclxufSlcclxub2JzZXJ2ZXIub2JzZXJ2ZSh7IGVudHJ5VHlwZXM6IFsnbWVhc3VyZSddLCBidWZmZXJlZDogZmFsc2UgfSlcclxuLy9DcmVhdGluZyB0aGUgYXN5bmMgaG9vayBoZXJlIHRvIHBpZ2d5YmFjayBvbiBhc3luYyBjYWxsc1xyXG5jb25zdCBob29rQ29udGV4dCA9IG5ldyBNYXAoKVxyXG5jb25zdCBob29rID0gQXN5bmNIb29rcy5jcmVhdGVIb29rKHtcclxuICBpbml0KGFzeW5jSWQsIHR5cGUsIHRyaWdnZXJBc3luY0lkKSB7XHJcbiAgICAvLyBlYWNoIHRpbWUgYSByZXNvdXJjZSBpcyBpbml0LCBpZiB0aGUgcGFyZW50IHJlc291cmNlIHdhcyBhc3NvY2lhdGVkIHdpdGggYSBjb250ZXh0LFxyXG4gICAgLy8gd2UgYXNzb2NpYXRlIHRoZSBjaGlsZCByZXNvdXJjZSB0byB0aGUgc2FtZSBjb250ZXh0XHJcbiAgICBpZiAoaG9va0NvbnRleHQuaGFzKHRyaWdnZXJBc3luY0lkKSkge1xyXG4gICAgICBob29rQ29udGV4dC5zZXQoYXN5bmNJZCwgaG9va0NvbnRleHQuZ2V0KHRyaWdnZXJBc3luY0lkKSlcclxuICAgIH1cclxuICB9LFxyXG4gIGRlc3Ryb3koYXN5bmNJZCkge1xyXG4gICAgLy8gdGhpcyBwcmV2ZW50cyBtZW1vcnkgbGVha3NcclxuICAgIGlmIChob29rQ29udGV4dC5oYXMoYXN5bmNJZCkpIHtcclxuICAgICAgaG9va0NvbnRleHQuZGVsZXRlKGFzeW5jSWQpXHJcbiAgICB9XHJcbiAgfSxcclxufSlcclxuaG9vay5lbmFibGUoKVxyXG5cclxuLy8gbWFrZSB1bi1oYW5kbGVkIHByb21pc2UgcmVqZWN0aW9ucyB0aHJvdyBhbmQgZW5kIE5vZGVqcyBwcm9jZXNzLlxyXG5wcm9jZXNzLm9uKCd1bmhhbmRsZWRSZWplY3Rpb24nLCBlcnJvciA9PiB7XHJcbiAgdGhyb3cgZXJyb3JcclxufSlcclxuXHJcbmV4cG9ydCBhc3luYyBmdW5jdGlvbiBidWlsZChcclxuICB7IGVudHJ5Tm9kZUtleSwgdGFza0NvbnRleHROYW1lIC8qVGhlIG9iamVjdCBvZiB0YXNrcyB0byB1c2UgYXMgcmVmZXJlbmNlIGZyb20gZGF0YWJhc2UgZ3JhcGgqLywgdGFyZ2V0UHJvamVjdCAvKnBhc3NlZCB0aHJvdWdoIHNjcmlwdE1hbmFnZXIqLyB9LFxyXG4gIGFyZ3VtZW50T2JqZWN0LCAvLyBzZWNvbmQgYXJndW1lbnQgaG9sZHMgcGFyYW1ldGVycyB0aGF0IG1heWJlIHVzZWQgaW4gdGhlIG5vZGUgZXhlY3V0aW9uIGZ1bmN0aW9ucy5cclxuKSB7XHJcbiAgYXNzZXJ0KGVudHJ5Tm9kZUtleSwgYOKAoiBObyBlbnRyeU5vZGVLZXkgZm9yIGdyYXBoIHRyYXZlcnNhbCB3YXMgcGFzc2VkLmApXHJcbiAgY29uc3QgdGFyZ2V0UHJvamVjdFJvb3QgPSB0YXJnZXRQcm9qZWN0LmNvbmZpZ3VyYXRpb24ucm9vdFBhdGhcclxuICAvLyBwYXNzIHZhcmlhYmxlcyB0aHJvdWdoIHRoZSBjb250ZXh0IG9iamVjdC5cclxuICBsZXQgY29udGV4dEluc3RhbmNlID0gbmV3IENvbnRleHQuY2xpZW50SW50ZXJmYWNlKHtcclxuICAgIGFyZ3VtZW50T2JqZWN0LFxyXG4gICAgdGFyZ2V0UHJvamVjdENvbmZpZzogdGFyZ2V0UHJvamVjdC5jb25maWd1cmF0aW9uLmNvbmZpZ3VyYXRpb24sXHJcbiAgICBmdW5jdGlvbkNvbnRleHQ6IHJlcXVpcmUoJy4vZnVuY3Rpb24vJyArIHRhc2tDb250ZXh0TmFtZSksIC8vIHRhc2tzIGNvbnRleHQgb2JqZWN0XHJcbiAgICBjb25kaXRpb25Db250ZXh0OiByZXF1aXJlKCcuL2Z1bmN0aW9uL2NvbmRpdGlvbi5qcycpLFxyXG4gIH0pXHJcbiAgbGV0IGNvbmZpZ3VyZWRHcmFwaCA9IEdyYXBoLmNsaWVudEludGVyZmFjZSh7XHJcbiAgICBwYXJhbWV0ZXI6IFt7IGNvbmNyZXRlQmVoYXZpb3JMaXN0OiBbY29udGV4dEluc3RhbmNlXSB9XSxcclxuICB9KVxyXG4gIGxldCBncmFwaCA9IG5ldyBjb25maWd1cmVkR3JhcGgoe30pXHJcbiAgZ3JhcGgudHJhdmVyc2FsLnByb2Nlc3NEYXRhWydleGVjdXRlRnVuY3Rpb25SZWZlcmVuY2UnXSA9IG1lYXN1cmVQZXJmb3JtYW5jZVByb3h5KGdyYXBoLnRyYXZlcnNhbC5wcm9jZXNzRGF0YVsnZXhlY3V0ZUZ1bmN0aW9uUmVmZXJlbmNlJ10pIC8vIG1hbmlwdWxhdGUgcHJvY2Vzc2luZyBpbXBsZW1lbnRhdGlvbiBjYWxsYmFja1xyXG5cclxuICB0cnkge1xyXG4gICAgbGV0IHJlc3VsdCA9IGF3YWl0IGdyYXBoLnRyYXZlcnNlKHsgbm9kZUtleTogZW50cnlOb2RlS2V5LCBpbXBsZW1lbnRhdGlvbktleTogeyBwcm9jZXNzRGF0YTogJ2V4ZWN1dGVGdW5jdGlvblJlZmVyZW5jZScsIGV2YWx1YXRlUG9zaXRpb246ICdldmFsdWF0ZUNvbmRpdGlvblJlZmVyZW5jZScgfSB9KVxyXG4gIH0gY2F0Y2ggKGVycm9yKSB7XHJcbiAgICBjb25zb2xlLmVycm9yKGVycm9yKVxyXG4gICAgYXdhaXQgZ3JhcGguZGF0YWJhc2UuZHJpdmVySW5zdGFuY2UuY2xvc2UoKVxyXG4gICAgcHJvY2Vzcy5leGl0KClcclxuICB9XHJcbiAgLy8gbGV0IHJlc3VsdCA9IGdyYXBoLnRyYXZlcnNlKHsgbm9kZUtleTogJzkxNjAzMzhmLTY5OTAtNDk1Ny05NTA2LWRlZWJhZmRiNmUyOScgfSlcclxuICBhd2FpdCBncmFwaC5kYXRhYmFzZS5kcml2ZXJJbnN0YW5jZS5jbG9zZSgpXHJcbn1cclxuXHJcbmNvbnN0IG1lYXN1cmVQZXJmb3JtYW5jZVByb3h5ID0gY2FsbGJhY2sgPT5cclxuICBuZXcgUHJveHkoY2FsbGJhY2ssIHtcclxuICAgIGFzeW5jIGFwcGx5KHRhcmdldCwgdGhpc0FyZywgYXJndW1lbnRMaXN0KSB7XHJcbiAgICAgIGxldCB7IG5vZGUgfSA9IGFyZ3VtZW50TGlzdFswXVxyXG5cclxuICAgICAgY29uc3QgaWQgPSBBc3luY0hvb2tzLmV4ZWN1dGlvbkFzeW5jSWQoKSAvLyB0aGlzIHJldHVybnMgdGhlIGN1cnJlbnQgYXN5bmNocm9ub3VzIGNvbnRleHQncyBpZFxyXG4gICAgICBob29rQ29udGV4dC5zZXQoaWQsIG5vZGUpXHJcbiAgICAgIHBlcmZvcm1hbmNlLm1hcmsoJ3N0YXJ0JyArIGlkKVxyXG5cclxuICAgICAgbGV0IHJlc3VsdCA9IGF3YWl0IFJlZmxlY3QuYXBwbHkoLi4uYXJndW1lbnRzKVxyXG5cclxuICAgICAgcGVyZm9ybWFuY2UubWFyaygnZW5kJyArIGlkKVxyXG4gICAgICBwZXJmb3JtYW5jZS5tZWFzdXJlKG5vZGUucHJvcGVydGllcy5uYW1lIHx8ICdOb2RlIElEOiAnICsgbm9kZS5pZGVudGl0eSwgJ3N0YXJ0JyArIGlkLCAnZW5kJyArIGlkKVxyXG5cclxuICAgICAgcmV0dXJuIHJlc3VsdFxyXG4gICAgfSxcclxuICB9KVxyXG4iXX0=

@@ -1,65 +1,66 @@
-import path from 'path'
-import ifType from 'gulp-if'
-import babel from 'gulp-babel'
-import merge from 'merge-stream'
-import size from 'gulp-size'
-import htmlmin from 'gulp-htmlmin'
-import { HtmlSplitter } from 'polymer-build'
-import { FragmentIndentation } from '@dependency/fragmentIndentationObjectStream'
-import { pipeline as _cssPipeline, cssFileRegex } from './stylesheet.js'
-import { clientJSPipeline, jsFileRegex } from './javascript.js'
+"use strict";var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.pipeline = pipeline;exports.fragmentPipeline = exports.htmlFileRegex = void 0;
+var _gulpIf = _interopRequireDefault(require("gulp-if"));
+
+
+var _gulpSize = _interopRequireDefault(require("gulp-size"));
+var _gulpHtmlmin = _interopRequireDefault(require("gulp-htmlmin"));
+var _polymerBuild = require("polymer-build");
+var _fragmentIndentationObjectStream = require("@dependency/fragmentIndentationObjectStream");
+var _stylesheet = require("./stylesheet.js");
+var _javascript = require("./javascript.js");
 
 const fragmentRegex = {
   ignoreCustomFragments: [/{%[\s\S]*?%}/, /<%[\s\S]*?%>/, /<\?[\s\S]*?\?>/],
   hbAttrWrap: {
     open: /\{\{(#|\^)[^}]+\}\}/,
-    close: /\{\{\/[^}]+\}\}/,
-  },
-}
+    close: /\{\{\/[^}]+\}\}/ } };
 
-export const htmlFileRegex = /\.html$/
 
-// for html fragments only, without css and js parts.
-export const fragmentPipeline = () => [
-  htmlmin({
-    collapseWhitespace: true,
-    removeComments: true,
-    removeCommentsFromCDATA: true,
-    minifyURLs: true,
-    minifyJS: true,
-    minifyCSS: true,
-    ignoreCustomFragments: fragmentRegex.ignoreCustomFragments,
-  }),
-]
 
-export function pipeline({
-  // array of file object streams (vinyl transformers)
+const htmlFileRegex = /\.html$/;exports.htmlFileRegex = htmlFileRegex;
+
+
+const fragmentPipeline = () => [
+(0, _gulpHtmlmin.default)({
+  collapseWhitespace: true,
+  removeComments: true,
+  removeCommentsFromCDATA: true,
+  minifyURLs: true,
+  minifyJS: true,
+  minifyCSS: true,
+  ignoreCustomFragments: fragmentRegex.ignoreCustomFragments })];exports.fragmentPipeline = fragmentPipeline;
+
+
+
+function pipeline({
+
   jsPipeline,
-  cssPipeline = _cssPipeline(),
+  cssPipeline = (0, _stylesheet.pipeline)(),
   htmlPipeline = fragmentPipeline(),
-  babelConfigFileName,
-} = {}) {
-  jsPipeline ||= clientJSPipeline({ babelConfigFileName })
-  const sourcesHtmlSplitter = new HtmlSplitter()
+  babelConfigFileName } =
+{}) {
+  jsPipeline || (jsPipeline = (0, _javascript.clientJSPipeline)({ babelConfigFileName }));
+  const sourcesHtmlSplitter = new _polymerBuild.HtmlSplitter();
 
   return [
-    // Split
-    FragmentIndentation.TransformToFragmentKeys(), // temporarly remove server side indentation e.g. server side template indentations
-    sourcesHtmlSplitter.split(), // split inline JS & CSS out into individual .js & .css files
 
-    /* JAVASCRIPT */
-    ifType(jsFileRegex, ...jsPipeline),
+  _fragmentIndentationObjectStream.FragmentIndentation.TransformToFragmentKeys(),
+  sourcesHtmlSplitter.split(),
 
-    /* HTML (also minimize any left or non detected sections - css, js, html tags that were not separated), e.g. css's transform property  */
-    ifType(htmlFileRegex, ...htmlPipeline),
 
-    /* CSS */
-    ifType(cssFileRegex, ...cssPipeline),
+  (0, _gulpIf.default)(_javascript.jsFileRegex, ...jsPipeline),
 
-    // Re-join those files back into their original location
-    sourcesHtmlSplitter.rejoin(),
-    FragmentIndentation.TransformBackToFragment(),
 
-    size({ title: `HTML` }),
-  ]
+  (0, _gulpIf.default)(htmlFileRegex, ...htmlPipeline),
+
+
+  (0, _gulpIf.default)(_stylesheet.cssFileRegex, ...cssPipeline),
+
+
+  sourcesHtmlSplitter.rejoin(),
+  _fragmentIndentationObjectStream.FragmentIndentation.TransformBackToFragment(),
+
+  (0, _gulpSize.default)({ title: `HTML` })];
+
 }
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uLy4uLy4uL3NvdXJjZS90cmFuc2Zvcm1QaXBlbGluZS9odG1sLmpzIl0sIm5hbWVzIjpbImZyYWdtZW50UmVnZXgiLCJpZ25vcmVDdXN0b21GcmFnbWVudHMiLCJoYkF0dHJXcmFwIiwib3BlbiIsImNsb3NlIiwiaHRtbEZpbGVSZWdleCIsImZyYWdtZW50UGlwZWxpbmUiLCJjb2xsYXBzZVdoaXRlc3BhY2UiLCJyZW1vdmVDb21tZW50cyIsInJlbW92ZUNvbW1lbnRzRnJvbUNEQVRBIiwibWluaWZ5VVJMcyIsIm1pbmlmeUpTIiwibWluaWZ5Q1NTIiwicGlwZWxpbmUiLCJqc1BpcGVsaW5lIiwiY3NzUGlwZWxpbmUiLCJodG1sUGlwZWxpbmUiLCJiYWJlbENvbmZpZ0ZpbGVOYW1lIiwic291cmNlc0h0bWxTcGxpdHRlciIsIkh0bWxTcGxpdHRlciIsIkZyYWdtZW50SW5kZW50YXRpb24iLCJUcmFuc2Zvcm1Ub0ZyYWdtZW50S2V5cyIsInNwbGl0IiwianNGaWxlUmVnZXgiLCJjc3NGaWxlUmVnZXgiLCJyZWpvaW4iLCJUcmFuc2Zvcm1CYWNrVG9GcmFnbWVudCIsInRpdGxlIl0sIm1hcHBpbmdzIjoiO0FBQ0E7OztBQUdBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTs7QUFFQSxNQUFNQSxhQUFhLEdBQUc7QUFDcEJDLEVBQUFBLHFCQUFxQixFQUFFLENBQUMsY0FBRCxFQUFpQixjQUFqQixFQUFpQyxnQkFBakMsQ0FESDtBQUVwQkMsRUFBQUEsVUFBVSxFQUFFO0FBQ1ZDLElBQUFBLElBQUksRUFBRSxxQkFESTtBQUVWQyxJQUFBQSxLQUFLLEVBQUUsaUJBRkcsRUFGUSxFQUF0Qjs7OztBQVFPLE1BQU1DLGFBQWEsR0FBRyxTQUF0QixDOzs7QUFHQSxNQUFNQyxnQkFBZ0IsR0FBRyxNQUFNO0FBQ3BDLDBCQUFRO0FBQ05DLEVBQUFBLGtCQUFrQixFQUFFLElBRGQ7QUFFTkMsRUFBQUEsY0FBYyxFQUFFLElBRlY7QUFHTkMsRUFBQUEsdUJBQXVCLEVBQUUsSUFIbkI7QUFJTkMsRUFBQUEsVUFBVSxFQUFFLElBSk47QUFLTkMsRUFBQUEsUUFBUSxFQUFFLElBTEo7QUFNTkMsRUFBQUEsU0FBUyxFQUFFLElBTkw7QUFPTlgsRUFBQUEscUJBQXFCLEVBQUVELGFBQWEsQ0FBQ0MscUJBUC9CLEVBQVIsQ0FEb0MsQ0FBL0IsQzs7OztBQVlBLFNBQVNZLFFBQVQsQ0FBa0I7O0FBRXZCQyxFQUFBQSxVQUZ1QjtBQUd2QkMsRUFBQUEsV0FBVyxHQUFHLDJCQUhTO0FBSXZCQyxFQUFBQSxZQUFZLEdBQUdWLGdCQUFnQixFQUpSO0FBS3ZCVyxFQUFBQSxtQkFMdUI7QUFNckIsRUFORyxFQU1DO0FBQ05ILEVBQUFBLFVBQVUsS0FBVkEsVUFBVSxHQUFLLGtDQUFpQixFQUFFRyxtQkFBRixFQUFqQixDQUFMLENBQVY7QUFDQSxRQUFNQyxtQkFBbUIsR0FBRyxJQUFJQywwQkFBSixFQUE1Qjs7QUFFQSxTQUFPOztBQUVMQyx1REFBb0JDLHVCQUFwQixFQUZLO0FBR0xILEVBQUFBLG1CQUFtQixDQUFDSSxLQUFwQixFQUhLOzs7QUFNTCx1QkFBT0MsdUJBQVAsRUFBb0IsR0FBR1QsVUFBdkIsQ0FOSzs7O0FBU0wsdUJBQU9ULGFBQVAsRUFBc0IsR0FBR1csWUFBekIsQ0FUSzs7O0FBWUwsdUJBQU9RLHdCQUFQLEVBQXFCLEdBQUdULFdBQXhCLENBWks7OztBQWVMRyxFQUFBQSxtQkFBbUIsQ0FBQ08sTUFBcEIsRUFmSztBQWdCTEwsdURBQW9CTSx1QkFBcEIsRUFoQks7O0FBa0JMLHlCQUFLLEVBQUVDLEtBQUssRUFBRyxNQUFWLEVBQUwsQ0FsQkssQ0FBUDs7QUFvQkQiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgcGF0aCBmcm9tICdwYXRoJ1xuaW1wb3J0IGlmVHlwZSBmcm9tICdndWxwLWlmJ1xuaW1wb3J0IGJhYmVsIGZyb20gJ2d1bHAtYmFiZWwnXG5pbXBvcnQgbWVyZ2UgZnJvbSAnbWVyZ2Utc3RyZWFtJ1xuaW1wb3J0IHNpemUgZnJvbSAnZ3VscC1zaXplJ1xuaW1wb3J0IGh0bWxtaW4gZnJvbSAnZ3VscC1odG1sbWluJ1xuaW1wb3J0IHsgSHRtbFNwbGl0dGVyIH0gZnJvbSAncG9seW1lci1idWlsZCdcbmltcG9ydCB7IEZyYWdtZW50SW5kZW50YXRpb24gfSBmcm9tICdAZGVwZW5kZW5jeS9mcmFnbWVudEluZGVudGF0aW9uT2JqZWN0U3RyZWFtJ1xuaW1wb3J0IHsgcGlwZWxpbmUgYXMgX2Nzc1BpcGVsaW5lLCBjc3NGaWxlUmVnZXggfSBmcm9tICcuL3N0eWxlc2hlZXQuanMnXG5pbXBvcnQgeyBjbGllbnRKU1BpcGVsaW5lLCBqc0ZpbGVSZWdleCB9IGZyb20gJy4vamF2YXNjcmlwdC5qcydcblxuY29uc3QgZnJhZ21lbnRSZWdleCA9IHtcbiAgaWdub3JlQ3VzdG9tRnJhZ21lbnRzOiBbL3slW1xcc1xcU10qPyV9LywgLzwlW1xcc1xcU10qPyU+LywgLzxcXD9bXFxzXFxTXSo/XFw/Pi9dLFxuICBoYkF0dHJXcmFwOiB7XG4gICAgb3BlbjogL1xce1xceygjfFxcXilbXn1dK1xcfVxcfS8sXG4gICAgY2xvc2U6IC9cXHtcXHtcXC9bXn1dK1xcfVxcfS8sXG4gIH0sXG59XG5cbmV4cG9ydCBjb25zdCBodG1sRmlsZVJlZ2V4ID0gL1xcLmh0bWwkL1xuXG4vLyBmb3IgaHRtbCBmcmFnbWVudHMgb25seSwgd2l0aG91dCBjc3MgYW5kIGpzIHBhcnRzLlxuZXhwb3J0IGNvbnN0IGZyYWdtZW50UGlwZWxpbmUgPSAoKSA9PiBbXG4gIGh0bWxtaW4oe1xuICAgIGNvbGxhcHNlV2hpdGVzcGFjZTogdHJ1ZSxcbiAgICByZW1vdmVDb21tZW50czogdHJ1ZSxcbiAgICByZW1vdmVDb21tZW50c0Zyb21DREFUQTogdHJ1ZSxcbiAgICBtaW5pZnlVUkxzOiB0cnVlLFxuICAgIG1pbmlmeUpTOiB0cnVlLFxuICAgIG1pbmlmeUNTUzogdHJ1ZSxcbiAgICBpZ25vcmVDdXN0b21GcmFnbWVudHM6IGZyYWdtZW50UmVnZXguaWdub3JlQ3VzdG9tRnJhZ21lbnRzLFxuICB9KSxcbl1cblxuZXhwb3J0IGZ1bmN0aW9uIHBpcGVsaW5lKHtcbiAgLy8gYXJyYXkgb2YgZmlsZSBvYmplY3Qgc3RyZWFtcyAodmlueWwgdHJhbnNmb3JtZXJzKVxuICBqc1BpcGVsaW5lLFxuICBjc3NQaXBlbGluZSA9IF9jc3NQaXBlbGluZSgpLFxuICBodG1sUGlwZWxpbmUgPSBmcmFnbWVudFBpcGVsaW5lKCksXG4gIGJhYmVsQ29uZmlnRmlsZU5hbWUsXG59ID0ge30pIHtcbiAganNQaXBlbGluZSB8fD0gY2xpZW50SlNQaXBlbGluZSh7IGJhYmVsQ29uZmlnRmlsZU5hbWUgfSlcbiAgY29uc3Qgc291cmNlc0h0bWxTcGxpdHRlciA9IG5ldyBIdG1sU3BsaXR0ZXIoKVxuXG4gIHJldHVybiBbXG4gICAgLy8gU3BsaXRcbiAgICBGcmFnbWVudEluZGVudGF0aW9uLlRyYW5zZm9ybVRvRnJhZ21lbnRLZXlzKCksIC8vIHRlbXBvcmFybHkgcmVtb3ZlIHNlcnZlciBzaWRlIGluZGVudGF0aW9uIGUuZy4gc2VydmVyIHNpZGUgdGVtcGxhdGUgaW5kZW50YXRpb25zXG4gICAgc291cmNlc0h0bWxTcGxpdHRlci5zcGxpdCgpLCAvLyBzcGxpdCBpbmxpbmUgSlMgJiBDU1Mgb3V0IGludG8gaW5kaXZpZHVhbCAuanMgJiAuY3NzIGZpbGVzXG5cbiAgICAvKiBKQVZBU0NSSVBUICovXG4gICAgaWZUeXBlKGpzRmlsZVJlZ2V4LCAuLi5qc1BpcGVsaW5lKSxcblxuICAgIC8qIEhUTUwgKGFsc28gbWluaW1pemUgYW55IGxlZnQgb3Igbm9uIGRldGVjdGVkIHNlY3Rpb25zIC0gY3NzLCBqcywgaHRtbCB0YWdzIHRoYXQgd2VyZSBub3Qgc2VwYXJhdGVkKSwgZS5nLiBjc3MncyB0cmFuc2Zvcm0gcHJvcGVydHkgICovXG4gICAgaWZUeXBlKGh0bWxGaWxlUmVnZXgsIC4uLmh0bWxQaXBlbGluZSksXG5cbiAgICAvKiBDU1MgKi9cbiAgICBpZlR5cGUoY3NzRmlsZVJlZ2V4LCAuLi5jc3NQaXBlbGluZSksXG5cbiAgICAvLyBSZS1qb2luIHRob3NlIGZpbGVzIGJhY2sgaW50byB0aGVpciBvcmlnaW5hbCBsb2NhdGlvblxuICAgIHNvdXJjZXNIdG1sU3BsaXR0ZXIucmVqb2luKCksXG4gICAgRnJhZ21lbnRJbmRlbnRhdGlvbi5UcmFuc2Zvcm1CYWNrVG9GcmFnbWVudCgpLFxuXG4gICAgc2l6ZSh7IHRpdGxlOiBgSFRNTGAgfSksXG4gIF1cbn1cbiJdfQ==
