@@ -4,9 +4,11 @@ import path from 'path'
 import assert from 'assert'
 import { PerformanceObserver, performance } from 'perf_hooks'
 import AsyncHooks from 'async_hooks'
-import { Graph as GraphModule, Context as ContextModule } from '@dependency/graphTraversal'
+import { Graph as GraphModule, Context as ContextModule, Database as DatabaseModule } from '@dependency/graphTraversal'
 const { Graph } = GraphModule
+const { Database } = DatabaseModule
 const { Context } = ContextModule
+import * as graphData from '../resource/taskSequence.graphData.json'
 // NOTE: tasks are imported on runtime.
 
 /** Performance measurment */
@@ -45,6 +47,7 @@ export async function build(
 ) {
   assert(entryNodeKey, `• No entryNodeKey for graph traversal was passed.`)
   const targetProjectRoot = targetProject.configuration.rootPath
+
   // pass variables through the context object.
   let contextInstance = new Context.clientInterface({
     argumentObject,
@@ -57,6 +60,13 @@ export async function build(
   })
   let graph = new configuredGraph({})
   graph.traversal.processData['executeFunctionReference'] = measurePerformanceProxy(graph.traversal.processData['executeFunctionReference']) // manipulate processing implementation callback
+
+  // clear database and load graph data:
+  let concereteDatabase = graph.database
+  await clearDatabase(graph.database)
+  assert(Array.isArray(graphData.node) && Array.isArray(graphData.edge), `• Unsupported graph data strcuture- ${graphData.edge} - ${graphData.node}`)
+  await graph.database.loadGraphData({ nodeEntryData: graphData.node, connectionEntryData: graphData.edge })
+  console.log(`• Graph in-memory database was cleared and 'resource' graph data was loaded.`)
 
   try {
     let result = await graph.traverse({ nodeKey: entryNodeKey, implementationKey: { processData: 'executeFunctionReference', evaluatePosition: 'evaluateConditionReference' } })
@@ -86,3 +96,11 @@ const measurePerformanceProxy = callback =>
       return result
     },
   })
+
+async function clearDatabase(concereteDatabase) {
+  // Delete all nodes in the in-memory database
+  const graphDBDriver = concereteDatabase.driverInstance
+  let session = await graphDBDriver.session()
+  await session.run(`match (n) detach delete n`)
+  session.close()
+}
