@@ -52,8 +52,8 @@ export async function build(
   let contextInstance = new Context.clientInterface({
     argumentObject,
     targetProjectConfig: targetProject.configuration.configuration,
-    functionContext: require('./function/' + taskContextName), // tasks context object
-    conditionContext: require('./function/condition.js'),
+    functionContext: require(path.join(__dirname, './function/' + taskContextName)), // tasks context object
+    conditionContext: require(path.join(__dirname, './function/condition.js')),
   })
   let configuredGraph = Graph.clientInterface({
     parameter: [{ concreteBehaviorList: [contextInstance] }],
