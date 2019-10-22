@@ -11,10 +11,10 @@ const rimraf = util.promisify(rimrafCallback)
 import { src as readFileAsObjectStream, dest as writeFileFromObjectStream } from 'vinyl-fs'
 import original_wildcardPathnameMatcher from 'glob' // Alternative modules - `globby`, `glob`, `glob-stream`
 const wildcardPathnameMatcher = util.promisify(original_wildcardPathnameMatcher)
-import { installJspm } from '@dependency/deploymentScript/script/provisionOS/installESModule/install-jspm.js'
-import { installYarn } from '@dependency/deploymentScript/script/provisionOS/installESModule/install-yarn.js'
-import { installNpm } from '@dependency/deploymentScript/script/provisionOS/installESModule/install-npm.js'
-import { recursivelySyncFile, copyFileAndSymlink } from '@dependency/deploymentScript/source/utility/filesystemOperation/synchronizeFile.js'
+import { installPackageUsingJspm } from '@dependency/deploymentProvisioning'    
+import { installPackageUsingYarn } from '@dependency/deploymentProvisioning'
+import { installPackageUsingNpm } from '@dependency/deploymentProvisioning' 
+import { synchronizeFile } from   '@dependency/deploymentProvisioning'
 import { pipeline as htmlPipeline } from '../transformPipeline/html.js'
 import { pipeline as imagePipeline } from '../transformPipeline/image.js'
 import { clientJSPipeline, serverJSPipeline } from '../transformPipeline/javascript.js'
@@ -27,7 +27,7 @@ const packageDependencyPatternMatch = '**/@package*/**/*', // `@package/...` `@p
 
 export const module_installYarn = ({ node, context }) => {
   let targetProjectConfig = context.targetProjectConfig || throw new Error(`• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
-  installYarn({ yarnPath: path.join(targetProjectConfig.directory.source) })
+  installPackageUsingYarn({ yarnPath: path.join(targetProjectConfig.directory.source) })
 }
 
 export const removeDistributionFolder = async ({ node, context }) => {
@@ -44,7 +44,7 @@ export const copyYarnLockfile = async ({ node, context }) => {
   let targetProjectConfig = context.targetProjectConfig || throw new Error(`• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
   let filePath = path.join(targetProjectConfig.directory.root, 'yarn.lock')
   let fileStat = await filesystem.lstat(filePath).catch(error => (error.code == 'ENOENT' ? false : console.error(error)))
-  if (fileStat && fileStat.isFile()) await copyFileAndSymlink({ source: filePath, destination: targetProjectConfig.directory.distribution })
+  if (fileStat && fileStat.isFile()) await synchronizeFile.copyFileAndSymlink({ source: filePath, destination: targetProjectConfig.directory.distribution })
 }
 
 export const transpilePackageDependency = async ({ node, context }) => {
