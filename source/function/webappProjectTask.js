@@ -9,10 +9,10 @@ import mergeStream from 'merge-stream'
 import { src as readFileAsObjectStream, dest as writeFileFromObjectStream } from 'vinyl-fs'
 import original_wildcardPathnameMatcher from 'glob' // Alternative modules - `globby`, `glob`, `glob-stream`
 const wildcardPathnameMatcher = util.promisify(original_wildcardPathnameMatcher)
-import { installPackageUsingJspm } from '@dependency/deploymentProvisioning'    
+import { installPackageUsingJspm } from '@dependency/deploymentProvisioning'
 import { installPackageUsingYarn } from '@dependency/deploymentProvisioning'
-import { installPackageUsingNpm } from '@dependency/deploymentProvisioning' 
-import { synchronizeFile } from   '@dependency/deploymentProvisioning'
+import { installPackageUsingNpm } from '@dependency/deploymentProvisioning'
+import { synchronizeFile } from '@dependency/deploymentProvisioning'
 import { pipeline as htmlPipeline } from '../transformPipeline/html.js'
 import { pipeline as imagePipeline } from '../transformPipeline/image.js'
 import { clientJSPipeline, serverJSPipeline } from '../transformPipeline/javascript.js'
@@ -200,7 +200,7 @@ export const serverSide_copyServerSide = async ({ node, context }) => {
 
 export const serverSide_copyDatabaseData = async ({ node, context }) => {
   let targetProjectConfig = context.targetProjectConfig || throw new Error(`• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
-  await .recursivelySyncFile({
+  await synchronizeFile.recursivelySyncFile.recursivelySyncFile({
     source: path.join(targetProjectConfig.directory.source, 'databaseData'),
     destination: targetProjectConfig.directory.distribution,
     copyContentOnly: false,
