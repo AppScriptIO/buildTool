@@ -1,23 +1,24 @@
-import assert from 'assert'
-import path from 'path'
-const normalizeArray = array => array.map(p => path.normalize(p))
+"use strict";var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.shouldTranspile = void 0;var _assert = _interopRequireDefault(require("assert"));
+var _path = _interopRequireDefault(require("path"));
+const normalizeArray = array => array.map(p => _path.default.normalize(p));
 
-/** Condition parameter hierarchy for evaluating a node and deciding which evaluation configuration to use:
- * 1. immediate value `switchValue` property of the evaluation node (this is an internal implementation).
- * 2. Directly passed parameters that would end up in the `graphInstance.context`
- *    e.g. `yarn run scriptManager shouldCompileScript=true JSProject/buildSourceCode ".moduleProject({}, {compile: ['./test']})"`
- * 3. Project configuration values that would be checked
- *    e.g. `project.configuration.build.compile = ['./source', './script' ]`
- */
-export const shouldTranspile = ({ node, context }) => {
-  // Requires `context.targetProjectConfig` property to be provided.
-  let argumentObject = context?.argumentObject // directly passed parameters
-  let targetProjectConfig = context?.targetProjectConfig // parameters in the configuration file.
-  assert(targetProjectConfig, `• Context "targetProjectConfig" variable is required to run project dependent conditions.`)
-  let currentNodeDirectory = node.properties?.relativePath && path.normalize(node.properties.relativePath)
-  assert(currentNodeDirectory, `• relativePath must exist on stage node that uses this condition for evaluation.`)
-  let parameterCompileArray = argumentObject?.compile || [] |> normalizeArray
-  let configCompileArray = targetProjectConfig.build?.compile || [] |> normalizeArray
 
-  return [...parameterCompileArray, ...configCompileArray].includes(currentNodeDirectory)
-}
+
+
+
+
+
+
+const shouldTranspile = ({ node, context }) => {var _node$properties, _ref, _ref2, _targetProjectConfig$;
+
+  let argumentObject = context === null || context === void 0 ? void 0 : context.argumentObject;
+  let targetProjectConfig = context === null || context === void 0 ? void 0 : context.targetProjectConfig;
+  (0, _assert.default)(targetProjectConfig, `• Context "targetProjectConfig" variable is required to run project dependent conditions.`);
+  let currentNodeDirectory = ((_node$properties = node.properties) === null || _node$properties === void 0 ? void 0 : _node$properties.relativePath) && _path.default.normalize(node.properties.relativePath);
+  (0, _assert.default)(currentNodeDirectory, `• relativePath must exist on stage node that uses this condition for evaluation.`);
+  let parameterCompileArray = (_ref = (argumentObject === null || argumentObject === void 0 ? void 0 : argumentObject.compile) || [], normalizeArray(_ref));
+  let configCompileArray = (_ref2 = ((_targetProjectConfig$ = targetProjectConfig.build) === null || _targetProjectConfig$ === void 0 ? void 0 : _targetProjectConfig$.compile) || [], normalizeArray(_ref2));
+
+  return [...parameterCompileArray, ...configCompileArray].includes(currentNodeDirectory);
+};exports.shouldTranspile = shouldTranspile;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uLy4uLy4uL3NvdXJjZS9mdW5jdGlvbi9jb25kaXRpb24uanMiXSwibmFtZXMiOlsibm9ybWFsaXplQXJyYXkiLCJhcnJheSIsIm1hcCIsInAiLCJwYXRoIiwibm9ybWFsaXplIiwic2hvdWxkVHJhbnNwaWxlIiwibm9kZSIsImNvbnRleHQiLCJhcmd1bWVudE9iamVjdCIsInRhcmdldFByb2plY3RDb25maWciLCJjdXJyZW50Tm9kZURpcmVjdG9yeSIsInByb3BlcnRpZXMiLCJyZWxhdGl2ZVBhdGgiLCJwYXJhbWV0ZXJDb21waWxlQXJyYXkiLCJjb21waWxlIiwiY29uZmlnQ29tcGlsZUFycmF5IiwiYnVpbGQiLCJpbmNsdWRlcyJdLCJtYXBwaW5ncyI6ImlNQUFBO0FBQ0E7QUFDQSxNQUFNQSxjQUFjLEdBQUdDLEtBQUssSUFBSUEsS0FBSyxDQUFDQyxHQUFOLENBQVVDLENBQUMsSUFBSUMsY0FBS0MsU0FBTCxDQUFlRixDQUFmLENBQWYsQ0FBaEM7Ozs7Ozs7OztBQVNPLE1BQU1HLGVBQWUsR0FBRyxDQUFDLEVBQUVDLElBQUYsRUFBUUMsT0FBUixFQUFELEtBQXVCOztBQUVwRCxNQUFJQyxjQUFjLEdBQUdELE9BQUgsYUFBR0EsT0FBSCx1QkFBR0EsT0FBTyxDQUFFQyxjQUE5QjtBQUNBLE1BQUlDLG1CQUFtQixHQUFHRixPQUFILGFBQUdBLE9BQUgsdUJBQUdBLE9BQU8sQ0FBRUUsbUJBQW5DO0FBQ0EsdUJBQU9BLG1CQUFQLEVBQTZCLDJGQUE3QjtBQUNBLE1BQUlDLG9CQUFvQixHQUFHLHFCQUFBSixJQUFJLENBQUNLLFVBQUwsc0VBQWlCQyxZQUFqQixLQUFpQ1QsY0FBS0MsU0FBTCxDQUFlRSxJQUFJLENBQUNLLFVBQUwsQ0FBZ0JDLFlBQS9CLENBQTVEO0FBQ0EsdUJBQU9GLG9CQUFQLEVBQThCLGtGQUE5QjtBQUNBLE1BQUlHLHFCQUFxQixXQUFHLENBQUFMLGNBQWMsU0FBZCxJQUFBQSxjQUFjLFdBQWQsWUFBQUEsY0FBYyxDQUFFTSxPQUFoQixLQUEyQixFQUE5QixFQUFvQ2YsY0FBcEMsT0FBekI7QUFDQSxNQUFJZ0Isa0JBQWtCLFlBQUcsMEJBQUFOLG1CQUFtQixDQUFDTyxLQUFwQixnRkFBMkJGLE9BQTNCLEtBQXNDLEVBQXpDLEVBQStDZixjQUEvQyxRQUF0Qjs7QUFFQSxTQUFPLENBQUMsR0FBR2MscUJBQUosRUFBMkIsR0FBR0Usa0JBQTlCLEVBQWtERSxRQUFsRCxDQUEyRFAsb0JBQTNELENBQVA7QUFDRCxDQVhNLEMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgYXNzZXJ0IGZyb20gJ2Fzc2VydCdcbmltcG9ydCBwYXRoIGZyb20gJ3BhdGgnXG5jb25zdCBub3JtYWxpemVBcnJheSA9IGFycmF5ID0+IGFycmF5Lm1hcChwID0+IHBhdGgubm9ybWFsaXplKHApKVxuXG4vKiogQ29uZGl0aW9uIHBhcmFtZXRlciBoaWVyYXJjaHkgZm9yIGV2YWx1YXRpbmcgYSBub2RlIGFuZCBkZWNpZGluZyB3aGljaCBldmFsdWF0aW9uIGNvbmZpZ3VyYXRpb24gdG8gdXNlOlxuICogMS4gaW1tZWRpYXRlIHZhbHVlIGBzd2l0Y2hWYWx1ZWAgcHJvcGVydHkgb2YgdGhlIGV2YWx1YXRpb24gbm9kZSAodGhpcyBpcyBhbiBpbnRlcm5hbCBpbXBsZW1lbnRhdGlvbikuXG4gKiAyLiBEaXJlY3RseSBwYXNzZWQgcGFyYW1ldGVycyB0aGF0IHdvdWxkIGVuZCB1cCBpbiB0aGUgYGdyYXBoSW5zdGFuY2UuY29udGV4dGBcbiAqICAgIGUuZy4gYHlhcm4gcnVuIHNjcmlwdE1hbmFnZXIgc2hvdWxkQ29tcGlsZVNjcmlwdD10cnVlIEpTUHJvamVjdC9idWlsZFNvdXJjZUNvZGUgXCIubW9kdWxlUHJvamVjdCh7fSwge2NvbXBpbGU6IFsnLi90ZXN0J119KVwiYFxuICogMy4gUHJvamVjdCBjb25maWd1cmF0aW9uIHZhbHVlcyB0aGF0IHdvdWxkIGJlIGNoZWNrZWRcbiAqICAgIGUuZy4gYHByb2plY3QuY29uZmlndXJhdGlvbi5idWlsZC5jb21waWxlID0gWycuL3NvdXJjZScsICcuL3NjcmlwdCcgXWBcbiAqL1xuZXhwb3J0IGNvbnN0IHNob3VsZFRyYW5zcGlsZSA9ICh7IG5vZGUsIGNvbnRleHQgfSkgPT4ge1xuICAvLyBSZXF1aXJlcyBgY29udGV4dC50YXJnZXRQcm9qZWN0Q29uZmlnYCBwcm9wZXJ0eSB0byBiZSBwcm92aWRlZC5cbiAgbGV0IGFyZ3VtZW50T2JqZWN0ID0gY29udGV4dD8uYXJndW1lbnRPYmplY3QgLy8gZGlyZWN0bHkgcGFzc2VkIHBhcmFtZXRlcnNcbiAgbGV0IHRhcmdldFByb2plY3RDb25maWcgPSBjb250ZXh0Py50YXJnZXRQcm9qZWN0Q29uZmlnIC8vIHBhcmFtZXRlcnMgaW4gdGhlIGNvbmZpZ3VyYXRpb24gZmlsZS5cbiAgYXNzZXJ0KHRhcmdldFByb2plY3RDb25maWcsIGDigKIgQ29udGV4dCBcInRhcmdldFByb2plY3RDb25maWdcIiB2YXJpYWJsZSBpcyByZXF1aXJlZCB0byBydW4gcHJvamVjdCBkZXBlbmRlbnQgY29uZGl0aW9ucy5gKVxuICBsZXQgY3VycmVudE5vZGVEaXJlY3RvcnkgPSBub2RlLnByb3BlcnRpZXM/LnJlbGF0aXZlUGF0aCAmJiBwYXRoLm5vcm1hbGl6ZShub2RlLnByb3BlcnRpZXMucmVsYXRpdmVQYXRoKVxuICBhc3NlcnQoY3VycmVudE5vZGVEaXJlY3RvcnksIGDigKIgcmVsYXRpdmVQYXRoIG11c3QgZXhpc3Qgb24gc3RhZ2Ugbm9kZSB0aGF0IHVzZXMgdGhpcyBjb25kaXRpb24gZm9yIGV2YWx1YXRpb24uYClcbiAgbGV0IHBhcmFtZXRlckNvbXBpbGVBcnJheSA9IGFyZ3VtZW50T2JqZWN0Py5jb21waWxlIHx8IFtdIHw+IG5vcm1hbGl6ZUFycmF5XG4gIGxldCBjb25maWdDb21waWxlQXJyYXkgPSB0YXJnZXRQcm9qZWN0Q29uZmlnLmJ1aWxkPy5jb21waWxlIHx8IFtdIHw+IG5vcm1hbGl6ZUFycmF5XG5cbiAgcmV0dXJuIFsuLi5wYXJhbWV0ZXJDb21waWxlQXJyYXksIC4uLmNvbmZpZ0NvbXBpbGVBcnJheV0uaW5jbHVkZXMoY3VycmVudE5vZGVEaXJlY3RvcnkpXG59XG4iXX0=
