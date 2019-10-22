@@ -9,10 +9,7 @@ import mergeStream from 'merge-stream'
 import { src as readFileAsObjectStream, dest as writeFileFromObjectStream } from 'vinyl-fs'
 import original_wildcardPathnameMatcher from 'glob' // Alternative modules - `globby`, `glob`, `glob-stream`
 const wildcardPathnameMatcher = util.promisify(original_wildcardPathnameMatcher)
-import { installPackageUsingJspm } from '@dependency/deploymentProvisioning'
-import { installPackageUsingYarn } from '@dependency/deploymentProvisioning'
-import { installPackageUsingNpm } from '@dependency/deploymentProvisioning'
-import { synchronizeFile } from '@dependency/deploymentProvisioning'
+import * as provision from '@dependency/deploymentProvisioning'
 import { pipeline as htmlPipeline } from '../transformPipeline/html.js'
 import { pipeline as imagePipeline } from '../transformPipeline/image.js'
 import { clientJSPipeline, serverJSPipeline } from '../transformPipeline/javascript.js'
@@ -35,17 +32,17 @@ const packageDependencyPatternMatch = '**/@package*/**/*', // `@package/...` `@p
 */
 export const clientSide_jspm = ({ node, context }) => {
   let targetProjectConfig = context.targetProjectConfig || throw new Error(`• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
-  installPackageUsingJspm({ jspmPath: path.join(targetProjectConfig.directory.source, '/packageManager/library.browser.jspm') })
+  provision.installUsingPackageManager.installJspm({ jspmPath: path.join(targetProjectConfig.directory.source, '/packageManager/library.browser.jspm') })
 }
 
 export const clientSide_webcomponentYarn = ({ node, context }) => {
   let targetProjectConfig = context.targetProjectConfig || throw new Error(`• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
-  installPackageUsingYarn({ yarnPath: path.join(targetProjectConfig.directory.source, '/packageManager/webcomponent.browser.yarn/') })
+  provision.installUsingPackageManager.installYarn({ yarnPath: path.join(targetProjectConfig.directory.source, '/packageManager/webcomponent.browser.yarn/') })
 }
 
 export const clientSide_libraryYarn = ({ node, context }) => {
   let targetProjectConfig = context.targetProjectConfig || throw new Error(`• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
-  installPackageUsingYarn({ yarnPath: path.join(targetProjectConfig.directory.source, '/packageManager/library.browser.yarn/') })
+  provision.installUsingPackageManager.installYarn({ yarnPath: path.join(targetProjectConfig.directory.source, '/packageManager/library.browser.yarn/') })
 }
 
 /*
@@ -57,7 +54,7 @@ export const clientSide_libraryYarn = ({ node, context }) => {
 */
 export const nativeClientSide_copySourceCode = async ({ node, context }) => {
   let targetProjectConfig = context.targetProjectConfig || throw new Error(`• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
-  await synchronizeFile.recursivelySyncFile({
+  await provision.synchronize.recursivelySyncFile({
     source: targetProjectConfig.directory.clientSide,
     destination: targetProjectConfig.distribution.clientSide.native,
     copyContentOnly: true,
@@ -126,7 +123,7 @@ export const nativeClientSide_javascript = async ({ node, context }) => {
 */
 export const polyfillClientSide_copySourceCode = ({ node, context }) => {
   let targetProjectConfig = context.targetProjectConfig || throw new Error(`• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
-  synchronizeFile.recursivelySyncFile({ source: targetProjectConfig.directory.clientSide, destination: targetProjectConfig.distribution.clientSide.polyfill, copyContentOnly: true })
+  provision.synchronize.recursivelySyncFile({ source: targetProjectConfig.directory.clientSide, destination: targetProjectConfig.distribution.clientSide.polyfill, copyContentOnly: true })
 }
 
 export const polyfillClientSide_json = async ({ node, context }) => {
@@ -190,17 +187,17 @@ export const polyfillClientSide_javascript = async ({ node, context }) => {
 */
 export const serverSide_installPackageUsingYarn = ({ node, context }) => {
   let targetProjectConfig = context.targetProjectConfig || throw new Error(`• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
-  installPackageUsingYarn({ yarnPath: path.join(targetProjectConfig.directory.source, '/packageManager/library.server.yarn/') })
+  provision.installUsingPackageManager.installYarn({ yarnPath: path.join(targetProjectConfig.directory.source, '/packageManager/library.server.yarn/') })
 }
 
 export const serverSide_copyServerSide = async ({ node, context }) => {
   let targetProjectConfig = context.targetProjectConfig || throw new Error(`• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
-  await synchronizeFile.recursivelySyncFile({ source: targetProjectConfig.directory.serverSide, destination: targetProjectConfig.distribution.serverSide, copyContentOnly: true })
+  await provision.synchronize.recursivelySyncFile({ source: targetProjectConfig.directory.serverSide, destination: targetProjectConfig.distribution.serverSide, copyContentOnly: true })
 }
 
 export const serverSide_copyDatabaseData = async ({ node, context }) => {
   let targetProjectConfig = context.targetProjectConfig || throw new Error(`• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
-  await synchronizeFile.recursivelySyncFile.recursivelySyncFile({
+  await provision.synchronize.recursivelySyncFile.recursivelySyncFile({
     source: path.join(targetProjectConfig.directory.source, 'databaseData'),
     destination: targetProjectConfig.directory.distribution,
     copyContentOnly: false,
