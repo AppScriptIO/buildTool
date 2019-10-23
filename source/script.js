@@ -62,7 +62,6 @@ export async function build(
   graph.traversal.processData['executeFunctionReference'] = measurePerformanceProxy(graph.traversal.processData['executeFunctionReference']) // manipulate processing implementation callback
 
   // clear database and load graph data:
-  let concereteDatabase = graph.database
   await clearDatabase(graph.database)
   assert(Array.isArray(graphData.node) && Array.isArray(graphData.edge), `• Unsupported graph data strcuture- ${graphData.edge} - ${graphData.node}`)
   await graph.database.loadGraphData({ nodeEntryData: graphData.node, connectionEntryData: graphData.edge })
