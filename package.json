@@ -3,8 +3,8 @@
 	"version": "1.0.12",
 	"main": "./entrypoint/programmaticAPI",
 	"scripts": {
-		"exportGraphData": "yarn run scriptManager shouldCompileScript=true graphDatabase/exportGraphData \".exportGraphData({targetPath: './resource',fileName: 'taskSequence.graphData.json'})\"",
-		"loadGraphData": "yarn run scriptManager shouldCompileScript=true graphDatabase/exportGraphData \".loadGraphDataFromFile({ shouldClearDatabase: true, graphDataFilePath: './resource/taskSequence.graphData.json' })\"",
+		"exportGraphData": "yarn run scriptManager shouldCompileScript=true graphDatabase/graphDataLoading \".exportAllGraphData({targetPath: './resource',fileName: '2taskSequence.graphData.json'})\"",
+		"loadGraphData": "yarn run scriptManager shouldCompileScript=true graphDatabase/graphDataLoading \".loadGraphDataFromFile({ shouldClearDatabase: true, graphDataFilePath: './resource/taskSequence.graphData.json' })\"",
 		"buildAndRelease": "yarn run scriptManager shouldCompileScript=true JSProject/buildAndRelease \".moduleProject({})\"",
 		"build": "yarn run scriptManager shouldCompileScript=true JSProject/buildSourceCode \".moduleProject({}, {compile:[/**'./test'*/]})\""
 	},
