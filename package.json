@@ -3,10 +3,10 @@
 	"version": "1.0.12",
 	"main": "./entrypoint/programmaticAPI",
 	"scripts": {
-		"exportGraphData": "yarn run scriptManager shouldCompileScript=true graphDatabase/graphDataLoading \".exportAllGraphData({targetPath: './resource',fileName: '2taskSequence.graphData.json'})\"",
-		"loadGraphData": "yarn run scriptManager shouldCompileScript=true graphDatabase/graphDataLoading \".loadGraphDataFromFile({ shouldClearDatabase: true, graphDataFilePath: './resource/taskSequence.graphData.json' })\"",
-		"buildAndRelease": "yarn run scriptManager shouldCompileScript=true JSProject/buildAndRelease \".moduleProject({})\"",
-		"build": "yarn run scriptManager shouldCompileScript=true JSProject/buildSourceCode \".moduleProject({}, {compile:[/**'./test'*/]})\""
+		"exportGraphData": "yarn run scriptManager shouldCompileScript=true graphDatabase/graphDataLoading \".exportAllGraphData({targetPath: './resource',fileName: 'taskSequence.graph.json'})\"",
+		"loadGraphData": "yarn run scriptManager shouldCompileScript=true graphDatabase/graphDataLoading \".loadGraphDataFromFile({ shouldClearDatabase: true, graphDataFilePath: './resource/taskSequence.graph.json' })\"",
+		"buildAndRelease": "yarn run scriptManager shouldCompileScript=true buildAndRelease \".moduleProject({})\"",
+		"build": "yarn run scriptManager shouldCompileScript=true buildSourceCode \".moduleProject({}, {compile:[/**'./test'*/]})\""
 	},
 	"dependencies": {
 		"@dependency/deploymentProvisioning": "https://github.com/AppScriptIO/deploymentProvisioning#semver:^1.x.x",
@@ -15,6 +15,7 @@
 		"@dependency/javascriptTranspilation": "https://github.com/AppScriptIO/javascriptTranspilation#semver:^1.x.x",
 		"command-exists": "^1.2.8",
 		"css-slam": "*",
+		"fs-extra": "^8.1.0",
 		"glob": "^7.1.4",
 		"glob-stream": "^6.1.0",
 		"globby": "^9.0.0",
@@ -45,6 +46,7 @@
 		"vinyl-fs": "^3.0.3"
 	},
 	"devDependencies": {
+		"@dependency/deploymentProvisioning": "https://github.com/AppScriptIO/deploymentProvisioning#semver:^1.x.x",
 		"@dependency/deploymentScript": "https://github.com/AppScriptIO/deploymentScript#semver:^1.x.x",
 		"@dependency/javascriptStaticAnalysis": "https://github.com/AppScriptIO/javascriptStaticAnalysis#semver:^1.x.x",
 		"@dependency/scriptManager": "https://github.com/AppScriptIO/scriptManager#semver:^1.x.x",

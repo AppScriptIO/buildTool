@@ -8,7 +8,7 @@ import { Graph as GraphModule, Context as ContextModule, Database as DatabaseMod
 const { Graph } = GraphModule
 const { Database } = DatabaseModule
 const { Context } = ContextModule
-import * as graphData from '../resource/taskSequence.graphData.json'
+import * as graphData from '../resource/taskSequence.graph.json'
 // NOTE: tasks are imported on runtime.
 
 /** Performance measurment */
