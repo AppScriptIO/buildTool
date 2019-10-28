@@ -907,8 +907,8 @@
   resolved "https://github.com/AppScriptIO/addModuleResolutionPath#fa351d3da0d496bf34831d840c5e30be2ab8defe"
 
 "@dependency/buildTool@https://github.com/AppScriptIO/buildTool#semver:^1.x.x":
-  version "1.0.12"
-  resolved "https://github.com/AppScriptIO/buildTool#933b41c77b6f770aa50f4a6ad5ac0928c2ecebae"
+  version "1.0.14"
+  resolved "https://github.com/AppScriptIO/buildTool#6812f732d96505e981aeb68840a38cc735be0540"
   dependencies:
     "@dependency/deploymentProvisioning" "https://github.com/AppScriptIO/deploymentProvisioning#semver:^1.x.x"
     "@dependency/fragmentIndentationObjectStream" "https://github.com/AppScriptIO/fragmentIndentationObjectStream#semver:^1.x.x"
@@ -916,6 +916,7 @@
     "@dependency/javascriptTranspilation" "https://github.com/AppScriptIO/javascriptTranspilation#semver:^1.x.x"
     command-exists "^1.2.8"
     css-slam "*"
+    fs-extra "^8.1.0"
     glob "^7.1.4"
     glob-stream "^6.1.0"
     globby "^9.0.0"
@@ -983,8 +984,8 @@
     which "*"
 
 "@dependency/deploymentScript@https://github.com/AppScriptIO/deploymentScript#semver:^1.x.x":
-  version "1.2.10"
-  resolved "https://github.com/AppScriptIO/deploymentScript#0a9897cf493c8867f905f50294a8c88fdc062c90"
+  version "1.2.11"
+  resolved "https://github.com/AppScriptIO/deploymentScript#7cbd6f0c149b7ad3b83bcad9e187dfa2d1e3d489"
   dependencies:
     "@dependency/buildTool" "https://github.com/AppScriptIO/buildTool#semver:^1.x.x"
     "@dependency/deploymentProvisioning" "https://github.com/AppScriptIO/deploymentProvisioning#semver:^1.x.x"
@@ -1003,8 +1004,8 @@
   resolved "https://github.com/AppScriptIO/fragmentIndentationObjectStream#9cb1ff843e442c5eaf34477cf4c9907eb0e74f7d"
 
 "@dependency/graphTraversal@https://github.com/AppScriptIO/graphTraversal#semver:^1.x.x":
-  version "1.2.9"
-  resolved "https://github.com/AppScriptIO/graphTraversal#6357e314a0b0b8f6fc05bd9173c3cd4388b0dc68"
+  version "1.2.11"
+  resolved "https://github.com/AppScriptIO/graphTraversal#3a17fad9ef1113657ea22c83896e47326e6924e4"
   dependencies:
     "@dependency/classMixin" "https://github.com/AppScriptIO/classMixin#semver:^1.x.x"
     "@dependency/commonPattern" "https://github.com/AppScriptIO/commonPattern#semver:^1.x.x"
