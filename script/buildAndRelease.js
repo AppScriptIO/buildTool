@@ -1,3 +1,6 @@
+import filesystem from 'fs'
+import { removeSync } from 'fs-extra'
+
 import { buildAndRelease, packageVersion, release } from '@dependency/deploymentScript'
 import { memgraphContainer } from '@dependency/deploymentProvisioning'
 import { moduleProject as buildModuleProject } from './buildSourceCode.js'
