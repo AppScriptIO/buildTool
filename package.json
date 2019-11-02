@@ -3,10 +3,10 @@
 	"version": "1.0.16",
 	"main": "./entrypoint/programmaticAPI",
 	"scripts": {
-		"exportGraphData": "yarn run scriptManager shouldCompileScript=true graphDatabase/graphDataLoading \".exportAllGraphData({targetPath: './resource',fileName: 'taskSequence.graph.json'})\"",
-		"loadGraphData": "yarn run scriptManager shouldCompileScript=true graphDatabase/graphDataLoading \".loadGraphDataFromFile({ shouldClearDatabase: true, graphDataFilePath: './resource/taskSequence.graph.json' })\"",
-		"buildAndRelease": "yarn run scriptManager shouldCompileScript=true buildAndRelease \".moduleProject({})\"",
-		"build": "yarn run scriptManager shouldCompileScript=true buildSourceCode \".moduleProject({}, {compile:[/**'./test'*/]})\""
+		"exportGraphData": "yarn run scriptManager shouldCompileScript=true @dependency/deploymentScript \".graphDataLoading.exportAllGraphData({targetPath: './temporary/resource',fileName: 'graphData.json'})\"",
+		"loadGraphData": "yarn run scriptManager shouldCompileScript=true @dependency/deploymentScript \".graphDataLoading.loadGraphDataFromFile({ shouldClearDatabase: true, graphDataFilePath: './resource/graphData.json' })\"",
+		"build": "yarn run scriptManager shouldCompileScript=true @dependency/deploymentScript \".buildSourceCode.moduleProject({}, {compile:[/**'./test'*/]})\"",
+		"buildAndRelease": "yarn run scriptManager shouldCompileScript=true @dependency/deploymentScript \".buildAndRelease.moduleProject({})\""
 	},
 	"dependencies": {
 		"@dependency/deploymentProvisioning": "https://github.com/AppScriptIO/deploymentProvisioning#semver:^1.x.x",
