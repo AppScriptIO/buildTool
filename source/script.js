@@ -83,16 +83,16 @@ export async function build(
 const measurePerformanceProxy = callback =>
   new Proxy(callback, {
     async apply(target, thisArg, argumentList) {
-      let { node } = argumentList[0]
+      let { stageNode, processNode } = argumentList[0]
 
       const id = AsyncHooks.executionAsyncId() // this returns the current asynchronous context's id
-      hookContext.set(id, node)
+      hookContext.set(id, stageNode)
       performance.mark('start' + id)
 
       let result = await Reflect.apply(...arguments)
 
       performance.mark('end' + id)
-      performance.measure(node.properties.name || 'Node ID: ' + node.identity, 'start' + id, 'end' + id)
+      performance.measure(stageNode.properties.name || 'Node ID: ' + stageNode.identity, 'start' + id, 'end' + id)
 
       return result
     },
