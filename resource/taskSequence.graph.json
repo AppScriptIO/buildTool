@@ -1,1 +1,1619 @@
-{"node":[{"identity":17661,"labels":["Stage","Process"],"properties":{"key":"100e6052-25d9-4967-927d-46f3abf4aff7","name":"json"}},{"identity":17662,"labels":["Stage","Process"],"properties":{"key":"14d728d8-ab48-40f5-a762-4677e37f901a","name":"create entrypoint cli"}},{"identity":17663,"labels":["Function"],"properties":{"functionName":"nativeClientSide_javascript","key":"14e55d42-bb32-4b68-bb72-8a64f1e63411"}},{"identity":17664,"labels":["SubgraphTemplate"],"properties":{"key":"171d18f8-9d25-4483-aeb9-a29c9fbed6ac","name":"JS Module Project Build"}},{"identity":17665,"labels":["Function"],"properties":{"functionName":"polyfillClientSide_html","key":"1a81fb95-3c2a-4fe0-99b2-09290d5fe453"}},{"identity":17666,"labels":["Stage","Process"],"properties":{"key":"1e2937ab-86ad-4b9e-a346-169d87057bfd","name":"copy yarn.lockfile"}},{"identity":17667,"labels":["Function"],"properties":{"functionName":"removeDistributionFolder","key":"1ec68145-b5eb-492e-8409-e3823b33b89e"}},{"identity":17668,"labels":["Function"],"properties":{"functionName":"transpileTarget","key":"255wg45sdf-865e-4b6f-a084-255wg45sdf"}},{"identity":17669,"labels":["Stage","Process"],"properties":{"key":"260b3bea-8289-48f6-91be-ba238d0b478d","name":"javascript"}},{"identity":17670,"labels":["Stage","Process","Port"],"properties":{"handlePropagationImplementation":"chronological","key":"2b12900e-3d69-4c98-b430-cdef3de8889d"}},{"identity":17671,"labels":["Stage","Process","Port"],"properties":{"handlePropagationImplementation":"chronological","key":"313b1316-1937-489d-9615-95bea700744b"}},{"identity":17672,"labels":["SubgraphTemplate"],"properties":{"key":"31d26540-cc48-4d54-8ebc-765632800667","name":"nativeClientSide:build"}},{"identity":17673,"labels":["Configuration"],"properties":{"aggregation":"process&include","key":"35df021f-7999-4194-97e4-83ec76a2d4e0","propagation":"continue"}},{"identity":17674,"labels":["Stage","Process"],"properties":{"key":"41483cc9-42cc-4551-9568-de08c89f500e","name":"copy:sourceCode"}},{"identity":17675,"labels":["Stage","Process","Port"],"properties":{"handlePropagationImplementation":"chronological","key":"4474bf66-52d4-4b1f-b4a2-f55fffc84404"}},{"identity":17676,"labels":["Function"],"properties":{"functionName":"polyfillClientSide_stylesheet","key":"45873284-de4f-4d87-8f5e-56bc7fa4ced0"}},{"identity":17677,"labels":["Stage","Process"],"properties":{"key":"46e4f2e3-299a-4817-9847-486ed94a2eca","name":"copy:sourceCode"}},{"identity":17678,"labels":["Function"],"properties":{"functionName":"copyYarnLockfile","key":"47d71ab0-da2e-4045-ae5e-7d47c24abcf7"}},{"identity":17679,"labels":["Configuration"],"properties":{"aggregation":"skipProcess","key":"4c02c2a0-4460-4121-b214-7f27411b1b33","propagation":"break"}},{"identity":17680,"labels":["Function"],"properties":{"functionName":"nativeClientSide_stylesheet","key":"52f86f85-d555-4006-8284-c5252e479893"}},{"identity":17681,"labels":["Stage","Process"],"properties":{"key":"563034d7-4e88-4a77-a08b-54624c9de00d","name":"copy:databaseData"}},{"identity":17682,"labels":["SubgraphTemplate"],"properties":{"key":"58c15cc8-6f40-4d0b-815a-0b8594aeb972","name":"Webapp (Appscript) Project Build"}},{"identity":17683,"labels":["Stage","Process","Port"],"properties":{"handlePropagationImplementation":"chronological","key":"5a7c4139-2ce8-4f3b-89e2-47a5f3286e60","name":"install:dependencies"}},{"identity":17684,"labels":["Function"],"properties":{"functionName":"serverSide_copyServerSide","key":"5bd44797-0366-4c4b-95eb-595e8c1116dd"}},{"identity":17685,"labels":["Stage","Process"],"properties":{"key":"6782cba1-1881-45e6-bd5c-c89002d353b9","name":"transpile:databaseData"}},{"identity":17686,"labels":["Stage","Process"],"properties":{"key":"6f624787-250f-4b7a-bfee-915bc913dcb5","name":"html"}},{"identity":17687,"labels":["Stage","Process"],"properties":{"key":"70b6c30d-aace-4550-a281-e296c825ec80","name":"transpile source","relativePath":"./source"}},{"identity":17688,"labels":["SubgraphTemplate"],"properties":{"key":"72a928e0-8cfe-41da-a81a-58a9a5161e28","name":"clientSide:build"}},{"identity":17689,"labels":["Stage","Process"],"properties":{"key":"72df1fa3-ba6d-4ccc-ba82-281614db559c","name":"html"}},{"identity":17690,"labels":["Stage","Port"],"properties":{"handlePropagationImplementation":"chronological","key":"7c5c5678-82f4-49ea-a8a5-303e148cb710"}},{"identity":17691,"labels":["Stage","Process"],"properties":{"key":"80084544-feaf-4e2b-81e0-93307a678480","name":"transpile script","relativePath":"./script"}},{"identity":17692,"labels":["Function"],"properties":{"functionName":"serverSide_copyDatabaseData","key":"84dab97c-f5ba-4084-b6ad-64290fb26460"}},{"identity":17693,"labels":["Stage","Process"],"properties":{"key":"8a8118ab-504e-4097-86b1-a5f522b8de6f","name":"json"}},{"identity":17694,"labels":["Function"],"properties":{"functionName":"shouldTranspile","key":"8asdf3-86952-8f76-04a9444d301f"}},{"identity":17695,"labels":["Stage","Process"],"properties":{"key":"8dd06790-df28-4500-8734-a1fbb139c5fb","name":"transpile package.json"}},{"identity":17696,"labels":["Function"],"properties":{"functionName":"entryointCLI","key":"907ddacd-1120-4045-b340-ca8dd41e34e7"}},{"identity":17697,"labels":["SubgraphTemplate"],"properties":{"key":"933b914c-35e0-4239-868c-fadf48e59d0e","name":"polyfillClientSide:build"}},{"identity":17698,"labels":["Stage","Process"],"properties":{"key":"96a8f083-dae7-4281-8ff0-ea90b7e228d0","name":"delete distribution"}},{"identity":17699,"labels":["Stage","Process","Port"],"properties":{"handlePropagationImplementation":"chronological","key":"9e3affa5-8dc5-439b-997c-9a11541ac700"}},{"identity":17700,"labels":["Function"],"properties":{"functionName":"nativeClientSide_html","key":"9f849ffa-6476-49ca-ad26-3b3c727c6a6c"}},{"identity":17701,"labels":["Function"],"properties":{"functionName":"transpilePackageDependency","key":"a14435a2-5d1d-45b7-841e-e331f7034672"}},{"identity":17702,"labels":["Function"],"properties":{"functionName":"clientSide_jspm","key":"a316e0c1-58ea-457e-9777-181bf76aa3f7"}},{"identity":17703,"labels":["Function"],"properties":{"functionName":"nativeClientSide_copySourceCode","key":"a37f11c3-85e3-4a12-9fa5-764fbfac77d3"}},{"identity":17704,"labels":["Stage","Process"],"properties":{"key":"a941a9fe-534b-49cf-adf4-8dcbb743de95","name":"create entrypoint programmaticAPI"}},{"identity":17705,"labels":["SubgraphTemplate"],"properties":{"key":"a9e3be10-bd73-45bc-9f44-25f9c60adac1","name":"serverSide:build"}},{"identity":17706,"labels":["Function"],"properties":{"functionName":"serverSide_transpileServerSide","key":"ae9c915e-e58c-4c6b-80fd-f4149a16d90d"}},{"identity":17707,"labels":["Stage","Process"],"properties":{"key":"asd456f-5967-4a2f-asd456f-1bf6c18f595f","name":"transpile resource","relativePath":"./resource"}},{"identity":17708,"labels":["Function"],"properties":{"functionName":"clientSide_webcomponentYarn","key":"b1140aa8-745a-4683-807d-787c0b580763"}},{"identity":17709,"labels":["Stage","Process","Port"],"properties":{"handlePropagationImplementation":"allPromise","key":"b13c2a34-4447-4e06-b5ca-1c6c6c264d69","name":"buildSourceCode"}},{"identity":17710,"labels":["Function"],"properties":{"functionName":"entrypointProgrammaticAPI","key":"b4318288-7748-4681-84f3-e010b2bdd2c2"}},{"identity":17711,"labels":["Stage","Process","Port"],"properties":{"key":"b57fbb1d-c65b-4bcf-8f76-04a9444d301f","logicalOperator":"and"}},{"identity":17712,"labels":["Function"],"properties":{"functionName":"serverSide_installYarn","key":"b896f0b1-b87c-46d3-9a3f-6a05445ee4f6"}},{"identity":17713,"labels":["Function"],"properties":{"functionName":"nativeClientSide_json","key":"bea37672-dcaf-40a7-9cd7-ae48f9e4f6e5"}},{"identity":17714,"labels":["Stage","Port"],"properties":{"handlePropagationImplementation":"allPromise","key":"c35f9539-6d11-47f9-9d70-ad3d3b108594","name":"install:dependencies"}},{"identity":17715,"labels":["Stage","Process","Port"],"properties":{"handlePropagationImplementation":"allPromise","key":"c7c1dca2-f1a1-4538-a39f-4a58b0abebf2","name":"copy:sourceToDistribution"}},{"identity":17716,"labels":["Stage","Process"],"properties":{"key":"c97d7e4-5967-4a2f-8102-1bf6c18f595b","name":"transpile test","relativePath":"./test"}},{"identity":17717,"labels":["Function"],"properties":{"functionName":"polyfillClientSide_json","key":"cb4dde73-767c-4867-b36a-90428a15aaa2"}},{"identity":17718,"labels":["Stage","Process"],"properties":{"key":"cebae0d9-f828-4d55-8878-72020b401bf3","name":"transpile:serverSide"}},{"identity":17719,"labels":["Stage","Process"],"properties":{"key":"cf4f10fe-c51f-4ca2-a276-e4317259c45f","name":"stylesheet"}},{"identity":17720,"labels":["Function"],"properties":{"functionName":"polyfillClientSide_copySourceCode","key":"cf7451b8-5162-469d-ae45-a685d1b953bf"}},{"identity":17721,"labels":["Function"],"properties":{"functionName":"serverSide_transpileDatabaseData","key":"d68357de-77cb-4cc7-a30c-019a76c13390"}},{"identity":17722,"labels":["Stage","Port"],"properties":{"handlePropagationImplementation":"chronological","key":"dc6aa15a-5f7c-4d2e-9bc0-e64d3584296f"}},{"identity":17723,"labels":["Stage","Port"],"properties":{"handlePropagationImplementation":"allPromise","key":"dcf5b2db-59c0-4c67-a7d0-a99fa8c71707","name":"code transpilation"}},{"identity":17724,"labels":["Stage","Process"],"properties":{"key":"e04c73fb-e068-43f7-be77-79f2045d432f"}},{"identity":17725,"labels":["Stage","Process","Port"],"properties":{"handlePropagationImplementation":"allPromise","key":"e559c25d-a438-417e-b089-e76c49df609e","name":"buildSourceCode"}},{"identity":17726,"labels":["Stage","Process"],"properties":{"key":"e7b08fa6-6e4e-4734-9465-3d5771ddb142","name":"javascript"}},{"identity":17727,"labels":["Stage","Port"],"properties":{"handlePropagationImplementation":"allPromise","key":"e7fcd5e0-e34c-4622-9582-0463755a3f17","name":"create entrypoints"}},{"identity":17728,"labels":["Stage","Process"],"properties":{"key":"e9db42ea-7257-4193-b137-d740b2a6db0f","name":"install:yarn"}},{"identity":17729,"labels":["Stage","Port"],"properties":{"handlePropagationImplementation":"chronological","key":"ea035819-52be-4dfb-bf45-2e3a01de611f","name":"dependency related"}},{"identity":17730,"labels":["Stage","Process","Port"],"properties":{"handlePropagationImplementation":"chronological","key":"eb55346c-b091-4618-bc47-b66ab3bcde09","name":"transpile:buildJavascriptCode"}},{"identity":17731,"labels":["Stage","Process"],"properties":{"key":"ec27cf69-45c1-4a17-86e3-39a2be0069ab","name":"stylesheet"}},{"identity":17732,"labels":["Stage","Process"],"properties":{"key":"ee37ad97-6c03-4d88-9ed4-33a325c2941e","name":"library-yarn"}},{"identity":17733,"labels":["Stage","Process"],"properties":{"key":"efb3c8f7-0721-4b04-86fe-784a1b18343d","name":"copy:serverSide"}},{"identity":17734,"labels":["Function"],"properties":{"functionName":"polyfillClientSide_javascript","key":"f25c6e55-a9f0-4674-bbaf-158fc479e886"}},{"identity":17735,"labels":["Stage","Process"],"properties":{"key":"f5a5a364-1a53-4289-a6aa-0dedf83cfd23","name":"webcomponent-yarn"}},{"identity":17736,"labels":["Function"],"properties":{"functionName":"clientSide_libraryYarn","key":"fb4a655c-63b5-48b1-8488-7b5574e7ee02"}},{"identity":17737,"labels":["Stage","Process"],"properties":{"key":"fd48ac89-3cec-49c0-a082-1b6b0087ffbe","name":"jspm"}}],"edge":[{"identity":27399,"start":17709,"end":17661,"type":"NEXT","properties":{"key":"d21c7220-7149-4ba8-837a-c068f6d6b45c","order":2}},{"identity":27398,"start":17661,"end":17661,"type":"EXECUTE","properties":{}},{"identity":27400,"start":17713,"end":17661,"type":"RESOURCE","properties":{"context":"applicationReference","key":"89f0a9d5-1aee-4517-ae0c-4890b2e714c8"}},{"identity":27401,"start":17662,"end":17662,"type":"EXECUTE","properties":{}},{"identity":27403,"start":17696,"end":17662,"type":"RESOURCE","properties":{"context":"applicationReference","key":"9b8470d1-b04c-4ba2-a929-8220f2760290"}},{"identity":27402,"start":17727,"end":17662,"type":"NEXT","properties":{"key":"00007082-14f6-4df7-94bc-8a7b2a3f0888","order":2}},{"identity":27404,"start":17729,"end":17666,"type":"NEXT","properties":{"key":"77b35171-4171-4b6f-ac2d-afd8e4d90a09","order":2}},{"identity":27405,"start":17678,"end":17666,"type":"RESOURCE","properties":{"context":"applicationReference","key":"0b642e7d-ef75-41ec-bf7d-d6bd6eeaf26b"}},{"identity":27406,"start":17666,"end":17666,"type":"EXECUTE","properties":{}},{"identity":27407,"start":17709,"end":17669,"type":"NEXT","properties":{"key":"86c3e487-5f4c-4bc2-9935-eb5b1db97fa4","order":4}},{"identity":27408,"start":17669,"end":17669,"type":"EXECUTE","properties":{}},{"identity":27409,"start":17663,"end":17669,"type":"RESOURCE","properties":{"context":"applicationReference","key":"12881a85-7be1-40b2-a4a8-3d940052499d"}},{"identity":27410,"start":17688,"end":17670,"type":"ROOT","properties":{}},{"identity":27411,"start":17670,"end":17670,"type":"EXECUTE","properties":{"key":"c5d170d6-1757-4b25-bc71-e7ff07f65bbe"}},{"identity":27412,"start":17670,"end":17670,"type":"FORK","properties":{"order":1}},{"identity":27413,"start":17671,"end":17671,"type":"FORK","properties":{}},{"identity":27414,"start":17672,"end":17671,"type":"ROOT","properties":{}},{"identity":27415,"start":17671,"end":17671,"type":"EXECUTE","properties":{"key":"063b144f-25e4-4327-853c-9be07a56e700"}},{"identity":27416,"start":17670,"end":17672,"type":"NEXT","properties":{"key":"26377cf7-f72b-43d1-85c9-c8ad619e3071","order":2}},{"identity":27418,"start":17711,"end":17673,"type":"DEFAULT","properties":{"key":"b7067a2a-33e9-4f3b-922a-d41a3f7f6df0"}},{"identity":27417,"start":17711,"end":17673,"type":"CASE","properties":{"expected":true,"key":"25874628-f586-48ab-9cd9-99b5e0d7841f"}},{"identity":27419,"start":17703,"end":17674,"type":"RESOURCE","properties":{"context":"applicationReference","key":"ddb4e381-9e9f-47c0-8fe2-643d83954e1c"}},{"identity":27420,"start":17674,"end":17674,"type":"EXECUTE","properties":{}},{"identity":27421,"start":17671,"end":17674,"type":"NEXT","properties":{"key":"9e3638f9-f583-4b2e-8019-957db7080588","order":1}},{"identity":27422,"start":17675,"end":17675,"type":"EXECUTE","properties":{"key":"03d5fd09-01a5-4bfb-872b-efe4b036c445"}},{"identity":27423,"start":17697,"end":17675,"type":"ROOT","properties":{}},{"identity":27424,"start":17675,"end":17675,"type":"FORK","properties":{}},{"identity":27425,"start":17720,"end":17677,"type":"RESOURCE","properties":{"context":"applicationReference","key":"ee3836df-e6d8-4c6e-934b-5626ff963aa3"}},{"identity":27426,"start":17677,"end":17677,"type":"EXECUTE","properties":{}},{"identity":27427,"start":17675,"end":17677,"type":"NEXT","properties":{"key":"74bda38a-c1be-4cbc-bc0b-4d1b47f19974","order":1}},{"identity":27428,"start":17711,"end":17679,"type":"CASE","properties":{"expected":false,"key":"1d136ca2-a7fc-4179-984e-b22b1f375869"}},{"identity":27429,"start":17715,"end":17681,"type":"NEXT","properties":{"key":"835b838d-3dee-4256-871e-33046857f8d2","order":2}},{"identity":27430,"start":17692,"end":17681,"type":"RESOURCE","properties":{"context":"applicationReference","key":"6c83adfd-f5c4-469c-ba20-c88f1e0500de"}},{"identity":27431,"start":17681,"end":17681,"type":"EXECUTE","properties":{}},{"identity":27434,"start":17683,"end":17683,"type":"FORK","properties":{}},{"identity":27433,"start":17699,"end":17683,"type":"NEXT","properties":{"key":"2c96da11-582b-498f-b8d5-9cf504a5bcce","order":1}},{"identity":27432,"start":17683,"end":17683,"type":"EXECUTE","properties":{}},{"identity":27435,"start":17721,"end":17685,"type":"RESOURCE","properties":{"context":"applicationReference","key":"134d52ac-d5df-4fbd-9abe-1e4b877b03d1"}},{"identity":27436,"start":17730,"end":17685,"type":"NEXT","properties":{"key":"af475ed7-7ed9-4239-a7b2-209dd3ceca57","order":3}},{"identity":27437,"start":17685,"end":17685,"type":"EXECUTE","properties":{}},{"identity":27438,"start":17686,"end":17686,"type":"EXECUTE","properties":{}},{"identity":27439,"start":17700,"end":17686,"type":"RESOURCE","properties":{"context":"applicationReference","key":"bd9dbbc0-247b-4495-afc0-d9ee24eed834"}},{"identity":27440,"start":17709,"end":17686,"type":"NEXT","properties":{"key":"f4e6ed90-ef25-462b-b4ca-06daa190c5a2","order":1}},{"identity":27441,"start":17687,"end":17687,"type":"EXECUTE","properties":{}},{"identity":27442,"start":17668,"end":17687,"type":"RESOURCE","properties":{"context":"applicationReference","key":"54c808c6-aa1c-424d-8a99-8985cf84673c"}},{"identity":27443,"start":17723,"end":17687,"type":"NEXT","properties":{"key":"458b686d-f9ac-48b7-842f-d00d38c006c2","order":1}},{"identity":27444,"start":17711,"end":17687,"type":"CONFIGURE","properties":{"depthAffected":"0","key":"b68087ba-83af-4ae2-a5fb-0b6b57af4362","setting":"evaluation"}},{"identity":27445,"start":17690,"end":17688,"type":"NEXT","properties":{"key":"2c96da11-23332-498f-23332-9cf504a5bcce"}},{"identity":27446,"start":17689,"end":17689,"type":"EXECUTE","properties":{}},{"identity":27447,"start":17725,"end":17689,"type":"NEXT","properties":{"key":"9fea099c-9e48-4b5d-bf1f-47025c0f6f11","order":2}},{"identity":27448,"start":17665,"end":17689,"type":"RESOURCE","properties":{"context":"applicationReference","key":"acc3da94-47e1-4e1e-b288-8007fe0c6736"}},{"identity":27450,"start":17690,"end":17690,"type":"FORK","properties":{}},{"identity":27449,"start":17682,"end":17690,"type":"ROOT","properties":{}},{"identity":27451,"start":17668,"end":17691,"type":"RESOURCE","properties":{"context":"applicationReference","key":"84cbf99d-83b6-482b-81c5-11a6d6aed605"}},{"identity":27452,"start":17691,"end":17691,"type":"EXECUTE","properties":{}},{"identity":27453,"start":17723,"end":17691,"type":"NEXT","properties":{"key":"77eb5f47-57a8-48ab-9fc1-dae3e8927234","order":3}},{"identity":27454,"start":17711,"end":17691,"type":"CONFIGURE","properties":{"depthAffected":"0","key":"eef76382-9efc-44bf-b55a-35111d957437","setting":"evaluation"}},{"identity":27455,"start":17725,"end":17693,"type":"NEXT","properties":{"key":"60d4b819-0cca-4445-93b6-49b5bc590b9b","order":1}},{"identity":27456,"start":17693,"end":17693,"type":"EXECUTE","properties":{}},{"identity":27457,"start":17717,"end":17693,"type":"RESOURCE","properties":{"context":"applicationReference","key":"cc517aff-2bc9-4447-b51c-9effcd6ffeb0"}},{"identity":27458,"start":17729,"end":17695,"type":"NEXT","properties":{"key":"88ba81bb-7ad1-4a07-b91e-214cd4e6c8fc","order":1}},{"identity":27460,"start":17701,"end":17695,"type":"RESOURCE","properties":{"context":"applicationReference","key":"25e6e307-1605-4b14-93b6-6f6e6c2b85ba"}},{"identity":27459,"start":17695,"end":17695,"type":"EXECUTE","properties":{}},{"identity":27461,"start":17670,"end":17697,"type":"NEXT","properties":{"key":"cf305321-0f64-4c84-bf09-41d1586dd7ee","order":3}},{"identity":27462,"start":17722,"end":17698,"type":"NEXT","properties":{"key":"5e8da21d-82ee-4de7-afd1-7192f7f7a630","order":1}},{"identity":27463,"start":17667,"end":17698,"type":"RESOURCE","properties":{"context":"applicationReference","key":"a5552d71-ceed-4462-ade1-4c4d403a6713"}},{"identity":27464,"start":17698,"end":17698,"type":"EXECUTE","properties":{}},{"identity":27467,"start":17705,"end":17699,"type":"ROOT","properties":{}},{"identity":27466,"start":17699,"end":17699,"type":"FORK","properties":{}},{"identity":27465,"start":17699,"end":17699,"type":"EXECUTE","properties":{"key":"3a633b09-8a27-4c40-8532-42ae17b5c254"}},{"identity":27468,"start":17704,"end":17704,"type":"EXECUTE","properties":{}},{"identity":27469,"start":17727,"end":17704,"type":"NEXT","properties":{"key":"5b9fee16-ac9c-452a-b049-48326d1216e4","order":1}},{"identity":27470,"start":17710,"end":17704,"type":"RESOURCE","properties":{"context":"applicationReference","key":"9a743790-88ac-41d7-8577-11ca29a4ef6b"}},{"identity":27471,"start":17690,"end":17705,"type":"NEXT","properties":{"key":"34g9d-582b-498f-b8d5-34g9d"}},{"identity":27472,"start":17668,"end":17707,"type":"RESOURCE","properties":{"context":"applicationReference","key":"f235-v1qwe5-482b-81c5-v1qwe5"}},{"identity":27473,"start":17711,"end":17707,"type":"CONFIGURE","properties":{"depthAffected":"0","key":"15rt2a-2541-4e05-aab6-15rt2a","setting":"evaluation"}},{"identity":27474,"start":17723,"end":17707,"type":"NEXT","properties":{"key":"23gh-f9ac-48b7-842f-23gh","order":2}},{"identity":27475,"start":17707,"end":17707,"type":"EXECUTE","properties":{}},{"identity":27476,"start":17671,"end":17709,"type":"NEXT","properties":{"key":"4b187c74-e72b-46ff-a783-30f3a05ac126","order":2}},{"identity":27478,"start":17709,"end":17709,"type":"FORK","properties":{}},{"identity":27477,"start":17709,"end":17709,"type":"EXECUTE","properties":{}},{"identity":27479,"start":17711,"end":17711,"type":"EXECUTE","properties":{}},{"identity":27480,"start":17711,"end":17711,"type":"FORK","properties":{"key":"5be80ca-4453-4125-96e5-3cc132a6a54a","order":1}},{"identity":27481,"start":17714,"end":17714,"type":"FORK","properties":{"order":1}},{"identity":27482,"start":17670,"end":17714,"type":"NEXT","properties":{"key":"a5b3b48b-68df-4a0d-94cc-f95e4f80d3ea","order":1}},{"identity":27484,"start":17699,"end":17715,"type":"NEXT","properties":{"key":"757f34aa-f10b-4270-91bc-719ace4122d9","order":2}},{"identity":27485,"start":17715,"end":17715,"type":"FORK","properties":{}},{"identity":27483,"start":17715,"end":17715,"type":"EXECUTE","properties":{}},{"identity":27486,"start":17668,"end":17716,"type":"RESOURCE","properties":{"context":"applicationReference","key":"6267688b-b949-40ea-a631-372afa192162"}},{"identity":27487,"start":17711,"end":17716,"type":"CONFIGURE","properties":{"depthAffected":0,"key":"079dd5e6-2541-4e05-aab6-deab96a9d633","setting":"evaluation"}},{"identity":27488,"start":17716,"end":17716,"type":"EXECUTE","properties":{}},{"identity":27489,"start":17723,"end":17716,"type":"NEXT","properties":{"key":"1903effc-9917-40d2-9776-e6448cb631e4","order":2}},{"identity":27490,"start":17718,"end":17718,"type":"EXECUTE","properties":{}},{"identity":27491,"start":17730,"end":17718,"type":"NEXT","properties":{"key":"94ff2869-8ef7-4076-b44b-15d3c932a0fa","order":1}},{"identity":27492,"start":17706,"end":17718,"type":"RESOURCE","properties":{"context":"applicationReference","key":"a6982835-ae6a-43f5-9537-738768eb31fa"}},{"identity":27493,"start":17725,"end":17719,"type":"NEXT","properties":{"key":"1e55d04a-74e4-47ff-9f45-c312c4ddda24","order":3}},{"identity":27495,"start":17676,"end":17719,"type":"RESOURCE","properties":{"context":"applicationReference","key":"bab07c5a-0d1c-4007-a272-afb7a1ed2df8"}},{"identity":27494,"start":17719,"end":17719,"type":"EXECUTE","properties":{}},{"identity":27496,"start":17722,"end":17722,"type":"FORK","properties":{}},{"identity":27497,"start":17664,"end":17722,"type":"ROOT","properties":{}},{"identity":27498,"start":17722,"end":17723,"type":"NEXT","properties":{"key":"86e457b4-3b35-4fb4-b1bf-03588c0585c6","order":4}},{"identity":27499,"start":17723,"end":17723,"type":"FORK","properties":{}},{"identity":27500,"start":17694,"end":17724,"type":"RESOURCE","properties":{"context":"applicationReference","key":"5368b6dc-f745-4d43-94d1-977e69e12135"}},{"identity":27502,"start":17711,"end":17724,"type":"NEXT","properties":{"key":"0fea0a80-82a4-4d1b-b60a-1e74e56b310b","order":1}},{"identity":27501,"start":17724,"end":17724,"type":"EXECUTE","properties":{"key":"83823368-7bc4-42b4-b4d1-201fa8cc4c0f","processDataImplementation":"executeFunctionReference"}},{"identity":27503,"start":17725,"end":17725,"type":"FORK","properties":{}},{"identity":27504,"start":17675,"end":17725,"type":"NEXT","properties":{"key":"ef723088-6b95-4496-b833-284dce32d41a","order":2}},{"identity":27505,"start":17725,"end":17725,"type":"EXECUTE","properties":{}},{"identity":27506,"start":17734,"end":17726,"type":"RESOURCE","properties":{"context":"applicationReference","key":"48f65fe0-b64c-4218-be78-5c19aefbca9c"}},{"identity":27507,"start":17725,"end":17726,"type":"NEXT","properties":{"key":"d153d8b2-7fd8-4296-826b-53f2e8bdef17","order":4}},{"identity":27508,"start":17726,"end":17726,"type":"EXECUTE","properties":{}},{"identity":27509,"start":17722,"end":17727,"type":"NEXT","properties":{"key":"81daab85-228a-4b69-8d91-e0fc3c5bca3a","order":3}},{"identity":27510,"start":17727,"end":17727,"type":"FORK","properties":{}},{"identity":27511,"start":17728,"end":17728,"type":"EXECUTE","properties":{}},{"identity":27512,"start":17683,"end":17728,"type":"NEXT","properties":{"key":"38ed18d6-b624-492e-9b31-3a14593d341a","order":1}},{"identity":27513,"start":17712,"end":17728,"type":"RESOURCE","properties":{"context":"applicationReference"}},{"identity":27514,"start":17722,"end":17729,"type":"NEXT","properties":{"key":"b0aa81af-11ac-41f1-9712-25a47286fdda","order":2}},{"identity":27515,"start":17729,"end":17729,"type":"FORK","properties":{}},{"identity":27518,"start":17730,"end":17730,"type":"EXECUTE","properties":{}},{"identity":27516,"start":17699,"end":17730,"type":"NEXT","properties":{"key":"2eade2d9-eafc-47be-bf56-8850b2ae6ad1","order":3}},{"identity":27517,"start":17730,"end":17730,"type":"FORK","properties":{}},{"identity":27519,"start":17680,"end":17731,"type":"RESOURCE","properties":{"context":"applicationReference","key":"448c4fb9-51eb-4822-88f8-1f4f8ad3527b"}},{"identity":27520,"start":17709,"end":17731,"type":"NEXT","properties":{"key":"4609f7d6-a536-4b06-b5a2-7411ac9d1e0f","order":3}},{"identity":27521,"start":17731,"end":17731,"type":"EXECUTE","properties":{}},{"identity":27522,"start":17714,"end":17732,"type":"NEXT","properties":{"key":"1f22c80c-b5b5-43af-91a5-1ea468a67773","order":3}},{"identity":27523,"start":17732,"end":17732,"type":"EXECUTE","properties":{}},{"identity":27524,"start":17736,"end":17732,"type":"RESOURCE","properties":{"context":"applicationReference","key":"f328bd86-df9f-486c-ac63-2d2d79dd4ac9"}},{"identity":27525,"start":17684,"end":17733,"type":"RESOURCE","properties":{"context":"applicationReference","key":"f9aee671-462e-4714-81ec-9dbf3aabaaf3"}},{"identity":27527,"start":17733,"end":17733,"type":"EXECUTE","properties":{}},{"identity":27526,"start":17715,"end":17733,"type":"NEXT","properties":{"key":"585bf87d-8254-4d16-a74e-b12837c63c28","order":1}},{"identity":27528,"start":17708,"end":17735,"type":"RESOURCE","properties":{"context":"applicationReference","key":"6ba09b01-af52-4def-9df5-0341b87b96f1"}},{"identity":27529,"start":17735,"end":17735,"type":"EXECUTE","properties":{}},{"identity":27530,"start":17714,"end":17735,"type":"NEXT","properties":{"key":"6703dcc5-c0db-4219-acf6-1df4bf61e6de","order":2}},{"identity":27531,"start":17737,"end":17737,"type":"EXECUTE","properties":{}},{"identity":27532,"start":17714,"end":17737,"type":"NEXT","properties":{"key":"02a80f4b-463c-4818-a648-97671f7a031c","order":1}},{"identity":27533,"start":17702,"end":17737,"type":"RESOURCE","properties":{"context":"applicationReference","key":"fc33f1e4-f433-47ff-acde-9bf77d2e30e6"}}]}
+{
+  "node": [{
+    "identity": 17661,
+    "labels": ["Stage", "Process"],
+    "properties": {
+      "key": "100e6052-25d9-4967-927d-46f3abf4aff7",
+      "name": "json"
+    }
+  }, {
+    "identity": 17662,
+    "labels": ["Stage", "Process"],
+    "properties": {
+      "key": "14d728d8-ab48-40f5-a762-4677e37f901a",
+      "name": "create entrypoint cli"
+    }
+  }, {
+    "identity": 17663,
+    "labels": ["Function"],
+    "properties": {
+      "functionName": "nativeClientSide_javascript",
+      "key": "14e55d42-bb32-4b68-bb72-8a64f1e63411"
+    }
+  }, {
+    "identity": 17664,
+    "labels": ["SubgraphTemplate"],
+    "properties": {
+      "key": "171d18f8-9d25-4483-aeb9-a29c9fbed6ac",
+      "name": "JS Module Project Build"
+    }
+  }, {
+    "identity": 17665,
+    "labels": ["Function"],
+    "properties": {
+      "functionName": "polyfillClientSide_html",
+      "key": "1a81fb95-3c2a-4fe0-99b2-09290d5fe453"
+    }
+  }, {
+    "identity": 17666,
+    "labels": ["Stage", "Process"],
+    "properties": {
+      "key": "1e2937ab-86ad-4b9e-a346-169d87057bfd",
+      "name": "copy yarn.lockfile"
+    }
+  }, {
+    "identity": 17667,
+    "labels": ["Function"],
+    "properties": {
+      "functionName": "removeDistributionFolder",
+      "key": "1ec68145-b5eb-492e-8409-e3823b33b89e"
+    }
+  }, {
+    "identity": 17668,
+    "labels": ["Function"],
+    "properties": {
+      "functionName": "transpileTarget",
+      "key": "255wg45sdf-865e-4b6f-a084-255wg45sdf"
+    }
+  }, {
+    "identity": 17669,
+    "labels": ["Stage", "Process"],
+    "properties": {
+      "key": "260b3bea-8289-48f6-91be-ba238d0b478d",
+      "name": "javascript"
+    }
+  }, {
+    "identity": 17670,
+    "labels": ["Stage", "Process", "Port"],
+    "properties": {
+      "handlePropagationImplementation": "chronological",
+      "key": "2b12900e-3d69-4c98-b430-cdef3de8889d"
+    }
+  }, {
+    "identity": 17671,
+    "labels": ["Stage", "Process", "Port"],
+    "properties": {
+      "handlePropagationImplementation": "chronological",
+      "key": "313b1316-1937-489d-9615-95bea700744b"
+    }
+  }, {
+    "identity": 17672,
+    "labels": ["SubgraphTemplate"],
+    "properties": {
+      "key": "31d26540-cc48-4d54-8ebc-765632800667",
+      "name": "nativeClientSide:build"
+    }
+  }, {
+    "identity": 17673,
+    "labels": ["Configuration"],
+    "properties": {
+      "aggregation": "process&include",
+      "key": "35df021f-7999-4194-97e4-83ec76a2d4e0",
+      "propagation": "continue"
+    }
+  }, {
+    "identity": 17674,
+    "labels": ["Stage", "Process"],
+    "properties": {
+      "key": "41483cc9-42cc-4551-9568-de08c89f500e",
+      "name": "copy:sourceCode"
+    }
+  }, {
+    "identity": 17675,
+    "labels": ["Stage", "Process", "Port"],
+    "properties": {
+      "handlePropagationImplementation": "chronological",
+      "key": "4474bf66-52d4-4b1f-b4a2-f55fffc84404"
+    }
+  }, {
+    "identity": 17676,
+    "labels": ["Function"],
+    "properties": {
+      "functionName": "polyfillClientSide_stylesheet",
+      "key": "45873284-de4f-4d87-8f5e-56bc7fa4ced0"
+    }
+  }, {
+    "identity": 17677,
+    "labels": ["Stage", "Process"],
+    "properties": {
+      "key": "46e4f2e3-299a-4817-9847-486ed94a2eca",
+      "name": "copy:sourceCode"
+    }
+  }, {
+    "identity": 17678,
+    "labels": ["Function"],
+    "properties": {
+      "functionName": "copyYarnLockfile",
+      "key": "47d71ab0-da2e-4045-ae5e-7d47c24abcf7"
+    }
+  }, {
+    "identity": 17679,
+    "labels": ["Configuration"],
+    "properties": {
+      "aggregation": "skipProcess",
+      "key": "4c02c2a0-4460-4121-b214-7f27411b1b33",
+      "propagation": "break"
+    }
+  }, {
+    "identity": 17680,
+    "labels": ["Function"],
+    "properties": {
+      "functionName": "nativeClientSide_stylesheet",
+      "key": "52f86f85-d555-4006-8284-c5252e479893"
+    }
+  }, {
+    "identity": 17681,
+    "labels": ["Stage", "Process"],
+    "properties": {
+      "key": "563034d7-4e88-4a77-a08b-54624c9de00d",
+      "name": "copy:databaseData"
+    }
+  }, {
+    "identity": 17682,
+    "labels": ["SubgraphTemplate"],
+    "properties": {
+      "key": "58c15cc8-6f40-4d0b-815a-0b8594aeb972",
+      "name": "Webapp (Appscript) Project Build"
+    }
+  }, {
+    "identity": 17683,
+    "labels": ["Stage", "Process", "Port"],
+    "properties": {
+      "handlePropagationImplementation": "chronological",
+      "key": "5a7c4139-2ce8-4f3b-89e2-47a5f3286e60",
+      "name": "install:dependencies"
+    }
+  }, {
+    "identity": 17684,
+    "labels": ["Function"],
+    "properties": {
+      "functionName": "serverSide_copyServerSide",
+      "key": "5bd44797-0366-4c4b-95eb-595e8c1116dd"
+    }
+  }, {
+    "identity": 17685,
+    "labels": ["Stage", "Process"],
+    "properties": {
+      "key": "6782cba1-1881-45e6-bd5c-c89002d353b9",
+      "name": "transpile:databaseData"
+    }
+  }, {
+    "identity": 17686,
+    "labels": ["Stage", "Process"],
+    "properties": {
+      "key": "6f624787-250f-4b7a-bfee-915bc913dcb5",
+      "name": "html"
+    }
+  }, {
+    "identity": 17687,
+    "labels": ["Stage", "Process"],
+    "properties": {
+      "key": "70b6c30d-aace-4550-a281-e296c825ec80",
+      "name": "transpile source",
+      "relativePath": "./source"
+    }
+  }, {
+    "identity": 17688,
+    "labels": ["SubgraphTemplate"],
+    "properties": {
+      "key": "72a928e0-8cfe-41da-a81a-58a9a5161e28",
+      "name": "clientSide:build"
+    }
+  }, {
+    "identity": 17689,
+    "labels": ["Stage", "Process"],
+    "properties": {
+      "key": "72df1fa3-ba6d-4ccc-ba82-281614db559c",
+      "name": "html"
+    }
+  }, {
+    "identity": 17690,
+    "labels": ["Stage", "Port"],
+    "properties": {
+      "handlePropagationImplementation": "chronological",
+      "key": "7c5c5678-82f4-49ea-a8a5-303e148cb710"
+    }
+  }, {
+    "identity": 17691,
+    "labels": ["Stage", "Process"],
+    "properties": {
+      "key": "80084544-feaf-4e2b-81e0-93307a678480",
+      "name": "transpile script",
+      "relativePath": "./script"
+    }
+  }, {
+    "identity": 17692,
+    "labels": ["Function"],
+    "properties": {
+      "functionName": "serverSide_copyDatabaseData",
+      "key": "84dab97c-f5ba-4084-b6ad-64290fb26460"
+    }
+  }, {
+    "identity": 17693,
+    "labels": ["Stage", "Process"],
+    "properties": {
+      "key": "8a8118ab-504e-4097-86b1-a5f522b8de6f",
+      "name": "json"
+    }
+  }, {
+    "identity": 17694,
+    "labels": ["Function"],
+    "properties": {
+      "functionName": "shouldTranspile",
+      "key": "8asdf3-86952-8f76-04a9444d301f"
+    }
+  }, {
+    "identity": 17695,
+    "labels": ["Stage", "Process"],
+    "properties": {
+      "key": "8dd06790-df28-4500-8734-a1fbb139c5fb",
+      "name": "transpile package.json"
+    }
+  }, {
+    "identity": 17696,
+    "labels": ["Function"],
+    "properties": {
+      "functionName": "entryointCLI",
+      "key": "907ddacd-1120-4045-b340-ca8dd41e34e7"
+    }
+  }, {
+    "identity": 17697,
+    "labels": ["SubgraphTemplate"],
+    "properties": {
+      "key": "933b914c-35e0-4239-868c-fadf48e59d0e",
+      "name": "polyfillClientSide:build"
+    }
+  }, {
+    "identity": 17698,
+    "labels": ["Stage", "Process"],
+    "properties": {
+      "key": "96a8f083-dae7-4281-8ff0-ea90b7e228d0",
+      "name": "delete distribution"
+    }
+  }, {
+    "identity": 17699,
+    "labels": ["Stage", "Process", "Port"],
+    "properties": {
+      "handlePropagationImplementation": "chronological",
+      "key": "9e3affa5-8dc5-439b-997c-9a11541ac700"
+    }
+  }, {
+    "identity": 17700,
+    "labels": ["Function"],
+    "properties": {
+      "functionName": "nativeClientSide_html",
+      "key": "9f849ffa-6476-49ca-ad26-3b3c727c6a6c"
+    }
+  }, {
+    "identity": 17701,
+    "labels": ["Function"],
+    "properties": {
+      "functionName": "transpilePackageDependency",
+      "key": "a14435a2-5d1d-45b7-841e-e331f7034672"
+    }
+  }, {
+    "identity": 17702,
+    "labels": ["Function"],
+    "properties": {
+      "functionName": "clientSide_jspm",
+      "key": "a316e0c1-58ea-457e-9777-181bf76aa3f7"
+    }
+  }, {
+    "identity": 17703,
+    "labels": ["Function"],
+    "properties": {
+      "functionName": "nativeClientSide_copySourceCode",
+      "key": "a37f11c3-85e3-4a12-9fa5-764fbfac77d3"
+    }
+  }, {
+    "identity": 17704,
+    "labels": ["Stage", "Process"],
+    "properties": {
+      "key": "a941a9fe-534b-49cf-adf4-8dcbb743de95",
+      "name": "create entrypoint programmaticAPI"
+    }
+  }, {
+    "identity": 17705,
+    "labels": ["SubgraphTemplate"],
+    "properties": {
+      "key": "a9e3be10-bd73-45bc-9f44-25f9c60adac1",
+      "name": "serverSide:build"
+    }
+  }, {
+    "identity": 17706,
+    "labels": ["Function"],
+    "properties": {
+      "functionName": "serverSide_transpileServerSide",
+      "key": "ae9c915e-e58c-4c6b-80fd-f4149a16d90d"
+    }
+  }, {
+    "identity": 17707,
+    "labels": ["Stage", "Process"],
+    "properties": {
+      "key": "asd456f-5967-4a2f-asd456f-1bf6c18f595f",
+      "name": "transpile resource",
+      "relativePath": "./resource"
+    }
+  }, {
+    "identity": 17708,
+    "labels": ["Function"],
+    "properties": {
+      "functionName": "clientSide_webcomponentYarn",
+      "key": "b1140aa8-745a-4683-807d-787c0b580763"
+    }
+  }, {
+    "identity": 17709,
+    "labels": ["Stage", "Process", "Port"],
+    "properties": {
+      "handlePropagationImplementation": "allPromise",
+      "key": "b13c2a34-4447-4e06-b5ca-1c6c6c264d69",
+      "name": "buildSourceCode"
+    }
+  }, {
+    "identity": 17710,
+    "labels": ["Function"],
+    "properties": {
+      "functionName": "entrypointProgrammaticAPI",
+      "key": "b4318288-7748-4681-84f3-e010b2bdd2c2"
+    }
+  }, {
+    "identity": 17711,
+    "labels": ["Stage", "Process", "Port"],
+    "properties": {
+      "key": "b57fbb1d-c65b-4bcf-8f76-04a9444d301f",
+      "logicalOperator": "and"
+    }
+  }, {
+    "identity": 17712,
+    "labels": ["Function"],
+    "properties": {
+      "functionName": "serverSide_installYarn",
+      "key": "b896f0b1-b87c-46d3-9a3f-6a05445ee4f6"
+    }
+  }, {
+    "identity": 17713,
+    "labels": ["Function"],
+    "properties": {
+      "functionName": "nativeClientSide_json",
+      "key": "bea37672-dcaf-40a7-9cd7-ae48f9e4f6e5"
+    }
+  }, {
+    "identity": 17714,
+    "labels": ["Stage", "Port"],
+    "properties": {
+      "handlePropagationImplementation": "allPromise",
+      "key": "c35f9539-6d11-47f9-9d70-ad3d3b108594",
+      "name": "install:dependencies"
+    }
+  }, {
+    "identity": 17715,
+    "labels": ["Stage", "Process", "Port"],
+    "properties": {
+      "handlePropagationImplementation": "allPromise",
+      "key": "c7c1dca2-f1a1-4538-a39f-4a58b0abebf2",
+      "name": "copy:sourceToDistribution"
+    }
+  }, {
+    "identity": 17716,
+    "labels": ["Stage", "Process"],
+    "properties": {
+      "key": "c97d7e4-5967-4a2f-8102-1bf6c18f595b",
+      "name": "transpile test",
+      "relativePath": "./test"
+    }
+  }, {
+    "identity": 17717,
+    "labels": ["Function"],
+    "properties": {
+      "functionName": "polyfillClientSide_json",
+      "key": "cb4dde73-767c-4867-b36a-90428a15aaa2"
+    }
+  }, {
+    "identity": 17718,
+    "labels": ["Stage", "Process"],
+    "properties": {
+      "key": "cebae0d9-f828-4d55-8878-72020b401bf3",
+      "name": "transpile:serverSide"
+    }
+  }, {
+    "identity": 17719,
+    "labels": ["Stage", "Process"],
+    "properties": {
+      "key": "cf4f10fe-c51f-4ca2-a276-e4317259c45f",
+      "name": "stylesheet"
+    }
+  }, {
+    "identity": 17720,
+    "labels": ["Function"],
+    "properties": {
+      "functionName": "polyfillClientSide_copySourceCode",
+      "key": "cf7451b8-5162-469d-ae45-a685d1b953bf"
+    }
+  }, {
+    "identity": 17721,
+    "labels": ["Function"],
+    "properties": {
+      "functionName": "serverSide_transpileDatabaseData",
+      "key": "d68357de-77cb-4cc7-a30c-019a76c13390"
+    }
+  }, {
+    "identity": 17722,
+    "labels": ["Stage", "Port"],
+    "properties": {
+      "handlePropagationImplementation": "chronological",
+      "key": "dc6aa15a-5f7c-4d2e-9bc0-e64d3584296f"
+    }
+  }, {
+    "identity": 17723,
+    "labels": ["Stage", "Port"],
+    "properties": {
+      "handlePropagationImplementation": "allPromise",
+      "key": "dcf5b2db-59c0-4c67-a7d0-a99fa8c71707",
+      "name": "code transpilation"
+    }
+  }, {
+    "identity": 17724,
+    "labels": ["Stage", "Process"],
+    "properties": {
+      "key": "e04c73fb-e068-43f7-be77-79f2045d432f"
+    }
+  }, {
+    "identity": 17725,
+    "labels": ["Stage", "Process", "Port"],
+    "properties": {
+      "handlePropagationImplementation": "allPromise",
+      "key": "e559c25d-a438-417e-b089-e76c49df609e",
+      "name": "buildSourceCode"
+    }
+  }, {
+    "identity": 17726,
+    "labels": ["Stage", "Process"],
+    "properties": {
+      "key": "e7b08fa6-6e4e-4734-9465-3d5771ddb142",
+      "name": "javascript"
+    }
+  }, {
+    "identity": 17727,
+    "labels": ["Stage", "Port"],
+    "properties": {
+      "handlePropagationImplementation": "allPromise",
+      "key": "e7fcd5e0-e34c-4622-9582-0463755a3f17",
+      "name": "create entrypoints"
+    }
+  }, {
+    "identity": 17728,
+    "labels": ["Stage", "Process"],
+    "properties": {
+      "key": "e9db42ea-7257-4193-b137-d740b2a6db0f",
+      "name": "install:yarn"
+    }
+  }, {
+    "identity": 17729,
+    "labels": ["Stage", "Port"],
+    "properties": {
+      "handlePropagationImplementation": "chronological",
+      "key": "ea035819-52be-4dfb-bf45-2e3a01de611f",
+      "name": "dependency related"
+    }
+  }, {
+    "identity": 17730,
+    "labels": ["Stage", "Process", "Port"],
+    "properties": {
+      "handlePropagationImplementation": "chronological",
+      "key": "eb55346c-b091-4618-bc47-b66ab3bcde09",
+      "name": "transpile:buildJavascriptCode"
+    }
+  }, {
+    "identity": 17731,
+    "labels": ["Stage", "Process"],
+    "properties": {
+      "key": "ec27cf69-45c1-4a17-86e3-39a2be0069ab",
+      "name": "stylesheet"
+    }
+  }, {
+    "identity": 17732,
+    "labels": ["Stage", "Process"],
+    "properties": {
+      "key": "ee37ad97-6c03-4d88-9ed4-33a325c2941e",
+      "name": "library-yarn"
+    }
+  }, {
+    "identity": 17733,
+    "labels": ["Stage", "Process"],
+    "properties": {
+      "key": "efb3c8f7-0721-4b04-86fe-784a1b18343d",
+      "name": "copy:serverSide"
+    }
+  }, {
+    "identity": 17734,
+    "labels": ["Function"],
+    "properties": {
+      "functionName": "polyfillClientSide_javascript",
+      "key": "f25c6e55-a9f0-4674-bbaf-158fc479e886"
+    }
+  }, {
+    "identity": 17735,
+    "labels": ["Stage", "Process"],
+    "properties": {
+      "key": "f5a5a364-1a53-4289-a6aa-0dedf83cfd23",
+      "name": "webcomponent-yarn"
+    }
+  }, {
+    "identity": 17736,
+    "labels": ["Function"],
+    "properties": {
+      "functionName": "clientSide_libraryYarn",
+      "key": "fb4a655c-63b5-48b1-8488-7b5574e7ee02"
+    }
+  }, {
+    "identity": 17737,
+    "labels": ["Stage", "Process"],
+    "properties": {
+      "key": "fd48ac89-3cec-49c0-a082-1b6b0087ffbe",
+      "name": "jspm"
+    }
+  }],
+  "edge": [{
+    "identity": 27399,
+    "start": 17709,
+    "end": 17661,
+    "type": "NEXT",
+    "properties": {
+      "key": "d21c7220-7149-4ba8-837a-c068f6d6b45c",
+      "order": 2
+    }
+  }, {
+    "identity": 27398,
+    "start": 17661,
+    "end": 17661,
+    "type": "EXECUTE",
+    "properties": {}
+  }, {
+    "identity": 27400,
+    "start": 17713,
+    "end": 17661,
+    "type": "RESOURCE",
+    "properties": {
+      "context": "applicationReference",
+      "key": "89f0a9d5-1aee-4517-ae0c-4890b2e714c8"
+    }
+  }, {
+    "identity": 27401,
+    "start": 17662,
+    "end": 17662,
+    "type": "EXECUTE",
+    "properties": {}
+  }, {
+    "identity": 27403,
+    "start": 17696,
+    "end": 17662,
+    "type": "RESOURCE",
+    "properties": {
+      "context": "applicationReference",
+      "key": "9b8470d1-b04c-4ba2-a929-8220f2760290"
+    }
+  }, {
+    "identity": 27402,
+    "start": 17727,
+    "end": 17662,
+    "type": "NEXT",
+    "properties": {
+      "key": "00007082-14f6-4df7-94bc-8a7b2a3f0888",
+      "order": 2
+    }
+  }, {
+    "identity": 27404,
+    "start": 17729,
+    "end": 17666,
+    "type": "NEXT",
+    "properties": {
+      "key": "77b35171-4171-4b6f-ac2d-afd8e4d90a09",
+      "order": 2
+    }
+  }, {
+    "identity": 27405,
+    "start": 17678,
+    "end": 17666,
+    "type": "RESOURCE",
+    "properties": {
+      "context": "applicationReference",
+      "key": "0b642e7d-ef75-41ec-bf7d-d6bd6eeaf26b"
+    }
+  }, {
+    "identity": 27406,
+    "start": 17666,
+    "end": 17666,
+    "type": "EXECUTE",
+    "properties": {}
+  }, {
+    "identity": 27407,
+    "start": 17709,
+    "end": 17669,
+    "type": "NEXT",
+    "properties": {
+      "key": "86c3e487-5f4c-4bc2-9935-eb5b1db97fa4",
+      "order": 4
+    }
+  }, {
+    "identity": 27408,
+    "start": 17669,
+    "end": 17669,
+    "type": "EXECUTE",
+    "properties": {}
+  }, {
+    "identity": 27409,
+    "start": 17663,
+    "end": 17669,
+    "type": "RESOURCE",
+    "properties": {
+      "context": "applicationReference",
+      "key": "12881a85-7be1-40b2-a4a8-3d940052499d"
+    }
+  }, {
+    "identity": 27410,
+    "start": 17688,
+    "end": 17670,
+    "type": "ROOT",
+    "properties": {}
+  }, {
+    "identity": 27411,
+    "start": 17670,
+    "end": 17670,
+    "type": "EXECUTE",
+    "properties": {
+      "key": "c5d170d6-1757-4b25-bc71-e7ff07f65bbe"
+    }
+  }, {
+    "identity": 27412,
+    "start": 17670,
+    "end": 17670,
+    "type": "FORK",
+    "properties": {
+      "order": 1
+    }
+  }, {
+    "identity": 27413,
+    "start": 17671,
+    "end": 17671,
+    "type": "FORK",
+    "properties": {}
+  }, {
+    "identity": 27414,
+    "start": 17672,
+    "end": 17671,
+    "type": "ROOT",
+    "properties": {}
+  }, {
+    "identity": 27415,
+    "start": 17671,
+    "end": 17671,
+    "type": "EXECUTE",
+    "properties": {
+      "key": "063b144f-25e4-4327-853c-9be07a56e700"
+    }
+  }, {
+    "identity": 27416,
+    "start": 17670,
+    "end": 17672,
+    "type": "NEXT",
+    "properties": {
+      "key": "26377cf7-f72b-43d1-85c9-c8ad619e3071",
+      "order": 2
+    }
+  }, {
+    "identity": 27418,
+    "start": 17711,
+    "end": 17673,
+    "type": "DEFAULT",
+    "properties": {
+      "key": "b7067a2a-33e9-4f3b-922a-d41a3f7f6df0"
+    }
+  }, {
+    "identity": 27417,
+    "start": 17711,
+    "end": 17673,
+    "type": "CASE",
+    "properties": {
+      "expected": true,
+      "key": "25874628-f586-48ab-9cd9-99b5e0d7841f"
+    }
+  }, {
+    "identity": 27419,
+    "start": 17703,
+    "end": 17674,
+    "type": "RESOURCE",
+    "properties": {
+      "context": "applicationReference",
+      "key": "ddb4e381-9e9f-47c0-8fe2-643d83954e1c"
+    }
+  }, {
+    "identity": 27420,
+    "start": 17674,
+    "end": 17674,
+    "type": "EXECUTE",
+    "properties": {}
+  }, {
+    "identity": 27421,
+    "start": 17671,
+    "end": 17674,
+    "type": "NEXT",
+    "properties": {
+      "key": "9e3638f9-f583-4b2e-8019-957db7080588",
+      "order": 1
+    }
+  }, {
+    "identity": 27422,
+    "start": 17675,
+    "end": 17675,
+    "type": "EXECUTE",
+    "properties": {
+      "key": "03d5fd09-01a5-4bfb-872b-efe4b036c445"
+    }
+  }, {
+    "identity": 27423,
+    "start": 17697,
+    "end": 17675,
+    "type": "ROOT",
+    "properties": {}
+  }, {
+    "identity": 27424,
+    "start": 17675,
+    "end": 17675,
+    "type": "FORK",
+    "properties": {}
+  }, {
+    "identity": 27425,
+    "start": 17720,
+    "end": 17677,
+    "type": "RESOURCE",
+    "properties": {
+      "context": "applicationReference",
+      "key": "ee3836df-e6d8-4c6e-934b-5626ff963aa3"
+    }
+  }, {
+    "identity": 27426,
+    "start": 17677,
+    "end": 17677,
+    "type": "EXECUTE",
+    "properties": {}
+  }, {
+    "identity": 27427,
+    "start": 17675,
+    "end": 17677,
+    "type": "NEXT",
+    "properties": {
+      "key": "74bda38a-c1be-4cbc-bc0b-4d1b47f19974",
+      "order": 1
+    }
+  }, {
+    "identity": 27428,
+    "start": 17711,
+    "end": 17679,
+    "type": "CASE",
+    "properties": {
+      "expected": false,
+      "key": "1d136ca2-a7fc-4179-984e-b22b1f375869"
+    }
+  }, {
+    "identity": 27429,
+    "start": 17715,
+    "end": 17681,
+    "type": "NEXT",
+    "properties": {
+      "key": "835b838d-3dee-4256-871e-33046857f8d2",
+      "order": 2
+    }
+  }, {
+    "identity": 27430,
+    "start": 17692,
+    "end": 17681,
+    "type": "RESOURCE",
+    "properties": {
+      "context": "applicationReference",
+      "key": "6c83adfd-f5c4-469c-ba20-c88f1e0500de"
+    }
+  }, {
+    "identity": 27431,
+    "start": 17681,
+    "end": 17681,
+    "type": "EXECUTE",
+    "properties": {}
+  }, {
+    "identity": 27434,
+    "start": 17683,
+    "end": 17683,
+    "type": "FORK",
+    "properties": {}
+  }, {
+    "identity": 27433,
+    "start": 17699,
+    "end": 17683,
+    "type": "NEXT",
+    "properties": {
+      "key": "2c96da11-582b-498f-b8d5-9cf504a5bcce",
+      "order": 1
+    }
+  }, {
+    "identity": 27432,
+    "start": 17683,
+    "end": 17683,
+    "type": "EXECUTE",
+    "properties": {}
+  }, {
+    "identity": 27435,
+    "start": 17721,
+    "end": 17685,
+    "type": "RESOURCE",
+    "properties": {
+      "context": "applicationReference",
+      "key": "134d52ac-d5df-4fbd-9abe-1e4b877b03d1"
+    }
+  }, {
+    "identity": 27436,
+    "start": 17730,
+    "end": 17685,
+    "type": "NEXT",
+    "properties": {
+      "key": "af475ed7-7ed9-4239-a7b2-209dd3ceca57",
+      "order": 3
+    }
+  }, {
+    "identity": 27437,
+    "start": 17685,
+    "end": 17685,
+    "type": "EXECUTE",
+    "properties": {}
+  }, {
+    "identity": 27438,
+    "start": 17686,
+    "end": 17686,
+    "type": "EXECUTE",
+    "properties": {}
+  }, {
+    "identity": 27439,
+    "start": 17700,
+    "end": 17686,
+    "type": "RESOURCE",
+    "properties": {
+      "context": "applicationReference",
+      "key": "bd9dbbc0-247b-4495-afc0-d9ee24eed834"
+    }
+  }, {
+    "identity": 27440,
+    "start": 17709,
+    "end": 17686,
+    "type": "NEXT",
+    "properties": {
+      "key": "f4e6ed90-ef25-462b-b4ca-06daa190c5a2",
+      "order": 1
+    }
+  }, {
+    "identity": 27441,
+    "start": 17687,
+    "end": 17687,
+    "type": "EXECUTE",
+    "properties": {}
+  }, {
+    "identity": 27442,
+    "start": 17668,
+    "end": 17687,
+    "type": "RESOURCE",
+    "properties": {
+      "context": "applicationReference",
+      "key": "54c808c6-aa1c-424d-8a99-8985cf84673c"
+    }
+  }, {
+    "identity": 27443,
+    "start": 17723,
+    "end": 17687,
+    "type": "NEXT",
+    "properties": {
+      "key": "458b686d-f9ac-48b7-842f-d00d38c006c2",
+      "order": 1
+    }
+  }, {
+    "identity": 27444,
+    "start": 17711,
+    "end": 17687,
+    "type": "CONFIGURE",
+    "properties": {
+      "depthAffected": "0",
+      "key": "b68087ba-83af-4ae2-a5fb-0b6b57af4362",
+      "setting": "evaluation"
+    }
+  }, {
+    "identity": 27445,
+    "start": 17690,
+    "end": 17688,
+    "type": "NEXT",
+    "properties": {
+      "key": "2c96da11-23332-498f-23332-9cf504a5bcce"
+    }
+  }, {
+    "identity": 27446,
+    "start": 17689,
+    "end": 17689,
+    "type": "EXECUTE",
+    "properties": {}
+  }, {
+    "identity": 27447,
+    "start": 17725,
+    "end": 17689,
+    "type": "NEXT",
+    "properties": {
+      "key": "9fea099c-9e48-4b5d-bf1f-47025c0f6f11",
+      "order": 2
+    }
+  }, {
+    "identity": 27448,
+    "start": 17665,
+    "end": 17689,
+    "type": "RESOURCE",
+    "properties": {
+      "context": "applicationReference",
+      "key": "acc3da94-47e1-4e1e-b288-8007fe0c6736"
+    }
+  }, {
+    "identity": 27450,
+    "start": 17690,
+    "end": 17690,
+    "type": "FORK",
+    "properties": {}
+  }, {
+    "identity": 27449,
+    "start": 17682,
+    "end": 17690,
+    "type": "ROOT",
+    "properties": {}
+  }, {
+    "identity": 27451,
+    "start": 17668,
+    "end": 17691,
+    "type": "RESOURCE",
+    "properties": {
+      "context": "applicationReference",
+      "key": "84cbf99d-83b6-482b-81c5-11a6d6aed605"
+    }
+  }, {
+    "identity": 27452,
+    "start": 17691,
+    "end": 17691,
+    "type": "EXECUTE",
+    "properties": {}
+  }, {
+    "identity": 27453,
+    "start": 17723,
+    "end": 17691,
+    "type": "NEXT",
+    "properties": {
+      "key": "77eb5f47-57a8-48ab-9fc1-dae3e8927234",
+      "order": 3
+    }
+  }, {
+    "identity": 27454,
+    "start": 17711,
+    "end": 17691,
+    "type": "CONFIGURE",
+    "properties": {
+      "depthAffected": "0",
+      "key": "eef76382-9efc-44bf-b55a-35111d957437",
+      "setting": "evaluation"
+    }
+  }, {
+    "identity": 27455,
+    "start": 17725,
+    "end": 17693,
+    "type": "NEXT",
+    "properties": {
+      "key": "60d4b819-0cca-4445-93b6-49b5bc590b9b",
+      "order": 1
+    }
+  }, {
+    "identity": 27456,
+    "start": 17693,
+    "end": 17693,
+    "type": "EXECUTE",
+    "properties": {}
+  }, {
+    "identity": 27457,
+    "start": 17717,
+    "end": 17693,
+    "type": "RESOURCE",
+    "properties": {
+      "context": "applicationReference",
+      "key": "cc517aff-2bc9-4447-b51c-9effcd6ffeb0"
+    }
+  }, {
+    "identity": 27458,
+    "start": 17729,
+    "end": 17695,
+    "type": "NEXT",
+    "properties": {
+      "key": "88ba81bb-7ad1-4a07-b91e-214cd4e6c8fc",
+      "order": 1
+    }
+  }, {
+    "identity": 27460,
+    "start": 17701,
+    "end": 17695,
+    "type": "RESOURCE",
+    "properties": {
+      "context": "applicationReference",
+      "key": "25e6e307-1605-4b14-93b6-6f6e6c2b85ba"
+    }
+  }, {
+    "identity": 27459,
+    "start": 17695,
+    "end": 17695,
+    "type": "EXECUTE",
+    "properties": {}
+  }, {
+    "identity": 27461,
+    "start": 17670,
+    "end": 17697,
+    "type": "NEXT",
+    "properties": {
+      "key": "cf305321-0f64-4c84-bf09-41d1586dd7ee",
+      "order": 3
+    }
+  }, {
+    "identity": 27462,
+    "start": 17722,
+    "end": 17698,
+    "type": "NEXT",
+    "properties": {
+      "key": "5e8da21d-82ee-4de7-afd1-7192f7f7a630",
+      "order": 1
+    }
+  }, {
+    "identity": 27463,
+    "start": 17667,
+    "end": 17698,
+    "type": "RESOURCE",
+    "properties": {
+      "context": "applicationReference",
+      "key": "a5552d71-ceed-4462-ade1-4c4d403a6713"
+    }
+  }, {
+    "identity": 27464,
+    "start": 17698,
+    "end": 17698,
+    "type": "EXECUTE",
+    "properties": {}
+  }, {
+    "identity": 27467,
+    "start": 17705,
+    "end": 17699,
+    "type": "ROOT",
+    "properties": {}
+  }, {
+    "identity": 27466,
+    "start": 17699,
+    "end": 17699,
+    "type": "FORK",
+    "properties": {}
+  }, {
+    "identity": 27465,
+    "start": 17699,
+    "end": 17699,
+    "type": "EXECUTE",
+    "properties": {
+      "key": "3a633b09-8a27-4c40-8532-42ae17b5c254"
+    }
+  }, {
+    "identity": 27468,
+    "start": 17704,
+    "end": 17704,
+    "type": "EXECUTE",
+    "properties": {}
+  }, {
+    "identity": 27469,
+    "start": 17727,
+    "end": 17704,
+    "type": "NEXT",
+    "properties": {
+      "key": "5b9fee16-ac9c-452a-b049-48326d1216e4",
+      "order": 1
+    }
+  }, {
+    "identity": 27470,
+    "start": 17710,
+    "end": 17704,
+    "type": "RESOURCE",
+    "properties": {
+      "context": "applicationReference",
+      "key": "9a743790-88ac-41d7-8577-11ca29a4ef6b"
+    }
+  }, {
+    "identity": 27471,
+    "start": 17690,
+    "end": 17705,
+    "type": "NEXT",
+    "properties": {
+      "key": "34g9d-582b-498f-b8d5-34g9d"
+    }
+  }, {
+    "identity": 27472,
+    "start": 17668,
+    "end": 17707,
+    "type": "RESOURCE",
+    "properties": {
+      "context": "applicationReference",
+      "key": "f235-v1qwe5-482b-81c5-v1qwe5"
+    }
+  }, {
+    "identity": 27473,
+    "start": 17711,
+    "end": 17707,
+    "type": "CONFIGURE",
+    "properties": {
+      "depthAffected": "0",
+      "key": "15rt2a-2541-4e05-aab6-15rt2a",
+      "setting": "evaluation"
+    }
+  }, {
+    "identity": 27474,
+    "start": 17723,
+    "end": 17707,
+    "type": "NEXT",
+    "properties": {
+      "key": "23gh-f9ac-48b7-842f-23gh",
+      "order": 2
+    }
+  }, {
+    "identity": 27475,
+    "start": 17707,
+    "end": 17707,
+    "type": "EXECUTE",
+    "properties": {}
+  }, {
+    "identity": 27476,
+    "start": 17671,
+    "end": 17709,
+    "type": "NEXT",
+    "properties": {
+      "key": "4b187c74-e72b-46ff-a783-30f3a05ac126",
+      "order": 2
+    }
+  }, {
+    "identity": 27478,
+    "start": 17709,
+    "end": 17709,
+    "type": "FORK",
+    "properties": {}
+  }, {
+    "identity": 27477,
+    "start": 17709,
+    "end": 17709,
+    "type": "EXECUTE",
+    "properties": {}
+  }, {
+    "identity": 27479,
+    "start": 17711,
+    "end": 17711,
+    "type": "EXECUTE",
+    "properties": {}
+  }, {
+    "identity": 27480,
+    "start": 17711,
+    "end": 17711,
+    "type": "FORK",
+    "properties": {
+      "key": "5be80ca-4453-4125-96e5-3cc132a6a54a",
+      "order": 1
+    }
+  }, {
+    "identity": 27481,
+    "start": 17714,
+    "end": 17714,
+    "type": "FORK",
+    "properties": {
+      "order": 1
+    }
+  }, {
+    "identity": 27482,
+    "start": 17670,
+    "end": 17714,
+    "type": "NEXT",
+    "properties": {
+      "key": "a5b3b48b-68df-4a0d-94cc-f95e4f80d3ea",
+      "order": 1
+    }
+  }, {
+    "identity": 27484,
+    "start": 17699,
+    "end": 17715,
+    "type": "NEXT",
+    "properties": {
+      "key": "757f34aa-f10b-4270-91bc-719ace4122d9",
+      "order": 2
+    }
+  }, {
+    "identity": 27485,
+    "start": 17715,
+    "end": 17715,
+    "type": "FORK",
+    "properties": {}
+  }, {
+    "identity": 27483,
+    "start": 17715,
+    "end": 17715,
+    "type": "EXECUTE",
+    "properties": {}
+  }, {
+    "identity": 27486,
+    "start": 17668,
+    "end": 17716,
+    "type": "RESOURCE",
+    "properties": {
+      "context": "applicationReference",
+      "key": "6267688b-b949-40ea-a631-372afa192162"
+    }
+  }, {
+    "identity": 27487,
+    "start": 17711,
+    "end": 17716,
+    "type": "CONFIGURE",
+    "properties": {
+      "depthAffected": 0,
+      "key": "079dd5e6-2541-4e05-aab6-deab96a9d633",
+      "setting": "evaluation"
+    }
+  }, {
+    "identity": 27488,
+    "start": 17716,
+    "end": 17716,
+    "type": "EXECUTE",
+    "properties": {}
+  }, {
+    "identity": 27489,
+    "start": 17723,
+    "end": 17716,
+    "type": "NEXT",
+    "properties": {
+      "key": "1903effc-9917-40d2-9776-e6448cb631e4",
+      "order": 2
+    }
+  }, {
+    "identity": 27490,
+    "start": 17718,
+    "end": 17718,
+    "type": "EXECUTE",
+    "properties": {}
+  }, {
+    "identity": 27491,
+    "start": 17730,
+    "end": 17718,
+    "type": "NEXT",
+    "properties": {
+      "key": "94ff2869-8ef7-4076-b44b-15d3c932a0fa",
+      "order": 1
+    }
+  }, {
+    "identity": 27492,
+    "start": 17706,
+    "end": 17718,
+    "type": "RESOURCE",
+    "properties": {
+      "context": "applicationReference",
+      "key": "a6982835-ae6a-43f5-9537-738768eb31fa"
+    }
+  }, {
+    "identity": 27493,
+    "start": 17725,
+    "end": 17719,
+    "type": "NEXT",
+    "properties": {
+      "key": "1e55d04a-74e4-47ff-9f45-c312c4ddda24",
+      "order": 3
+    }
+  }, {
+    "identity": 27495,
+    "start": 17676,
+    "end": 17719,
+    "type": "RESOURCE",
+    "properties": {
+      "context": "applicationReference",
+      "key": "bab07c5a-0d1c-4007-a272-afb7a1ed2df8"
+    }
+  }, {
+    "identity": 27494,
+    "start": 17719,
+    "end": 17719,
+    "type": "EXECUTE",
+    "properties": {}
+  }, {
+    "identity": 27496,
+    "start": 17722,
+    "end": 17722,
+    "type": "FORK",
+    "properties": {}
+  }, {
+    "identity": 27497,
+    "start": 17664,
+    "end": 17722,
+    "type": "ROOT",
+    "properties": {}
+  }, {
+    "identity": 27498,
+    "start": 17722,
+    "end": 17723,
+    "type": "NEXT",
+    "properties": {
+      "key": "86e457b4-3b35-4fb4-b1bf-03588c0585c6",
+      "order": 4
+    }
+  }, {
+    "identity": 27499,
+    "start": 17723,
+    "end": 17723,
+    "type": "FORK",
+    "properties": {}
+  }, {
+    "identity": 27500,
+    "start": 17694,
+    "end": 17724,
+    "type": "RESOURCE",
+    "properties": {
+      "context": "applicationReference",
+      "key": "5368b6dc-f745-4d43-94d1-977e69e12135"
+    }
+  }, {
+    "identity": 27502,
+    "start": 17711,
+    "end": 17724,
+    "type": "NEXT",
+    "properties": {
+      "key": "0fea0a80-82a4-4d1b-b60a-1e74e56b310b",
+      "order": 1
+    }
+  }, {
+    "identity": 27501,
+    "start": 17724,
+    "end": 17724,
+    "type": "EXECUTE",
+    "properties": {
+      "key": "83823368-7bc4-42b4-b4d1-201fa8cc4c0f",
+      "implementation": "executeFunctionReference"
+    }
+  }, {
+    "identity": 27503,
+    "start": 17725,
+    "end": 17725,
+    "type": "FORK",
+    "properties": {}
+  }, {
+    "identity": 27504,
+    "start": 17675,
+    "end": 17725,
+    "type": "NEXT",
+    "properties": {
+      "key": "ef723088-6b95-4496-b833-284dce32d41a",
+      "order": 2
+    }
+  }, {
+    "identity": 27505,
+    "start": 17725,
+    "end": 17725,
+    "type": "EXECUTE",
+    "properties": {}
+  }, {
+    "identity": 27506,
+    "start": 17734,
+    "end": 17726,
+    "type": "RESOURCE",
+    "properties": {
+      "context": "applicationReference",
+      "key": "48f65fe0-b64c-4218-be78-5c19aefbca9c"
+    }
+  }, {
+    "identity": 27507,
+    "start": 17725,
+    "end": 17726,
+    "type": "NEXT",
+    "properties": {
+      "key": "d153d8b2-7fd8-4296-826b-53f2e8bdef17",
+      "order": 4
+    }
+  }, {
+    "identity": 27508,
+    "start": 17726,
+    "end": 17726,
+    "type": "EXECUTE",
+    "properties": {}
+  }, {
+    "identity": 27509,
+    "start": 17722,
+    "end": 17727,
+    "type": "NEXT",
+    "properties": {
+      "key": "81daab85-228a-4b69-8d91-e0fc3c5bca3a",
+      "order": 3
+    }
+  }, {
+    "identity": 27510,
+    "start": 17727,
+    "end": 17727,
+    "type": "FORK",
+    "properties": {}
+  }, {
+    "identity": 27511,
+    "start": 17728,
+    "end": 17728,
+    "type": "EXECUTE",
+    "properties": {}
+  }, {
+    "identity": 27512,
+    "start": 17683,
+    "end": 17728,
+    "type": "NEXT",
+    "properties": {
+      "key": "38ed18d6-b624-492e-9b31-3a14593d341a",
+      "order": 1
+    }
+  }, {
+    "identity": 27513,
+    "start": 17712,
+    "end": 17728,
+    "type": "RESOURCE",
+    "properties": {
+      "context": "applicationReference"
+    }
+  }, {
+    "identity": 27514,
+    "start": 17722,
+    "end": 17729,
+    "type": "NEXT",
+    "properties": {
+      "key": "b0aa81af-11ac-41f1-9712-25a47286fdda",
+      "order": 2
+    }
+  }, {
+    "identity": 27515,
+    "start": 17729,
+    "end": 17729,
+    "type": "FORK",
+    "properties": {}
+  }, {
+    "identity": 27518,
+    "start": 17730,
+    "end": 17730,
+    "type": "EXECUTE",
+    "properties": {}
+  }, {
+    "identity": 27516,
+    "start": 17699,
+    "end": 17730,
+    "type": "NEXT",
+    "properties": {
+      "key": "2eade2d9-eafc-47be-bf56-8850b2ae6ad1",
+      "order": 3
+    }
+  }, {
+    "identity": 27517,
+    "start": 17730,
+    "end": 17730,
+    "type": "FORK",
+    "properties": {}
+  }, {
+    "identity": 27519,
+    "start": 17680,
+    "end": 17731,
+    "type": "RESOURCE",
+    "properties": {
+      "context": "applicationReference",
+      "key": "448c4fb9-51eb-4822-88f8-1f4f8ad3527b"
+    }
+  }, {
+    "identity": 27520,
+    "start": 17709,
+    "end": 17731,
+    "type": "NEXT",
+    "properties": {
+      "key": "4609f7d6-a536-4b06-b5a2-7411ac9d1e0f",
+      "order": 3
+    }
+  }, {
+    "identity": 27521,
+    "start": 17731,
+    "end": 17731,
+    "type": "EXECUTE",
+    "properties": {}
+  }, {
+    "identity": 27522,
+    "start": 17714,
+    "end": 17732,
+    "type": "NEXT",
+    "properties": {
+      "key": "1f22c80c-b5b5-43af-91a5-1ea468a67773",
+      "order": 3
+    }
+  }, {
+    "identity": 27523,
+    "start": 17732,
+    "end": 17732,
+    "type": "EXECUTE",
+    "properties": {}
+  }, {
+    "identity": 27524,
+    "start": 17736,
+    "end": 17732,
+    "type": "RESOURCE",
+    "properties": {
+      "context": "applicationReference",
+      "key": "f328bd86-df9f-486c-ac63-2d2d79dd4ac9"
+    }
+  }, {
+    "identity": 27525,
+    "start": 17684,
+    "end": 17733,
+    "type": "RESOURCE",
+    "properties": {
+      "context": "applicationReference",
+      "key": "f9aee671-462e-4714-81ec-9dbf3aabaaf3"
+    }
+  }, {
+    "identity": 27527,
+    "start": 17733,
+    "end": 17733,
+    "type": "EXECUTE",
+    "properties": {}
+  }, {
+    "identity": 27526,
+    "start": 17715,
+    "end": 17733,
+    "type": "NEXT",
+    "properties": {
+      "key": "585bf87d-8254-4d16-a74e-b12837c63c28",
+      "order": 1
+    }
+  }, {
+    "identity": 27528,
+    "start": 17708,
+    "end": 17735,
+    "type": "RESOURCE",
+    "properties": {
+      "context": "applicationReference",
+      "key": "6ba09b01-af52-4def-9df5-0341b87b96f1"
+    }
+  }, {
+    "identity": 27529,
+    "start": 17735,
+    "end": 17735,
+    "type": "EXECUTE",
+    "properties": {}
+  }, {
+    "identity": 27530,
+    "start": 17714,
+    "end": 17735,
+    "type": "NEXT",
+    "properties": {
+      "key": "6703dcc5-c0db-4219-acf6-1df4bf61e6de",
+      "order": 2
+    }
+  }, {
+    "identity": 27531,
+    "start": 17737,
+    "end": 17737,
+    "type": "EXECUTE",
+    "properties": {}
+  }, {
+    "identity": 27532,
+    "start": 17714,
+    "end": 17737,
+    "type": "NEXT",
+    "properties": {
+      "key": "02a80f4b-463c-4818-a648-97671f7a031c",
+      "order": 1
+    }
+  }, {
+    "identity": 27533,
+    "start": 17702,
+    "end": 17737,
+    "type": "RESOURCE",
+    "properties": {
+      "context": "applicationReference",
+      "key": "fc33f1e4-f433-47ff-acde-9bf77d2e30e6"
+    }
+  }]
+}

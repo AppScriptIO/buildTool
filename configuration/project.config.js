@@ -21,7 +21,13 @@ const ownConfig = {
     },
   },
   get script() {
-    return [...script, ...[{ type: 'directory', path: ownConfig.directory.script }, { type: 'directory', path: path.join(ownConfig.directory.root, 'node_modules') }]]
+    return [
+      ...script,
+      ...[
+        { type: 'directory', path: ownConfig.directory.script },
+        { type: 'directory', path: path.join(ownConfig.directory.root, 'node_modules') },
+      ],
+    ]
   },
   entrypoint: {
     programmaticAPI: './script.js',
