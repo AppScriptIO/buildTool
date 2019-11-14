@@ -52,16 +52,13 @@ export async function build(
   let contextInstance = new Context.clientInterface({
     argumentObject,
     targetProjectConfig: targetProject.configuration.configuration,
-    functionReferenceContext: Object.assign(
-        require(path.join(__dirname, './function/' + taskContextName)),
-        require(path.join(__dirname, './function/condition.js'))
-      ), // tasks context object
+    functionReferenceContext: Object.assign(require(path.join(__dirname, './function/' + taskContextName)), require(path.join(__dirname, './function/condition.js'))), // tasks context object
   })
   let configuredGraph = Graph.clientInterface({
     parameter: [{ concreteBehaviorList: [contextInstance] }],
   })
   let graph = new configuredGraph({})
-  graph.traversal.processData['executeFunctionReference'] = measurePerformanceProxy(graph.traversal.processData['executeFunctionReference']) // manipulate processing implementation callback
+  graph.traversal.processNode['executeFunctionReference'] = measurePerformanceProxy(graph.traversal.processNode['executeFunctionReference']) // manipulate processing implementation callback
 
   // clear database and load graph data:
   await clearDatabase(graph.database)
@@ -70,7 +67,7 @@ export async function build(
   console.log(`• Graph in-memory database was cleared and 'resource' graph data was loaded.`)
 
   try {
-    let result = await graph.traverse({ nodeKey: entryNodeKey, implementationKey: { processData: 'executeFunctionReference', evaluatePosition: 'evaluateConditionReference' } })
+    let result = await graph.traverse({ nodeKey: entryNodeKey, implementationKey: { processNode: 'executeFunctionReference', evaluatePosition: 'evaluateConditionReference' } })
   } catch (error) {
     console.error(error)
     await graph.database.driverInstance.close()
