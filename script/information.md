@@ -1,1 +1,0 @@
-The scripts your the repository to build itself, rather than relying on `deploymentScript` which includes a previous version of itself.
