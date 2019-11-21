@@ -1036,12 +1036,29 @@
     redisgraph.js "^1.1.4"
     uuid "*"
 
+"@dependency/graphTraversal-implementation@https://github.com/AppScriptIO/graphTraversal-implementation#semver:^2.x.x":
+  version "2.0.1"
+  resolved "https://github.com/AppScriptIO/graphTraversal-implementation#dffabfbe55c9912970f111f563356e4d06f82a19"
+  dependencies:
+    neo4j-driver "^1.7.5"
+    redisgraph.js "^1.1.4"
+    uuid "*"
+
 "@dependency/graphTraversal@https://github.com/AppScriptIO/graphTraversal#semver:^1.x.x":
   version "1.2.19"
   resolved "https://github.com/AppScriptIO/graphTraversal#8ef647eaf907a8e0a4b16a22ca113d958f0677cc"
   dependencies:
     "@dependency/entity" "https://github.com/AppScriptIO/entity#semver:^1.x.x"
     "@dependency/graphTraversal-implementation" "https://github.com/AppScriptIO/graphTraversal-implementation#semver:^1.x.x"
+    "@dependency/multiplePrototypeDelegation" "https://github.com/AppScriptIO/multiplePrototypeDelegation#semver:^1.x.x"
+    "@dependency/promiseProperRace" "https://github.com/AppScriptIO/promiseProperRace#semver:^1.x.x"
+
+"@dependency/graphTraversal@https://github.com/AppScriptIO/graphTraversal#semver:^2.x.x":
+  version "2.0.1"
+  resolved "https://github.com/AppScriptIO/graphTraversal#866787504d1ea98c50e0229c2f7157aeca762dbd"
+  dependencies:
+    "@dependency/entity" "https://github.com/AppScriptIO/entity#semver:^1.x.x"
+    "@dependency/graphTraversal-implementation" "https://github.com/AppScriptIO/graphTraversal-implementation#semver:^2.x.x"
     "@dependency/multiplePrototypeDelegation" "https://github.com/AppScriptIO/multiplePrototypeDelegation#semver:^1.x.x"
     "@dependency/promiseProperRace" "https://github.com/AppScriptIO/promiseProperRace#semver:^1.x.x"
 
