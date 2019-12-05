@@ -1,18 +1,19 @@
-import filesystem from 'fs'
-import path from 'path'
-import { build } from '../'
-import { removeSync } from 'fs-extra'
+"use strict";var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.moduleProject = moduleProject;var _fs = _interopRequireDefault(require("fs"));
 
-// build process for Javascript module repositories
-export async function moduleProject(...args) {
-  // adapter for working with target function interface of `scriptManager`.
-  const { api /* supplied by scriptManager */ } = args[0]
-  args[0].targetProject = api.project
-  args[0].entryNodeKey ||= '171d18f8-9d25-4483-aeb9-a29c9fbed6ac' // graph tasks traversal entrypoint
-  args[0].taskContextName = 'moduleProjectTask'
+var _ = require("../");
+var _fsExtra = require("fs-extra");
 
-  let distributionPath = api.project.configuration.configuration.directory.distribution
-  if (filesystem.existsSync(distributionPath)) removeSync(distributionPath) // delete existing destribution folder
 
-  await build(...args).catch(console.error)
+async function moduleProject(...args) {var _args$;
+
+  const { api } = args[0];
+  args[0].targetProject = api.project;
+  (_args$ = args[0]).entryNodeKey || (_args$.entryNodeKey = '171d18f8-9d25-4483-aeb9-a29c9fbed6ac');
+  args[0].taskContextName = 'moduleProjectTask';
+
+  let distributionPath = api.project.configuration.configuration.directory.distribution;
+  if (_fs.default.existsSync(distributionPath)) (0, _fsExtra.removeSync)(distributionPath);
+
+  await (0, _.build)(...args).catch(console.error);
 }
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uLy4uL3NjcmlwdC9idWlsZFNvdXJjZUNvZGUuanMiXSwibmFtZXMiOlsibW9kdWxlUHJvamVjdCIsImFyZ3MiLCJhcGkiLCJ0YXJnZXRQcm9qZWN0IiwicHJvamVjdCIsImVudHJ5Tm9kZUtleSIsInRhc2tDb250ZXh0TmFtZSIsImRpc3RyaWJ1dGlvblBhdGgiLCJjb25maWd1cmF0aW9uIiwiZGlyZWN0b3J5IiwiZGlzdHJpYnV0aW9uIiwiZmlsZXN5c3RlbSIsImV4aXN0c1N5bmMiLCJjYXRjaCIsImNvbnNvbGUiLCJlcnJvciJdLCJtYXBwaW5ncyI6InNNQUFBOztBQUVBO0FBQ0E7OztBQUdPLGVBQWVBLGFBQWYsQ0FBNkIsR0FBR0MsSUFBaEMsRUFBc0M7O0FBRTNDLFFBQU0sRUFBRUMsR0FBRixLQUEwQ0QsSUFBSSxDQUFDLENBQUQsQ0FBcEQ7QUFDQUEsRUFBQUEsSUFBSSxDQUFDLENBQUQsQ0FBSixDQUFRRSxhQUFSLEdBQXdCRCxHQUFHLENBQUNFLE9BQTVCO0FBQ0EsWUFBQUgsSUFBSSxDQUFDLENBQUQsQ0FBSixFQUFRSSxZQUFSLFlBQVFBLFlBQVIsR0FBeUIsc0NBQXpCO0FBQ0FKLEVBQUFBLElBQUksQ0FBQyxDQUFELENBQUosQ0FBUUssZUFBUixHQUEwQixtQkFBMUI7O0FBRUEsTUFBSUMsZ0JBQWdCLEdBQUdMLEdBQUcsQ0FBQ0UsT0FBSixDQUFZSSxhQUFaLENBQTBCQSxhQUExQixDQUF3Q0MsU0FBeEMsQ0FBa0RDLFlBQXpFO0FBQ0EsTUFBSUMsWUFBV0MsVUFBWCxDQUFzQkwsZ0JBQXRCLENBQUosRUFBNkMseUJBQVdBLGdCQUFYOztBQUU3QyxRQUFNLGFBQU0sR0FBR04sSUFBVCxFQUFlWSxLQUFmLENBQXFCQyxPQUFPLENBQUNDLEtBQTdCLENBQU47QUFDRCIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBmaWxlc3lzdGVtIGZyb20gJ2ZzJ1xyXG5pbXBvcnQgcGF0aCBmcm9tICdwYXRoJ1xyXG5pbXBvcnQgeyBidWlsZCB9IGZyb20gJy4uLydcclxuaW1wb3J0IHsgcmVtb3ZlU3luYyB9IGZyb20gJ2ZzLWV4dHJhJ1xyXG5cclxuLy8gYnVpbGQgcHJvY2VzcyBmb3IgSmF2YXNjcmlwdCBtb2R1bGUgcmVwb3NpdG9yaWVzXHJcbmV4cG9ydCBhc3luYyBmdW5jdGlvbiBtb2R1bGVQcm9qZWN0KC4uLmFyZ3MpIHtcclxuICAvLyBhZGFwdGVyIGZvciB3b3JraW5nIHdpdGggdGFyZ2V0IGZ1bmN0aW9uIGludGVyZmFjZSBvZiBgc2NyaXB0TWFuYWdlcmAuXHJcbiAgY29uc3QgeyBhcGkgLyogc3VwcGxpZWQgYnkgc2NyaXB0TWFuYWdlciAqLyB9ID0gYXJnc1swXVxyXG4gIGFyZ3NbMF0udGFyZ2V0UHJvamVjdCA9IGFwaS5wcm9qZWN0XHJcbiAgYXJnc1swXS5lbnRyeU5vZGVLZXkgfHw9ICcxNzFkMThmOC05ZDI1LTQ0ODMtYWViOS1hMjljOWZiZWQ2YWMnIC8vIGdyYXBoIHRhc2tzIHRyYXZlcnNhbCBlbnRyeXBvaW50XHJcbiAgYXJnc1swXS50YXNrQ29udGV4dE5hbWUgPSAnbW9kdWxlUHJvamVjdFRhc2snXHJcblxyXG4gIGxldCBkaXN0cmlidXRpb25QYXRoID0gYXBpLnByb2plY3QuY29uZmlndXJhdGlvbi5jb25maWd1cmF0aW9uLmRpcmVjdG9yeS5kaXN0cmlidXRpb25cclxuICBpZiAoZmlsZXN5c3RlbS5leGlzdHNTeW5jKGRpc3RyaWJ1dGlvblBhdGgpKSByZW1vdmVTeW5jKGRpc3RyaWJ1dGlvblBhdGgpIC8vIGRlbGV0ZSBleGlzdGluZyBkZXN0cmlidXRpb24gZm9sZGVyXHJcblxyXG4gIGF3YWl0IGJ1aWxkKC4uLmFyZ3MpLmNhdGNoKGNvbnNvbGUuZXJyb3IpXHJcbn1cclxuIl19

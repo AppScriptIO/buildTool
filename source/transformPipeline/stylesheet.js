@@ -1,29 +1,30 @@
-import plumber from 'gulp-plumber'
-import size from 'gulp-size'
-import cleanCss from 'gulp-clean-css'
-const cssSlam = require('css-slam')
-import autoprefixer from 'gulp-autoprefixer'
+"use strict";var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.pipeline = pipeline;exports.fragmentPipeline = exports.cssFileRegex = void 0;var _gulpPlumber = _interopRequireDefault(require("gulp-plumber"));
+var _gulpSize = _interopRequireDefault(require("gulp-size"));
+var _gulpCleanCss = _interopRequireDefault(require("gulp-clean-css"));
+const cssSlam = require('css-slam');
 
-// Other browesers configuration :
-// var AUTOPREFIXER_BROWSERS = ['last 2 versions', '> 1%', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'];
-let AUTOPREFIXER_BROWSERS = ['ie >= 10', 'ie_mob >= 10', 'ff >= 30', 'chrome >= 34', 'safari >= 7', 'opera >= 23', 'ios >= 7', 'android >= 4.4', 'bb >= 10']
 
-export const cssFileRegex = /\.css$/
 
-export const fragmentPipeline = () => [
-  // wrapped with function to produce a separate instance on invocation
-  cssSlam.gulp(),
-  cleanCss(),
-]
 
-export function pipeline() {
+let AUTOPREFIXER_BROWSERS = ['ie >= 10', 'ie_mob >= 10', 'ff >= 30', 'chrome >= 34', 'safari >= 7', 'opera >= 23', 'ios >= 7', 'android >= 4.4', 'bb >= 10'];
+
+const cssFileRegex = /\.css$/;exports.cssFileRegex = cssFileRegex;
+
+const fragmentPipeline = () => [
+
+cssSlam.gulp(),
+(0, _gulpCleanCss.default)()];exports.fragmentPipeline = fragmentPipeline;
+
+
+function pipeline() {
   return [
-    plumber(),
-    // autoprefixer({
-    //   browsers: AUTOPREFIXER_BROWSERS,
-    //   cascade: false
-    // }),
-    ...fragmentPipeline(),
-    size({ title: 'CSS' }),
-  ]
+  (0, _gulpPlumber.default)(),
+
+
+
+
+  ...fragmentPipeline(),
+  (0, _gulpSize.default)({ title: 'CSS' })];
+
 }
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uLy4uLy4uL3NvdXJjZS90cmFuc2Zvcm1QaXBlbGluZS9zdHlsZXNoZWV0LmpzIl0sIm5hbWVzIjpbImNzc1NsYW0iLCJyZXF1aXJlIiwiQVVUT1BSRUZJWEVSX0JST1dTRVJTIiwiY3NzRmlsZVJlZ2V4IiwiZnJhZ21lbnRQaXBlbGluZSIsImd1bHAiLCJwaXBlbGluZSIsInRpdGxlIl0sIm1hcHBpbmdzIjoicVBBQUE7QUFDQTtBQUNBO0FBQ0EsTUFBTUEsT0FBTyxHQUFHQyxPQUFPLENBQUMsVUFBRCxDQUF2Qjs7Ozs7QUFLQSxJQUFJQyxxQkFBcUIsR0FBRyxDQUFDLFVBQUQsRUFBYSxjQUFiLEVBQTZCLFVBQTdCLEVBQXlDLGNBQXpDLEVBQXlELGFBQXpELEVBQXdFLGFBQXhFLEVBQXVGLFVBQXZGLEVBQW1HLGdCQUFuRyxFQUFxSCxVQUFySCxDQUE1Qjs7QUFFTyxNQUFNQyxZQUFZLEdBQUcsUUFBckIsQzs7QUFFQSxNQUFNQyxnQkFBZ0IsR0FBRyxNQUFNOztBQUVwQ0osT0FBTyxDQUFDSyxJQUFSLEVBRm9DO0FBR3BDLDRCQUhvQyxDQUEvQixDOzs7QUFNQSxTQUFTQyxRQUFULEdBQW9CO0FBQ3pCLFNBQU87QUFDTCw2QkFESzs7Ozs7QUFNTCxLQUFHRixnQkFBZ0IsRUFOZDtBQU9MLHlCQUFLLEVBQUVHLEtBQUssRUFBRSxLQUFULEVBQUwsQ0FQSyxDQUFQOztBQVNEIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHBsdW1iZXIgZnJvbSAnZ3VscC1wbHVtYmVyJ1xuaW1wb3J0IHNpemUgZnJvbSAnZ3VscC1zaXplJ1xuaW1wb3J0IGNsZWFuQ3NzIGZyb20gJ2d1bHAtY2xlYW4tY3NzJ1xuY29uc3QgY3NzU2xhbSA9IHJlcXVpcmUoJ2Nzcy1zbGFtJylcbmltcG9ydCBhdXRvcHJlZml4ZXIgZnJvbSAnZ3VscC1hdXRvcHJlZml4ZXInXG5cbi8vIE90aGVyIGJyb3dlc2VycyBjb25maWd1cmF0aW9uIDpcbi8vIHZhciBBVVRPUFJFRklYRVJfQlJPV1NFUlMgPSBbJ2xhc3QgMiB2ZXJzaW9ucycsICc+IDElJywgJ3NhZmFyaSA1JywgJ2llIDgnLCAnaWUgOScsICdvcGVyYSAxMi4xJywgJ2lvcyA2JywgJ2FuZHJvaWQgNCddO1xubGV0IEFVVE9QUkVGSVhFUl9CUk9XU0VSUyA9IFsnaWUgPj0gMTAnLCAnaWVfbW9iID49IDEwJywgJ2ZmID49IDMwJywgJ2Nocm9tZSA+PSAzNCcsICdzYWZhcmkgPj0gNycsICdvcGVyYSA+PSAyMycsICdpb3MgPj0gNycsICdhbmRyb2lkID49IDQuNCcsICdiYiA+PSAxMCddXG5cbmV4cG9ydCBjb25zdCBjc3NGaWxlUmVnZXggPSAvXFwuY3NzJC9cblxuZXhwb3J0IGNvbnN0IGZyYWdtZW50UGlwZWxpbmUgPSAoKSA9PiBbXG4gIC8vIHdyYXBwZWQgd2l0aCBmdW5jdGlvbiB0byBwcm9kdWNlIGEgc2VwYXJhdGUgaW5zdGFuY2Ugb24gaW52b2NhdGlvblxuICBjc3NTbGFtLmd1bHAoKSxcbiAgY2xlYW5Dc3MoKSxcbl1cblxuZXhwb3J0IGZ1bmN0aW9uIHBpcGVsaW5lKCkge1xuICByZXR1cm4gW1xuICAgIHBsdW1iZXIoKSxcbiAgICAvLyBhdXRvcHJlZml4ZXIoe1xuICAgIC8vICAgYnJvd3NlcnM6IEFVVE9QUkVGSVhFUl9CUk9XU0VSUyxcbiAgICAvLyAgIGNhc2NhZGU6IGZhbHNlXG4gICAgLy8gfSksXG4gICAgLi4uZnJhZ21lbnRQaXBlbGluZSgpLFxuICAgIHNpemUoeyB0aXRsZTogJ0NTUycgfSksXG4gIF1cbn1cbiJdfQ==
