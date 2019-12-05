@@ -4,10 +4,7 @@ import path from 'path'
 import assert from 'assert'
 import { PerformanceObserver, performance } from 'perf_hooks'
 import AsyncHooks from 'async_hooks'
-import { Graph as GraphModule, Context as ContextModule, Database as DatabaseModule } from '@dependency/graphTraversal'
-const { Graph } = GraphModule
-const { Database } = DatabaseModule
-const { Context } = ContextModule
+import { Graph, Context, Database } from '@dependency/graphTraversal'
 import * as graphData from '../resource/taskSequence.graph.json'
 // NOTE: tasks are imported on runtime.
 
