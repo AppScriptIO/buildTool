@@ -47,14 +47,16 @@ export async function build(
 
   // pass variables through the context object.
   let contextInstance = new Context.clientInterface({
-    argumentObject,
-    targetProjectConfig: targetProject.configuration.configuration,
-    functionReferenceContext: Object.assign(require(path.join(__dirname, './function/' + taskContextName)), require(path.join(__dirname, './function/condition.js'))), // tasks context object
+    data: {
+      argumentObject,
+      targetProjectConfig: targetProject.configuration.configuration,
+      functionReferenceContext: Object.assign(require(path.join(__dirname, './function/' + taskContextName)), require(path.join(__dirname, './function/condition.js'))), // tasks context object
+    },
   })
   let configuredGraph = Graph.clientInterface({
     parameter: [{ concreteBehaviorList: [contextInstance] }],
   })
-  let graph = new configuredGraph({})
+  let graph = new configuredGraph.clientInterface({})
   graph.traversal.processNode['executeFunctionReference'] = measurePerformanceProxy(graph.traversal.processNode['executeFunctionReference']) // manipulate processing implementation callback
 
   // clear database and load graph data:
