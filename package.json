@@ -1,6 +1,6 @@
 {
 	"name": "@dependency/buildTool",
-	"version": "1.0.25",
+	"version": "1.0.26",
 	"main": "./entrypoint/programmaticAPI",
 	"scripts": {
 		"exportGraphData": "yarn run scriptManager shouldCompileScript=true @dependency/deploymentScript \".graphDataLoading.exportAllGraphData({targetPath: './resource',fileName: 'taskSequence.graph.json'})\"",
