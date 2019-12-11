@@ -724,7 +724,7 @@
     "identity": 62211,
     "start": 40912,
     "end": 40874,
-    "type": "DEFAULT",
+    "type": "FALLBACK",
     "properties": {
       "key": "b7067a2a-33e9-4f3b-922a-d41a3f7f6df0"
     }
@@ -1211,7 +1211,16 @@
     "type": "REFERENCE",
     "properties": {
       "key": "40c8347d-05a1-481f-98a4-1fae3cb1581a",
-      "resolutionImplementation": "caseSwitch"
+      "resolutionImplementation": "selection"
+    }
+  }, {
+    "identity": 362328,
+    "start": 40912,
+    "end": 40912,
+    "type": "SELECT",
+    "properties": {
+      "key": "nloiu-05a1-481f-nloi325gu-23f",
+      "order": 1
     }
   }, {
     "identity": 62275,
