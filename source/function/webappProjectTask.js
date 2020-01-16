@@ -30,18 +30,18 @@ const packageDependencyPatternMatch = '**/@package*/**/*', // `@package/...` `@p
   | (__| | |  __/ | | | |_ ___) | | (_| |  __/
    \___|_|_|\___|_| |_|\__|____/|_|\__,_|\___|
 */
-export const clientSide_jspm = ({ node, context }) => {
-  let targetProjectConfig = context.targetProjectConfig || throw new Error(`• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
+export const clientSide_jspm = ({ node, traverser }) => {
+  let targetProjectConfig = traverser.context.targetProjectConfig || throw new Error(`• traverser.context "targetProjectConfig" variable is required to run project dependent tasks.`)
   provision.installUsingPackageManager.installJspm({ jspmPath: path.join(targetProjectConfig.directory.source, '/packageManager/library.browser.jspm') })
 }
 
-export const clientSide_webcomponentYarn = ({ node, context }) => {
-  let targetProjectConfig = context.targetProjectConfig || throw new Error(`• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
+export const clientSide_webcomponentYarn = ({ node, traverser }) => {
+  let targetProjectConfig = traverser.context.targetProjectConfig || throw new Error(`• traverser.context "targetProjectConfig" variable is required to run project dependent tasks.`)
   provision.installUsingPackageManager.installYarn({ yarnPath: path.join(targetProjectConfig.directory.source, '/packageManager/webcomponent.browser.yarn/') })
 }
 
-export const clientSide_libraryYarn = ({ node, context }) => {
-  let targetProjectConfig = context.targetProjectConfig || throw new Error(`• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
+export const clientSide_libraryYarn = ({ node, traverser }) => {
+  let targetProjectConfig = traverser.context.targetProjectConfig || throw new Error(`• traverser.context "targetProjectConfig" variable is required to run project dependent tasks.`)
   provision.installUsingPackageManager.installYarn({ yarnPath: path.join(targetProjectConfig.directory.source, '/packageManager/library.browser.yarn/') })
 }
 
@@ -52,8 +52,8 @@ export const clientSide_libraryYarn = ({ node, context }) => {
     | | | | (_| | |_| |\ V /  __/ |___| | |  __/ | | | |_ ___) | | (_| |  __/
     |_| |_|\__,_|\__|_| \_/ \___|\____|_|_|\___|_| |_|\__|____/|_|\__,_|\___|
 */
-export const nativeClientSide_copySourceCode = async ({ node, context }) => {
-  let targetProjectConfig = context.targetProjectConfig || throw new Error(`• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
+export const nativeClientSide_copySourceCode = async ({ node, traverser }) => {
+  let targetProjectConfig = traverser.context.targetProjectConfig || throw new Error(`• traverser.context "targetProjectConfig" variable is required to run project dependent tasks.`)
   await provision.synchronize.recursivelySyncFile({
     source: targetProjectConfig.directory.clientSide,
     destination: targetProjectConfig.distribution.clientSide.native,
@@ -61,15 +61,15 @@ export const nativeClientSide_copySourceCode = async ({ node, context }) => {
   })
 }
 
-export const nativeClientSide_json = async ({ node, context }) => {
-  let targetProjectConfig = context.targetProjectConfig || throw new Error(`• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
+export const nativeClientSide_json = async ({ node, traverser }) => {
+  let targetProjectConfig = traverser.context.targetProjectConfig || throw new Error(`• traverser.context "targetProjectConfig" variable is required to run project dependent tasks.`)
   let basePath = targetProjectConfig.directory.clientSide
   let fileArray = await wildcardPathnameMatcher('**/*.json', { cwd: basePath, absolute: true /*always receive absolute paths*/, ignore: packageDependencyPatternMatch })
   if (fileArray.length) await pipeline(readFileAsObjectStream(fileArray, { base: basePath }), ...jsonPipeline(), writeFileFromObjectStream(targetProjectConfig.distribution.clientSide.native))
 }
 
-export const nativeClientSide_html = async ({ node, context }) => {
-  let targetProjectConfig = context.targetProjectConfig || throw new Error(`• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
+export const nativeClientSide_html = async ({ node, traverser }) => {
+  let targetProjectConfig = traverser.context.targetProjectConfig || throw new Error(`• traverser.context "targetProjectConfig" variable is required to run project dependent tasks.`)
   let basePath = targetProjectConfig.directory.clientSide
   let fileArray = await wildcardPathnameMatcher('**/*.html', { cwd: basePath, absolute: true /*always receive absolute paths*/, ignore: packageDependencyPatternMatch })
   if (fileArray.length)
@@ -80,15 +80,15 @@ export const nativeClientSide_html = async ({ node, context }) => {
     )
 }
 
-export const nativeClientSide_stylesheet = async ({ node, context }) => {
-  let targetProjectConfig = context.targetProjectConfig || throw new Error(`• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
+export const nativeClientSide_stylesheet = async ({ node, traverser }) => {
+  let targetProjectConfig = traverser.context.targetProjectConfig || throw new Error(`• traverser.context "targetProjectConfig" variable is required to run project dependent tasks.`)
   let basePath = targetProjectConfig.directory.clientSide
   let fileArray = await wildcardPathnameMatcher('**/*.css', { cwd: basePath, absolute: true /*always receive absolute paths*/, ignore: packageDependencyPatternMatch })
   if (fileArray.length) await pipeline(readFileAsObjectStream(fileArray, { base: basePath }), ...stylesheetPipeline(), writeFileFromObjectStream(targetProjectConfig.distribution.clientSide.native))
 }
 
-export const nativeClientSide_javascript = async ({ node, context }) => {
-  let targetProjectConfig = context.targetProjectConfig || throw new Error(`• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
+export const nativeClientSide_javascript = async ({ node, traverser }) => {
+  let targetProjectConfig = traverser.context.targetProjectConfig || throw new Error(`• traverser.context "targetProjectConfig" variable is required to run project dependent tasks.`)
   let basePath = targetProjectConfig.directory.clientSide
   let fileArray = await wildcardPathnameMatcher(
     [
@@ -121,20 +121,20 @@ export const nativeClientSide_javascript = async ({ node, context }) => {
     | .__/ \___/|_|\__, |_| |_|_|_|\____|_|_|\___|_| |_|\__|____/|_|\__,_|\___|
     |_|            |___/                                                       
 */
-export const polyfillClientSide_copySourceCode = ({ node, context }) => {
-  let targetProjectConfig = context.targetProjectConfig || throw new Error(`• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
+export const polyfillClientSide_copySourceCode = ({ node, traverser }) => {
+  let targetProjectConfig = traverser.context.targetProjectConfig || throw new Error(`• traverser.context "targetProjectConfig" variable is required to run project dependent tasks.`)
   provision.synchronize.recursivelySyncFile({ source: targetProjectConfig.directory.clientSide, destination: targetProjectConfig.distribution.clientSide.polyfill, copyContentOnly: true })
 }
 
-export const polyfillClientSide_json = async ({ node, context }) => {
-  let targetProjectConfig = context.targetProjectConfig || throw new Error(`• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
+export const polyfillClientSide_json = async ({ node, traverser }) => {
+  let targetProjectConfig = traverser.context.targetProjectConfig || throw new Error(`• traverser.context "targetProjectConfig" variable is required to run project dependent tasks.`)
   let basePath = targetProjectConfig.directory.clientSide
   let fileArray = await wildcardPathnameMatcher('**/*.json', { cwd: basePath, absolute: true /*always receive absolute paths*/, ignore: packageDependencyPatternMatch })
   if (fileArray.length) await pipeline(readFileAsObjectStream(fileArray, { base: basePath }), ...jsonPipeline(), writeFileFromObjectStream(targetProjectConfig.distribution.clientSide.polyfill))
 }
 
-export const polyfillClientSide_html = async ({ node, context }) => {
-  let targetProjectConfig = context.targetProjectConfig || throw new Error(`• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
+export const polyfillClientSide_html = async ({ node, traverser }) => {
+  let targetProjectConfig = traverser.context.targetProjectConfig || throw new Error(`• traverser.context "targetProjectConfig" variable is required to run project dependent tasks.`)
   let basePath = targetProjectConfig.directory.clientSide
   let fileArray = await wildcardPathnameMatcher('**/*.html', { cwd: basePath, absolute: true /*always receive absolute paths*/, ignore: packageDependencyPatternMatch })
   if (fileArray.length)
@@ -145,15 +145,15 @@ export const polyfillClientSide_html = async ({ node, context }) => {
     )
 }
 
-export const polyfillClientSide_stylesheet = async ({ node, context }) => {
-  let targetProjectConfig = context.targetProjectConfig || throw new Error(`• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
+export const polyfillClientSide_stylesheet = async ({ node, traverser }) => {
+  let targetProjectConfig = traverser.context.targetProjectConfig || throw new Error(`• traverser.context "targetProjectConfig" variable is required to run project dependent tasks.`)
   let basePath = targetProjectConfig.directory.clientSide
   let fileArray = await wildcardPathnameMatcher('**/*.css', { cwd: basePath, absolute: true /*always receive absolute paths*/, ignore: packageDependencyPatternMatch })
   if (fileArray.length) await pipeline(readFileAsObjectStream(fileArray, { base: basePath }), ...stylesheetPipeline(), writeFileFromObjectStream(targetProjectConfig.distribution.clientSide.polyfill))
 }
 
-export const polyfillClientSide_javascript = async ({ node, context }) => {
-  let targetProjectConfig = context.targetProjectConfig || throw new Error(`• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
+export const polyfillClientSide_javascript = async ({ node, traverser }) => {
+  let targetProjectConfig = traverser.context.targetProjectConfig || throw new Error(`• traverser.context "targetProjectConfig" variable is required to run project dependent tasks.`)
   let basePath = targetProjectConfig.directory.clientSide
   let fileArray = await wildcardPathnameMatcher(
     [
@@ -185,18 +185,18 @@ export const polyfillClientSide_javascript = async ({ node, context }) => {
     \__ \  __/ |   \ V /  __/ |   ___) | | (_| |  __/
     |___/\___|_|    \_/ \___|_|  |____/|_|\__,_|\___|
 */
-export const serverSide_installPackageUsingYarn = ({ node, context }) => {
-  let targetProjectConfig = context.targetProjectConfig || throw new Error(`• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
+export const serverSide_installPackageUsingYarn = ({ node, traverser }) => {
+  let targetProjectConfig = traverser.context.targetProjectConfig || throw new Error(`• traverser.context "targetProjectConfig" variable is required to run project dependent tasks.`)
   provision.installUsingPackageManager.installYarn({ yarnPath: path.join(targetProjectConfig.directory.source, '/packageManager/library.server.yarn/') })
 }
 
-export const serverSide_copyServerSide = async ({ node, context }) => {
-  let targetProjectConfig = context.targetProjectConfig || throw new Error(`• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
+export const serverSide_copyServerSide = async ({ node, traverser }) => {
+  let targetProjectConfig = traverser.context.targetProjectConfig || throw new Error(`• traverser.context "targetProjectConfig" variable is required to run project dependent tasks.`)
   await provision.synchronize.recursivelySyncFile({ source: targetProjectConfig.directory.serverSide, destination: targetProjectConfig.distribution.serverSide, copyContentOnly: true })
 }
 
-export const serverSide_copyDatabaseData = async ({ node, context }) => {
-  let targetProjectConfig = context.targetProjectConfig || throw new Error(`• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
+export const serverSide_copyDatabaseData = async ({ node, traverser }) => {
+  let targetProjectConfig = traverser.context.targetProjectConfig || throw new Error(`• traverser.context "targetProjectConfig" variable is required to run project dependent tasks.`)
   await provision.synchronize.recursivelySyncFile.recursivelySyncFile({
     source: path.join(targetProjectConfig.directory.source, 'databaseData'),
     destination: targetProjectConfig.directory.distribution,
@@ -204,8 +204,8 @@ export const serverSide_copyDatabaseData = async ({ node, context }) => {
   })
 }
 
-export const serverSide_transpileDatabaseData = async ({ node, context }) => {
-  let targetProjectConfig = context.targetProjectConfig || throw new Error(`• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
+export const serverSide_transpileDatabaseData = async ({ node, traverser }) => {
+  let targetProjectConfig = traverser.context.targetProjectConfig || throw new Error(`• traverser.context "targetProjectConfig" variable is required to run project dependent tasks.`)
   let basePath = targetProjectConfig.directory.source
   let fileArray = await wildcardPathnameMatcher('databaseData/**/*.js', { cwd: basePath, absolute: true /*always receive absolute paths*/, ignore: nodeModulePatternMatch })
   if (fileArray.length)
@@ -216,8 +216,8 @@ export const serverSide_transpileDatabaseData = async ({ node, context }) => {
     )
 }
 
-export const serverSide_transpileServerSide = async ({ node, context }) => {
-  let targetProjectConfig = context.targetProjectConfig || throw new Error(`• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
+export const serverSide_transpileServerSide = async ({ node, traverser }) => {
+  let targetProjectConfig = traverser.context.targetProjectConfig || throw new Error(`• traverser.context "targetProjectConfig" variable is required to run project dependent tasks.`)
   let basePath = targetProjectConfig.directory.serverSide
   let fileArray = await wildcardPathnameMatcher('**/*.js', { cwd: basePath, absolute: true /*always receive absolute paths*/, ignore: nodeModulePatternMatch })
   if (fileArray.length)

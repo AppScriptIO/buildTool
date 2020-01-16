@@ -22,13 +22,13 @@ import { transpileSourcePath } from '@dependency/javascriptTranspilation'
 const packageDependencyPatternMatch = '**/@package*/**/*', // `@package/...` `@package-x/...`
   nodeModulePatternMatch = '**/node_modules/**/*'
 
-export const module_installYarn = ({ node, context }) => {
-  let targetProjectConfig = context.targetProjectConfig || throw new Error(`• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
+export const module_installYarn = ({ node, traverser }) => {
+  let targetProjectConfig = traverser.context.targetProjectConfig || throw new Error(`• traverser.context "targetProjectConfig" variable is required to run project dependent tasks.`)
   provision.installUsingPackageManager.installYarn({ yarnPath: path.join(targetProjectConfig.directory.source) })
 }
 
-export const removeDistributionFolder = async ({ node, context }) => {
-  let targetProjectConfig = context.targetProjectConfig || throw new Error(`• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
+export const removeDistributionFolder = async ({ node, traverser }) => {
+  let targetProjectConfig = traverser.context.targetProjectConfig || throw new Error(`• traverser.context "targetProjectConfig" variable is required to run project dependent tasks.`)
   // https://pubs.opengroup.org/onlinepubs/9699919799/functions/rmdir.html
   // https://www.unix.com/man-page/posix/3posix/rmdir/
   let fileStat = await filesystem.lstat(targetProjectConfig.directory.distribution).catch(error => (error.code == 'ENOENT' ? false : console.error(error)))
@@ -37,29 +37,29 @@ export const removeDistributionFolder = async ({ node, context }) => {
   await filesystem.mkdir(targetProjectConfig.directory.distribution, { recursive: true })
 }
 
-export const copyYarnLockfile = async ({ node, context }) => {
-  let targetProjectConfig = context.targetProjectConfig || throw new Error(`• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
+export const copyYarnLockfile = async ({ node, traverser }) => {
+  let targetProjectConfig = traverser.context.targetProjectConfig || throw new Error(`• traverser.context "targetProjectConfig" variable is required to run project dependent tasks.`)
   let filePath = path.join(targetProjectConfig.directory.root, 'yarn.lock')
   let fileStat = await filesystem.lstat(filePath).catch(error => (error.code == 'ENOENT' ? false : console.error(error)))
   if (fileStat && fileStat.isFile()) await provision.synchronize.copyFileAndSymlink({ source: filePath, destination: targetProjectConfig.directory.distribution })
 }
 
-export const transpilePackageDependency = async ({ node, context }) => {
-  let targetProjectConfig = context.targetProjectConfig || throw new Error(`• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
+export const transpilePackageDependency = async ({ node, traverser }) => {
+  let targetProjectConfig = traverser.context.targetProjectConfig || throw new Error(`• traverser.context "targetProjectConfig" variable is required to run project dependent tasks.`)
   let sourceRelativePath = './package.json'
   await transpileSourcePath({ source: sourceRelativePath, destination: targetProjectConfig.directory.distribution, basePath: targetProjectConfig.directory.root })
   // remove dev dependenices
   // TODO: - remove dev dependencies from package.json.
 }
 
-export const transpileTarget = async ({ node, context }) => {
-  let targetProjectConfig = context.targetProjectConfig || throw new Error(`• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
+export const transpileTarget = async ({ node, traverser }) => {
+  let targetProjectConfig = traverser.context.targetProjectConfig || throw new Error(`• traverser.context "targetProjectConfig" variable is required to run project dependent tasks.`)
   let sourceRelativePath = node.properties?.relativePath || throw new Error(`• relativePath must exist on stage node that uses this condition for evaluation.`)
   return await transpileSourcePath({ source: sourceRelativePath, destination: targetProjectConfig.directory.distribution, basePath: targetProjectConfig.directory.root })
 }
 
-export const entrypointProgrammaticAPI = async ({ node, context }) => {
-  let targetProjectConfig = context.targetProjectConfig || throw new Error(`• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
+export const entrypointProgrammaticAPI = async ({ node, traverser }) => {
+  let targetProjectConfig = traverser.context.targetProjectConfig || throw new Error(`• traverser.context "targetProjectConfig" variable is required to run project dependent tasks.`)
 
   let enrtypointKey = 'programmaticAPI'
   if (!targetProjectConfig?.entrypoint || !targetProjectConfig?.entrypoint[enrtypointKey]) return
@@ -79,8 +79,8 @@ export const entrypointProgrammaticAPI = async ({ node, context }) => {
   await filesystem.appendFile(filePath, content, { encoding: 'utf8' })
 }
 
-export const entryointCLI = async ({ node, context }) => {
-  let targetProjectConfig = context.targetProjectConfig || throw new Error(`• Context "targetProjectConfig" variable is required to run project dependent tasks.`)
+export const entryointCLI = async ({ node, traverser }) => {
+  let targetProjectConfig = traverser.context.targetProjectConfig || throw new Error(`• traverser.context "targetProjectConfig" variable is required to run project dependent tasks.`)
 
   let enrtypointKey = 'cli'
   if (!targetProjectConfig?.entrypoint || !targetProjectConfig?.entrypoint[enrtypointKey]) return

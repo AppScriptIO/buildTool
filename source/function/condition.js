@@ -9,12 +9,12 @@ const normalizeArray = array => array.map(p => path.normalize(p))
  * 3. Project configuration values that would be checked
  *    e.g. `project.configuration.build.compile = ['./source', './script' ]`
  */
-export const shouldTranspile = ({ node, context, traverseCallContext }) => {
+export const shouldTranspile = ({ node, traverser, traverseCallContext }) => {
   let targetNode = traverseCallContext.targetNode ? traverseCallContext.targetNode : node // object to check the condition on.
   // Requires `context.targetProjectConfig` property to be provided.
-  let argumentObject = context?.argumentObject // directly passed parameters to the Context instance of the configured graph.
-  let targetProjectConfig = context?.targetProjectConfig // parameters in the configuration file.
-  assert(targetProjectConfig, `• Context "targetProjectConfig" variable is required to run project dependent conditions.`)
+  let argumentObject = traverser.context?.argumentObject // directly passed parameters to the Context instance of the configured graph.
+  let targetProjectConfig = traverser.context?.targetProjectConfig // parameters in the configuration file.
+  assert(targetProjectConfig, `• traverser.context "targetProjectConfig" variable is required to run project dependent conditions.`)
   let currentNodeDirectory = targetNode.properties?.relativePath && path.normalize(targetNode.properties.relativePath)
   assert(currentNodeDirectory, `• relativePath must exist on stage targetNode that uses this condition for evaluation.`)
   let parameterCompileArray = argumentObject?.compile || [] |> normalizeArray

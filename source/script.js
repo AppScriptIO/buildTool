@@ -65,20 +65,20 @@ export async function build(
   traverser.implementation.processNode['executeFunctionReference'] = measurePerformanceProxy(traverser.implementation.processNode['executeFunctionReference']) // manipulate processing implementation callback
 
   // clear database and load graph data:
-  await clearDatabase(graph.database)
+  await clearDatabase(graph.database.implementation)
   assert(Array.isArray(graphData.node) && Array.isArray(graphData.edge), `• Unsupported graph data strcuture- ${graphData.edge} - ${graphData.node}`)
-  await graph.database.loadGraphData({ nodeEntryData: graphData.node, connectionEntryData: graphData.edge })
+  await graph.load({ graphData })
   console.log(`• Graph in-memory database was cleared and 'resource' graph data was loaded.`)
 
   try {
     let result = await graph.traverse({ traverser, nodeKey: entryNodeKey, implementationKey: { processNode: 'executeFunctionReference', evaluatePosition: 'evaluateConditionReference' } })
   } catch (error) {
     console.error(error)
-    await graph.database.driverInstance.close()
+    await graph.database.implementation.driverInstance.close()
     process.exit()
   }
   // let result = graph.traverse({ nodeKey: '9160338f-6990-4957-9506-deebafdb6e29' })
-  await graph.database.driverInstance.close()
+  await graph.database.implementation.driverInstance.close()
 }
 
 const measurePerformanceProxy = callback =>
