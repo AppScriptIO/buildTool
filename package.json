@@ -47,7 +47,7 @@
 	},
 	"devDependencies": {
 		"@dependency/deploymentProvisioning": "https://github.com/AppScriptIO/deploymentProvisioning#semver:^1.x.x",
-		"@dependency/deploymentScript": "https://github.com/AppScriptIO/deploymentScript#semver:1.x.x",
+		"@dependency/deploymentScript": "https://github.com/AppScriptIO/deploymentScript#semver:2.x.x",
 		"@dependency/javascriptStaticAnalysis": "https://github.com/AppScriptIO/javascriptStaticAnalysis#semver:^1.x.x",
 		"@dependency/scriptManager": "https://github.com/AppScriptIO/scriptManager#semver:^1.x.x",
 		"typescript": "*"
