@@ -4,7 +4,7 @@ import path from 'path'
 import assert from 'assert'
 import { PerformanceObserver, performance } from 'perf_hooks'
 import AsyncHooks from 'async_hooks'
-import { Graph, Context, Database } from '@dependency/graphTraversal'
+import { Graph, Context, Database, Traverser } from '@dependency/graphTraversal'
 import * as graphData from '../resource/taskSequence.graph.json'
 // NOTE: tasks are imported on runtime.
 
@@ -53,11 +53,16 @@ export async function build(
       functionReferenceContext: Object.assign(require(path.join(__dirname, './function/' + taskContextName)), require(path.join(__dirname, './function/condition.js'))), // tasks context object
     },
   })
-  let configuredGraph = Graph.clientInterface({
+  let configuredTraverser = Traverser.clientInterface({
     parameter: [{ concreteBehaviorList: [contextInstance] }],
   })
+  let configuredGraph = Graph.clientInterface({
+    parameter: [{ configuredTraverser, concreteBehaviorList: [] }],
+  })
+
   let graph = new configuredGraph.clientInterface({})
-  graph.traversal.processNode['executeFunctionReference'] = measurePerformanceProxy(graph.traversal.processNode['executeFunctionReference']) // manipulate processing implementation callback
+  let traverser = new graph.configuredTraverser.clientInterface()
+  traverser.implementation.processNode['executeFunctionReference'] = measurePerformanceProxy(traverser.implementation.processNode['executeFunctionReference']) // manipulate processing implementation callback
 
   // clear database and load graph data:
   await clearDatabase(graph.database)
@@ -66,7 +71,7 @@ export async function build(
   console.log(`• Graph in-memory database was cleared and 'resource' graph data was loaded.`)
 
   try {
-    let result = await graph.traverse({ nodeKey: entryNodeKey, implementationKey: { processNode: 'executeFunctionReference', evaluatePosition: 'evaluateConditionReference' } })
+    let result = await graph.traverse({ traverser, nodeKey: entryNodeKey, implementationKey: { processNode: 'executeFunctionReference', evaluatePosition: 'evaluateConditionReference' } })
   } catch (error) {
     console.error(error)
     await graph.database.driverInstance.close()
