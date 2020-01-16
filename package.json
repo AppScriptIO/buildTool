@@ -1,6 +1,6 @@
 {
 	"name": "@dependency/buildTool",
-	"version": "2.0.2",
+	"version": "2.0.3",
 	"main": "./entrypoint/programmaticAPI",
 	"scripts": {
 		"exportGraphData": "yarn run scriptManager shouldCompileScript=true @dependency/deploymentScript \".graphDataLoading.exportAllGraphData({targetPath: './resource',fileName: 'taskSequence.graph.json'})\"",
@@ -47,7 +47,7 @@
 	},
 	"devDependencies": {
 		"@dependency/deploymentProvisioning": "https://github.com/AppScriptIO/deploymentProvisioning#semver:^1.x.x",
-		"@dependency/deploymentScript": "https://github.com/AppScriptIO/deploymentScript#semver:^1.x.x",
+		"@dependency/deploymentScript": "https://github.com/AppScriptIO/deploymentScript#semver:1.x.x",
 		"@dependency/javascriptStaticAnalysis": "https://github.com/AppScriptIO/javascriptStaticAnalysis#semver:^1.x.x",
 		"@dependency/scriptManager": "https://github.com/AppScriptIO/scriptManager#semver:^1.x.x",
 		"typescript": "*"
