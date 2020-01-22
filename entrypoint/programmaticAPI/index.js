@@ -8,8 +8,8 @@ if (filesystem.existsSync(projectConfig.directory.distribution)) {
 } else {
   // • Transpilation (babelJSCompiler)
   const { Compiler } = require('@dependency/javascriptTranspilation')
-  let compiler = new Compiler({ callerPath: __dirname, debugKey: __dirname })
-  compiler.requireHook({ restrictToTargetProject: false, matchTargetFile: false }) // `restrictToTargetProject` is off for fixing an issue in circular dependencies when this package and it's dependencies symlink each other.
+  let compiler = new Compiler({ callerPath: __dirname, babelConfig: {ignore: [] /*override default ignore list*/} })
+  compiler.requireHook({ restrictToTargetProject: false }) // `restrictToTargetProject` is off for fixing an issue in circular dependencies when this package and it's dependencies symlink each other.
   module.exports = require(path.join(projectConfig.directory.source, projectConfig.entrypoint.programmaticAPI))
   // process.on('exit', () => {
   //   console.log(compiler.loadedFiles.map(value => value.filename))
