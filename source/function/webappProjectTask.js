@@ -9,7 +9,7 @@ import mergeStream from 'merge-stream'
 import { src as readFileAsObjectStream, dest as writeFileFromObjectStream } from 'vinyl-fs'
 import original_wildcardPathnameMatcher from 'glob' // Alternative modules - `globby`, `glob`, `glob-stream`
 const wildcardPathnameMatcher = util.promisify(original_wildcardPathnameMatcher)
-import * as provision from '@dependency/deploymentProvisioning'
+import * as provision from '@deployment/deploymentProvisioning'
 import { pipeline as htmlPipeline } from '../transformPipeline/html.js'
 import { pipeline as imagePipeline } from '../transformPipeline/image.js'
 import { clientJSPipeline, serverJSPipeline } from '../transformPipeline/javascript.js'

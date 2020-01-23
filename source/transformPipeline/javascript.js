@@ -6,7 +6,7 @@ import babel from 'gulp-babel'
 import debug from 'gulp-debug'
 import size from 'gulp-size'
 import jsMinify from 'gulp-uglify'
-import { getBabelConfig } from '@dependency/javascriptTranspilation'
+import { getBabelConfig } from '@deployment/javascriptTranspilation'
 
 export const jsFileRegex = /\.js$/
 

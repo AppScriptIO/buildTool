@@ -11,14 +11,14 @@ const rimraf = util.promisify(rimrafCallback)
 import { src as readFileAsObjectStream, dest as writeFileFromObjectStream } from 'vinyl-fs'
 import original_wildcardPathnameMatcher from 'glob' // Alternative modules - `globby`, `glob`, `glob-stream`
 const wildcardPathnameMatcher = util.promisify(original_wildcardPathnameMatcher)
-import * as provision from '@dependency/deploymentProvisioning'
+import * as provision from '@deployment/deploymentProvisioning'
 import { pipeline as htmlPipeline } from '../transformPipeline/html.js'
 import { pipeline as imagePipeline } from '../transformPipeline/image.js'
 import { clientJSPipeline, serverJSPipeline } from '../transformPipeline/javascript.js'
 import { pipeline as jsonPipeline } from '../transformPipeline/json.js'
 import { pipeline as stylesheetPipeline } from '../transformPipeline/stylesheet.js'
 import { convertArrayToMultiplePatternGlob } from '../utility/convertArrayToMultiplePatternGlob.js'
-import { transpileSourcePath } from '@dependency/javascriptTranspilation'
+import { transpileSourcePath } from '@deployment/javascriptTranspilation'
 const packageDependencyPatternMatch = '**/@package*/**/*', // `@package/...` `@package-x/...`
   nodeModulePatternMatch = '**/node_modules/**/*'
 
