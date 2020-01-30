@@ -10,6 +10,7 @@ import { src as readFileAsObjectStream, dest as writeFileFromObjectStream } from
 import original_wildcardPathnameMatcher from 'glob' // Alternative modules - `globby`, `glob`, `glob-stream`
 const wildcardPathnameMatcher = util.promisify(original_wildcardPathnameMatcher)
 import * as provision from '@deployment/deploymentProvisioning'
+import { recursivelySyncFile } from "@dependency/handleFilesystemOperation";
 import { pipeline as htmlPipeline } from '../transformPipeline/html.js'
 import { pipeline as imagePipeline } from '../transformPipeline/image.js'
 import { clientJSPipeline, serverJSPipeline } from '../transformPipeline/javascript.js'
@@ -54,7 +55,7 @@ export const clientSide_libraryYarn = ({ node, traverser }) => {
 */
 export const nativeClientSide_copySourceCode = async ({ node, traverser }) => {
   let targetProjectConfig = traverser.context.targetProjectConfig || throw new Error(`• traverser.context "targetProjectConfig" variable is required to run project dependent tasks.`)
-  await provision.synchronize.recursivelySyncFile({
+  await recursivelySyncFile({
     source: targetProjectConfig.directory.clientSide,
     destination: targetProjectConfig.distribution.clientSide.native,
     copyContentOnly: true,
@@ -123,7 +124,7 @@ export const nativeClientSide_javascript = async ({ node, traverser }) => {
 */
 export const polyfillClientSide_copySourceCode = ({ node, traverser }) => {
   let targetProjectConfig = traverser.context.targetProjectConfig || throw new Error(`• traverser.context "targetProjectConfig" variable is required to run project dependent tasks.`)
-  provision.synchronize.recursivelySyncFile({ source: targetProjectConfig.directory.clientSide, destination: targetProjectConfig.distribution.clientSide.polyfill, copyContentOnly: true })
+  recursivelySyncFile({ source: targetProjectConfig.directory.clientSide, destination: targetProjectConfig.distribution.clientSide.polyfill, copyContentOnly: true })
 }
 
 export const polyfillClientSide_json = async ({ node, traverser }) => {
@@ -192,12 +193,12 @@ export const serverSide_installPackageUsingYarn = ({ node, traverser }) => {
 
 export const serverSide_copyServerSide = async ({ node, traverser }) => {
   let targetProjectConfig = traverser.context.targetProjectConfig || throw new Error(`• traverser.context "targetProjectConfig" variable is required to run project dependent tasks.`)
-  await provision.synchronize.recursivelySyncFile({ source: targetProjectConfig.directory.serverSide, destination: targetProjectConfig.distribution.serverSide, copyContentOnly: true })
+  await recursivelySyncFile({ source: targetProjectConfig.directory.serverSide, destination: targetProjectConfig.distribution.serverSide, copyContentOnly: true })
 }
 
 export const serverSide_copyDatabaseData = async ({ node, traverser }) => {
   let targetProjectConfig = traverser.context.targetProjectConfig || throw new Error(`• traverser.context "targetProjectConfig" variable is required to run project dependent tasks.`)
-  await provision.synchronize.recursivelySyncFile.recursivelySyncFile({
+  await recursivelySyncFile.recursivelySyncFile({
     source: path.join(targetProjectConfig.directory.source, 'databaseData'),
     destination: targetProjectConfig.directory.distribution,
     copyContentOnly: false,

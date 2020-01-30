@@ -12,6 +12,7 @@ import { src as readFileAsObjectStream, dest as writeFileFromObjectStream } from
 import original_wildcardPathnameMatcher from 'glob' // Alternative modules - `globby`, `glob`, `glob-stream`
 const wildcardPathnameMatcher = util.promisify(original_wildcardPathnameMatcher)
 import * as provision from '@deployment/deploymentProvisioning'
+import { copyFileAndSymlink } from '@deployment/handleFilesystemOperation'
 import { pipeline as htmlPipeline } from '../transformPipeline/html.js'
 import { pipeline as imagePipeline } from '../transformPipeline/image.js'
 import { clientJSPipeline, serverJSPipeline } from '../transformPipeline/javascript.js'
@@ -41,7 +42,7 @@ export const copyYarnLockfile = async ({ node, traverser }) => {
   let targetProjectConfig = traverser.context.targetProjectConfig || throw new Error(`• traverser.context "targetProjectConfig" variable is required to run project dependent tasks.`)
   let filePath = path.join(targetProjectConfig.directory.root, 'yarn.lock')
   let fileStat = await filesystem.lstat(filePath).catch(error => (error.code == 'ENOENT' ? false : console.error(error)))
-  if (fileStat && fileStat.isFile()) await provision.synchronize.copyFileAndSymlink({ source: filePath, destination: targetProjectConfig.directory.distribution })
+  if (fileStat && fileStat.isFile()) await copyFileAndSymlink({ source: filePath, destination: targetProjectConfig.directory.distribution })
 }
 
 export const transpilePackageDependency = async ({ node, traverser }) => {

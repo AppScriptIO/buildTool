@@ -1,8 +1,7 @@
 import filesystem from 'fs'
 import { removeSync } from 'fs-extra'
 
-import { buildAndRelease, packageVersion, release } from '@deployment/deploymentScript'
-import { memgraphContainer } from '@deployment/deploymentProvisioning'
+import { buildAndRelease, packageVersion, release, memgraphContainer } from '@deployment/deploymentScript'
 import { moduleProject as buildModuleProject } from './buildSourceCode.js'
 const { bumpVersion } = packageVersion
 const { createGithubBranchedRelease } = release
