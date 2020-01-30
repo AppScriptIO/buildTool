@@ -1,6 +1,6 @@
 {
 	"name": "@deployment/buildTool",
-	"version": "2.3.2",
+	"version": "2.3.3",
 	"main": "./entrypoint/programmaticAPI",
 	"scripts": {
 		"exportGraphData": "yarn run scriptManager shouldCompileScript=true @deployment/deploymentScript \".graphDataLoading.exportAllGraphData({targetPath: './resource',fileName: 'taskSequence.graph.json'})\"",
@@ -12,8 +12,8 @@
 	"dependencies": {
 		"@dependency/fragmentIndentationObjectStream": "https://github.com/AppScriptIO/fragmentIndentationObjectStream#semver:^1.x.x",
 		"@dependency/graphTraversal": "https://github.com/AppScriptIO/graphTraversal#semver:4.x.x",
+		"@dependency/handleFilesystemOperation": "https://github.com/AppScriptIO/handleFilesystemOperation#semver:^2.x.x",
 		"@deployment/deploymentProvisioning": "https://github.com/AppScriptIO/deploymentProvisioning#semver:^2.x.x",
-		"@deployment/handleFilesystemOperation": "https://github.com/AppScriptIO/handleFilesystemOperation#semver:^2.x.x",
 		"@deployment/javascriptTranspilation": "https://github.com/AppScriptIO/javascriptTranspilation#semver:^2.x.x",
 		"command-exists": "*",
 		"css-slam": "*",
