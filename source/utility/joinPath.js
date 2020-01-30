@@ -1,8 +1,9 @@
-const checktype = require('type-of-is')
-const path = require('path')
+"use strict";Object.defineProperty(exports, "__esModule", { value: true });exports.default = joinPath;const checktype = require('type-of-is');
+const path = require('path');
 
-export default function joinPath(mainpath: String, subpath: [String]) {
-  if (subpath == null || typeof subpath === 'undefined') return mainpath
-  if (checktype(subpath, String)) return path.join(mainpath, subpath)
-  else return subpath.map(value => path.join(mainpath, value))
+function joinPath(mainpath, subpath) {
+  if (subpath == null || typeof subpath === 'undefined') return mainpath;
+  if (checktype(subpath, String)) return path.join(mainpath, subpath);else
+  return subpath.map(value => path.join(mainpath, value));
 }
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uLy4uLy4uL3NvdXJjZS91dGlsaXR5L2pvaW5QYXRoLmpzIl0sIm5hbWVzIjpbImNoZWNrdHlwZSIsInJlcXVpcmUiLCJwYXRoIiwiam9pblBhdGgiLCJtYWlucGF0aCIsInN1YnBhdGgiLCJTdHJpbmciLCJqb2luIiwibWFwIiwidmFsdWUiXSwibWFwcGluZ3MiOiJzR0FBQSxNQUFNQSxTQUFTLEdBQUdDLE9BQU8sQ0FBQyxZQUFELENBQXpCO0FBQ0EsTUFBTUMsSUFBSSxHQUFHRCxPQUFPLENBQUMsTUFBRCxDQUFwQjs7QUFFZSxTQUFTRSxRQUFULENBQWtCQyxRQUFsQixFQUFvQ0MsT0FBcEMsRUFBdUQ7QUFDcEUsTUFBSUEsT0FBTyxJQUFJLElBQVgsSUFBbUIsT0FBT0EsT0FBUCxLQUFtQixXQUExQyxFQUF1RCxPQUFPRCxRQUFQO0FBQ3ZELE1BQUlKLFNBQVMsQ0FBQ0ssT0FBRCxFQUFVQyxNQUFWLENBQWIsRUFBZ0MsT0FBT0osSUFBSSxDQUFDSyxJQUFMLENBQVVILFFBQVYsRUFBb0JDLE9BQXBCLENBQVAsQ0FBaEM7QUFDSyxTQUFPQSxPQUFPLENBQUNHLEdBQVIsQ0FBWUMsS0FBSyxJQUFJUCxJQUFJLENBQUNLLElBQUwsQ0FBVUgsUUFBVixFQUFvQkssS0FBcEIsQ0FBckIsQ0FBUDtBQUNOIiwic291cmNlc0NvbnRlbnQiOlsiY29uc3QgY2hlY2t0eXBlID0gcmVxdWlyZSgndHlwZS1vZi1pcycpXG5jb25zdCBwYXRoID0gcmVxdWlyZSgncGF0aCcpXG5cbmV4cG9ydCBkZWZhdWx0IGZ1bmN0aW9uIGpvaW5QYXRoKG1haW5wYXRoOiBTdHJpbmcsIHN1YnBhdGg6IFtTdHJpbmddKSB7XG4gIGlmIChzdWJwYXRoID09IG51bGwgfHwgdHlwZW9mIHN1YnBhdGggPT09ICd1bmRlZmluZWQnKSByZXR1cm4gbWFpbnBhdGhcbiAgaWYgKGNoZWNrdHlwZShzdWJwYXRoLCBTdHJpbmcpKSByZXR1cm4gcGF0aC5qb2luKG1haW5wYXRoLCBzdWJwYXRoKVxuICBlbHNlIHJldHVybiBzdWJwYXRoLm1hcCh2YWx1ZSA9PiBwYXRoLmpvaW4obWFpbnBhdGgsIHZhbHVlKSlcbn1cbiJdfQ==
