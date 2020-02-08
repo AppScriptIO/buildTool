@@ -39,6 +39,7 @@ process.on('unhandledRejection', error => {
   throw error
 })
 
+// TODO: Fix webappProject resource data.
 export async function build(
   { entryNodeKey, taskContextName /*The object of tasks to use as reference from database graph*/, targetProject /*passed through scriptManager*/, memgraph = {} } = {},
   argumentObject, // second argument holds parameters that maybe used in the node execution functions.
