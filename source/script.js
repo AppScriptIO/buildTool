@@ -5,6 +5,7 @@ import assert from 'assert'
 import { PerformanceObserver, performance } from 'perf_hooks'
 import AsyncHooks from 'async_hooks'
 import { Graph, Context, Database, Traverser } from '@dependency/graphTraversal'
+import * as implementation from '@dependency/graphTraversal-implementation'
 import * as graphData from '../resource/taskSequence.graph.json'
 // NOTE: tasks are imported on runtime.
 
@@ -39,11 +40,18 @@ process.on('unhandledRejection', error => {
 })
 
 export async function build(
-  { entryNodeKey, taskContextName /*The object of tasks to use as reference from database graph*/, targetProject /*passed through scriptManager*/, memgraph } = {},
+  { entryNodeKey, taskContextName /*The object of tasks to use as reference from database graph*/, targetProject /*passed through scriptManager*/, memgraph = {} } = {},
   argumentObject, // second argument holds parameters that maybe used in the node execution functions.
 ) {
   assert(entryNodeKey, `• No entryNodeKey for graph traversal was passed.`)
   const targetProjectRoot = targetProject.configuration.rootPath
+
+  let concreteDatabaseBehavior = new Database.clientInterface({
+    implementationList: {
+      boltCypher: implementation.database.boltCypherModelAdapterFunction({ url: { protocol: 'bolt', hostname: memgraph.host || 'localhost', port: memgraph.port || 7687 } }),
+    },
+    defaultImplementation: 'boltCypher',
+  })
 
   // pass variables through the context object.
   let contextInstance = new Context.clientInterface({
@@ -56,8 +64,15 @@ export async function build(
   let configuredTraverser = Traverser.clientInterface({
     parameter: [{ concreteBehaviorList: [contextInstance] }],
   })
+
   let configuredGraph = Graph.clientInterface({
-    parameter: [{ configuredTraverser, concreteBehaviorList: [] }],
+    parameter: [
+      {
+        database: concreteDatabaseBehavior,
+        configuredTraverser,
+        concreteBehaviorList: [],
+      },
+    ],
   })
 
   let graph = new configuredGraph.clientInterface({})

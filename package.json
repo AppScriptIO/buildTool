@@ -12,6 +12,7 @@
 	"dependencies": {
 		"@dependency/fragmentIndentationObjectStream": "https://github.com/AppScriptIO/fragmentIndentationObjectStream#semver:^1.x.x",
 		"@dependency/graphTraversal": "https://github.com/AppScriptIO/graphTraversal#semver:4.x.x",
+		"@dependency/graphTraversal-implementation": "https://github.com/AppScriptIO/graphTraversal-implementation#semver:4.x.x",
 		"@dependency/handleFilesystemOperation": "https://github.com/AppScriptIO/handleFilesystemOperation#semver:^2.x.x",
 		"@deployment/deploymentProvisioning": "https://github.com/AppScriptIO/deploymentProvisioning#semver:^2.x.x",
 		"@deployment/javascriptTranspilation": "https://github.com/AppScriptIO/javascriptTranspilation#semver:^2.x.x",
