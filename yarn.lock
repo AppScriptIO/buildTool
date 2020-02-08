@@ -950,8 +950,9 @@
   version "1.0.3"
   resolved "https://github.com/AppScriptIO/fragmentIndentationObjectStream#c1fb724c0e1fdcf62de7d3c6ea5bc8f1fbe35c53"
 
-"@dependency/graphTraversal-implementation@https://github.com/AppScriptIO/graphTraversal-implementation#semver:^4.x.x":
+"@dependency/graphTraversal-implementation@https://github.com/AppScriptIO/graphTraversal-implementation#semver:4.x.x", "@dependency/graphTraversal-implementation@https://github.com/AppScriptIO/graphTraversal-implementation#semver:^4.x.x":
   version "4.2.4"
+  uid "1a9e39a5b6cd1ee0502190622783cfc115f1ee00"
   resolved "https://github.com/AppScriptIO/graphTraversal-implementation#1a9e39a5b6cd1ee0502190622783cfc115f1ee00"
   dependencies:
     neo4j-driver "^1.7.5"
@@ -1043,8 +1044,8 @@
   resolved "https://github.com/AppScriptIO/promiseProperRace#a1ceb5ff9707b78e2d72876955c23f829a0830d5"
 
 "@deployment/buildTool@https://github.com/AppScriptIO/buildTool#semver:^2.x.x":
-  version "2.3.3"
-  resolved "https://github.com/AppScriptIO/buildTool#8f98dfabffa5a2e691c21cb1ce7c3cc930f1b924"
+  version "2.3.5"
+  resolved "https://github.com/AppScriptIO/buildTool#5a485218e21817ddf5fa295d889453bf25eedf9a"
   dependencies:
     "@dependency/fragmentIndentationObjectStream" "https://github.com/AppScriptIO/fragmentIndentationObjectStream#semver:^1.x.x"
     "@dependency/graphTraversal" "https://github.com/AppScriptIO/graphTraversal#semver:4.x.x"
