@@ -5,6 +5,7 @@ import assert from 'assert'
 import { PerformanceObserver, performance } from 'perf_hooks'
 import AsyncHooks from 'async_hooks'
 import { Graph, Context, Database, Traverser } from '@dependency/graphTraversal'
+import { container } from '@deployment/deploymentScript'
 import * as graphData from '../resource/taskSequence.graph.json'
 // NOTE: tasks are imported on runtime.
 
@@ -39,7 +40,7 @@ process.on('unhandledRejection', error => {
 })
 
 export async function build(
-  { entryNodeKey, taskContextName /*The object of tasks to use as reference from database graph*/, targetProject /*passed through scriptManager*/ },
+  { entryNodeKey, taskContextName /*The object of tasks to use as reference from database graph*/, targetProject /*passed through scriptManager*/, memgraph } = {},
   argumentObject, // second argument holds parameters that maybe used in the node execution functions.
 ) {
   assert(entryNodeKey, `• No entryNodeKey for graph traversal was passed.`)
@@ -65,7 +66,7 @@ export async function build(
   traverser.implementation.processNode['executeFunctionReference'] = measurePerformanceProxy(traverser.implementation.processNode['executeFunctionReference']) // manipulate processing implementation callback
 
   // clear database and load graph data:
-  await clearDatabase(graph.database.implementation)
+  await container.memgraph.clearGraphData({ memgraph, connectionDriver: graph.database.implementation.driverInstance })
   assert(Array.isArray(graphData.node) && Array.isArray(graphData.edge), `• Unsupported graph data strcuture- ${graphData.edge} - ${graphData.node}`)
   await graph.load({ graphData })
   console.log(`• Graph in-memory database was cleared and 'resource' graph data was loaded.`)
@@ -98,11 +99,3 @@ const measurePerformanceProxy = callback =>
       return result
     },
   })
-
-async function clearDatabase(concereteDatabase) {
-  // Delete all nodes in the in-memory database
-  const graphDBDriver = concereteDatabase.driverInstance
-  let session = await graphDBDriver.session()
-  await session.run(`match (n) detach delete n`)
-  session.close()
-}
