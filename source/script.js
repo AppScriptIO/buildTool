@@ -5,7 +5,6 @@ import assert from 'assert'
 import { PerformanceObserver, performance } from 'perf_hooks'
 import AsyncHooks from 'async_hooks'
 import { Graph, Context, Database, Traverser } from '@dependency/graphTraversal'
-import { container } from '@deployment/deploymentScript'
 import * as graphData from '../resource/taskSequence.graph.json'
 // NOTE: tasks are imported on runtime.
 
@@ -65,8 +64,6 @@ export async function build(
   let traverser = new graph.configuredTraverser.clientInterface()
   traverser.implementation.processNode['executeFunctionReference'] = measurePerformanceProxy(traverser.implementation.processNode['executeFunctionReference']) // manipulate processing implementation callback
 
-  // clear database and load graph data:
-  await container.memgraph.clearGraphData({ memgraph, connectionDriver: graph.database.implementation.driverInstance })
   assert(Array.isArray(graphData.node) && Array.isArray(graphData.edge), `• Unsupported graph data strcuture- ${graphData.edge} - ${graphData.node}`)
   await graph.load({ graphData })
   console.log(`• Graph in-memory database was cleared and 'resource' graph data was loaded.`)
