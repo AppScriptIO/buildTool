@@ -1,103 +1,104 @@
-import path from 'path'
-import { promises as filesystem } from 'fs'
-import assert from 'assert'
-import util from 'util'
-import stream from 'stream'
-const pipeline = util.promisify(stream.pipeline)
-import mergeStream from 'merge-stream'
-import rimrafCallback from 'rimraf'
-const rimraf = util.promisify(rimrafCallback)
-// https://github.com/gulpjs/vinyl-fs#destfolder-options & https://gulpjs.com/docs/en/api/src
-import { src as readFileAsObjectStream, dest as writeFileFromObjectStream } from 'vinyl-fs'
-import original_wildcardPathnameMatcher from 'glob' // Alternative modules - `globby`, `glob`, `glob-stream`
-const wildcardPathnameMatcher = util.promisify(original_wildcardPathnameMatcher)
-import * as provision from '@deployment/deploymentProvisioning'
-import { copyFileAndSymlink } from '@dependency/handleFilesystemOperation'
-import { pipeline as htmlPipeline } from '../transformPipeline/html.js'
-import { pipeline as imagePipeline } from '../transformPipeline/image.js'
-import { clientJSPipeline, serverJSPipeline } from '../transformPipeline/javascript.js'
-import { pipeline as jsonPipeline } from '../transformPipeline/json.js'
-import { pipeline as stylesheetPipeline } from '../transformPipeline/stylesheet.js'
-import { convertArrayToMultiplePatternGlob } from '../utility/convertArrayToMultiplePatternGlob.js'
-import { transpileSourcePath } from '@deployment/javascriptTranspilation'
-const packageDependencyPatternMatch = '**/@package*/**/*', // `@package/...` `@package-x/...`
-  nodeModulePatternMatch = '**/node_modules/**/*'
+"use strict";var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.entryointCLI = exports.entrypointProgrammaticAPI = exports.transpileTarget = exports.transpilePackageDependency = exports.copyYarnLockfile = exports.removeDistributionFolder = exports.module_installYarn = void 0;var _path = _interopRequireDefault(require("path"));
+var _fs = require("fs");
 
-export const module_installYarn = ({ node, traverser }) => {
-  let targetProjectConfig = traverser.context.targetProjectConfig || throw new Error(`• traverser.context "targetProjectConfig" variable is required to run project dependent tasks.`)
-  provision.installUsingPackageManager.installYarn({ yarnPath: path.join(targetProjectConfig.directory.source) })
-}
+var _util = _interopRequireDefault(require("util"));
+var _stream = _interopRequireDefault(require("stream"));
 
-export const removeDistributionFolder = async ({ node, traverser }) => {
-  let targetProjectConfig = traverser.context.targetProjectConfig || throw new Error(`• traverser.context "targetProjectConfig" variable is required to run project dependent tasks.`)
-  // https://pubs.opengroup.org/onlinepubs/9699919799/functions/rmdir.html
-  // https://www.unix.com/man-page/posix/3posix/rmdir/
-  let fileStat = await filesystem.lstat(targetProjectConfig.directory.distribution).catch(error => (error.code == 'ENOENT' ? false : console.error(error)))
-  if (fileStat && fileStat.isDirectory()) await rimraf(targetProjectConfig.directory.distribution, { disableGlob: false })
-  // create an empty distribution folder
-  await filesystem.mkdir(targetProjectConfig.directory.distribution, { recursive: true })
-}
 
-export const copyYarnLockfile = async ({ node, traverser }) => {
-  let targetProjectConfig = traverser.context.targetProjectConfig || throw new Error(`• traverser.context "targetProjectConfig" variable is required to run project dependent tasks.`)
-  let filePath = path.join(targetProjectConfig.directory.root, 'yarn.lock')
-  let fileStat = await filesystem.lstat(filePath).catch(error => (error.code == 'ENOENT' ? false : console.error(error)))
-  if (fileStat && fileStat.isFile()) await copyFileAndSymlink({ source: filePath, destination: targetProjectConfig.directory.distribution })
-}
+var _rimraf = _interopRequireDefault(require("rimraf"));
 
-export const transpilePackageDependency = async ({ node, traverser }) => {
-  let targetProjectConfig = traverser.context.targetProjectConfig || throw new Error(`• traverser.context "targetProjectConfig" variable is required to run project dependent tasks.`)
-  let sourceRelativePath = './package.json'
-  await transpileSourcePath({ source: sourceRelativePath, destination: targetProjectConfig.directory.distribution, basePath: targetProjectConfig.directory.root })
-  // remove dev dependenices
-  // TODO: - remove dev dependencies from package.json.
-}
 
-export const transpileTarget = async ({ node, traverser }) => {
-  let targetProjectConfig = traverser.context.targetProjectConfig || throw new Error(`• traverser.context "targetProjectConfig" variable is required to run project dependent tasks.`)
-  let sourceRelativePath = node.properties?.relativePath || throw new Error(`• relativePath must exist on stage node that uses this condition for evaluation.`)
-  return await transpileSourcePath({ source: sourceRelativePath, destination: targetProjectConfig.directory.distribution, basePath: targetProjectConfig.directory.root })
-}
 
-export const entrypointProgrammaticAPI = async ({ node, traverser }) => {
-  let targetProjectConfig = traverser.context.targetProjectConfig || throw new Error(`• traverser.context "targetProjectConfig" variable is required to run project dependent tasks.`)
+var _glob = _interopRequireDefault(require("glob"));
 
-  let enrtypointKey = 'programmaticAPI'
-  if (!targetProjectConfig?.entrypoint || !targetProjectConfig?.entrypoint[enrtypointKey]) return
+var provision = _interopRequireWildcard(require("@deployment/deploymentProvisioning"));
+var _handleFilesystemOperation = require("@dependency/handleFilesystemOperation");
 
-  let scriptTargetFile = path.join(targetProjectConfig.directory.source, targetProjectConfig.entrypoint[enrtypointKey])
-  let entrypointFolder = path.join(targetProjectConfig.directory.root, `./entrypoint/${enrtypointKey}`)
 
-  // path to the target script file from the entrypoint file.
-  let relativeTargetFile = path.relative(entrypointFolder, scriptTargetFile)
 
-  let destinationFolder = path.join(targetProjectConfig.directory.distribution, path.relative(targetProjectConfig.directory.root, entrypointFolder))
-  await filesystem.mkdir(destinationFolder, { recursive: true }) // create folder recursively
 
-  // create entrypoint
-  let filePath = path.join(destinationFolder, 'index.js')
-  let content = `module.exports = require('${relativeTargetFile}')`
-  await filesystem.appendFile(filePath, content, { encoding: 'utf8' })
-}
 
-export const entryointCLI = async ({ node, traverser }) => {
-  let targetProjectConfig = traverser.context.targetProjectConfig || throw new Error(`• traverser.context "targetProjectConfig" variable is required to run project dependent tasks.`)
 
-  let enrtypointKey = 'cli'
-  if (!targetProjectConfig?.entrypoint || !targetProjectConfig?.entrypoint[enrtypointKey]) return
+var _javascriptTranspilation = require("@deployment/javascriptTranspilation");const pipeline = _util.default.promisify(_stream.default.pipeline);const rimraf = _util.default.promisify(_rimraf.default);const wildcardPathnameMatcher = _util.default.promisify(_glob.default);
+const packageDependencyPatternMatch = '**/@package*/**/*',
+nodeModulePatternMatch = '**/node_modules/**/*';
 
-  let scriptTargetFile = path.join(targetProjectConfig.directory.source, targetProjectConfig.entrypoint[enrtypointKey])
-  let entrypointFolder = path.join(targetProjectConfig.directory.root, `./entrypoint/${enrtypointKey}`)
+const module_installYarn = ({ node, traverser }) => {
+  let targetProjectConfig = traverser.context.targetProjectConfig || function (e) {throw e;}(new Error(`• traverser.context "targetProjectConfig" variable is required to run project dependent tasks.`));
+  provision.installUsingPackageManager.installYarn({ yarnPath: _path.default.join(targetProjectConfig.directory.source) });
+};exports.module_installYarn = module_installYarn;
 
-  // path to the target script file from the entrypoint file.
-  let relativeTargetFile = path.relative(entrypointFolder, scriptTargetFile)
+const removeDistributionFolder = async ({ node, traverser }) => {
+  let targetProjectConfig = traverser.context.targetProjectConfig || function (e) {throw e;}(new Error(`• traverser.context "targetProjectConfig" variable is required to run project dependent tasks.`));
 
-  let destinationFolder = path.join(targetProjectConfig.directory.distribution, path.relative(targetProjectConfig.directory.root, entrypointFolder))
-  await filesystem.mkdir(destinationFolder, { recursive: true }) // create folder recursively
 
-  // create entrypoint
-  let filePath = path.join(destinationFolder, 'index.js')
-  let content = `module.exports = require('${relativeTargetFile}')`
-  content = `#\!/usr/bin/env node\n` + content
-  await filesystem.appendFile(filePath, content, { encoding: 'utf8' })
-}
+  let fileStat = await _fs.promises.lstat(targetProjectConfig.directory.distribution).catch(error => error.code == 'ENOENT' ? false : console.error(error));
+  if (fileStat && fileStat.isDirectory()) await rimraf(targetProjectConfig.directory.distribution, { disableGlob: false });
+
+  await _fs.promises.mkdir(targetProjectConfig.directory.distribution, { recursive: true });
+};exports.removeDistributionFolder = removeDistributionFolder;
+
+const copyYarnLockfile = async ({ node, traverser }) => {
+  let targetProjectConfig = traverser.context.targetProjectConfig || function (e) {throw e;}(new Error(`• traverser.context "targetProjectConfig" variable is required to run project dependent tasks.`));
+  let filePath = _path.default.join(targetProjectConfig.directory.root, 'yarn.lock');
+  let fileStat = await _fs.promises.lstat(filePath).catch(error => error.code == 'ENOENT' ? false : console.error(error));
+  if (fileStat && fileStat.isFile()) await (0, _handleFilesystemOperation.copyFileAndSymlink)({ source: filePath, destination: targetProjectConfig.directory.distribution });
+};exports.copyYarnLockfile = copyYarnLockfile;
+
+const transpilePackageDependency = async ({ node, traverser }) => {
+  let targetProjectConfig = traverser.context.targetProjectConfig || function (e) {throw e;}(new Error(`• traverser.context "targetProjectConfig" variable is required to run project dependent tasks.`));
+  let sourceRelativePath = './package.json';
+  await (0, _javascriptTranspilation.transpileSourcePath)({ source: sourceRelativePath, destination: targetProjectConfig.directory.distribution, basePath: targetProjectConfig.directory.root });
+
+
+};exports.transpilePackageDependency = transpilePackageDependency;
+
+const transpileTarget = async ({ node, traverser }) => {var _node$properties;
+  let targetProjectConfig = traverser.context.targetProjectConfig || function (e) {throw e;}(new Error(`• traverser.context "targetProjectConfig" variable is required to run project dependent tasks.`));
+  let sourceRelativePath = ((_node$properties = node.properties) === null || _node$properties === void 0 ? void 0 : _node$properties.relativePath) || function (e) {throw e;}(new Error(`• relativePath must exist on stage node that uses this condition for evaluation.`));
+  return await (0, _javascriptTranspilation.transpileSourcePath)({ source: sourceRelativePath, destination: targetProjectConfig.directory.distribution, basePath: targetProjectConfig.directory.root });
+};exports.transpileTarget = transpileTarget;
+
+const entrypointProgrammaticAPI = async ({ node, traverser }) => {
+  let targetProjectConfig = traverser.context.targetProjectConfig || function (e) {throw e;}(new Error(`• traverser.context "targetProjectConfig" variable is required to run project dependent tasks.`));
+
+  let enrtypointKey = 'programmaticAPI';
+  if (!(targetProjectConfig === null || targetProjectConfig === void 0 ? void 0 : targetProjectConfig.entrypoint) || !(targetProjectConfig === null || targetProjectConfig === void 0 ? void 0 : targetProjectConfig.entrypoint[enrtypointKey])) return;
+
+  let scriptTargetFile = _path.default.join(targetProjectConfig.directory.source, targetProjectConfig.entrypoint[enrtypointKey]);
+  let entrypointFolder = _path.default.join(targetProjectConfig.directory.root, `./entrypoint/${enrtypointKey}`);
+
+
+  let relativeTargetFile = _path.default.relative(entrypointFolder, scriptTargetFile);
+
+  let destinationFolder = _path.default.join(targetProjectConfig.directory.distribution, _path.default.relative(targetProjectConfig.directory.root, entrypointFolder));
+  await _fs.promises.mkdir(destinationFolder, { recursive: true });
+
+
+  let filePath = _path.default.join(destinationFolder, 'index.js');
+  let content = `module.exports = require('${relativeTargetFile}')`;
+  await _fs.promises.appendFile(filePath, content, { encoding: 'utf8' });
+};exports.entrypointProgrammaticAPI = entrypointProgrammaticAPI;
+
+const entryointCLI = async ({ node, traverser }) => {
+  let targetProjectConfig = traverser.context.targetProjectConfig || function (e) {throw e;}(new Error(`• traverser.context "targetProjectConfig" variable is required to run project dependent tasks.`));
+
+  let enrtypointKey = 'cli';
+  if (!(targetProjectConfig === null || targetProjectConfig === void 0 ? void 0 : targetProjectConfig.entrypoint) || !(targetProjectConfig === null || targetProjectConfig === void 0 ? void 0 : targetProjectConfig.entrypoint[enrtypointKey])) return;
+
+  let scriptTargetFile = _path.default.join(targetProjectConfig.directory.source, targetProjectConfig.entrypoint[enrtypointKey]);
+  let entrypointFolder = _path.default.join(targetProjectConfig.directory.root, `./entrypoint/${enrtypointKey}`);
+
+
+  let relativeTargetFile = _path.default.relative(entrypointFolder, scriptTargetFile);
+
+  let destinationFolder = _path.default.join(targetProjectConfig.directory.distribution, _path.default.relative(targetProjectConfig.directory.root, entrypointFolder));
+  await _fs.promises.mkdir(destinationFolder, { recursive: true });
+
+
+  let filePath = _path.default.join(destinationFolder, 'index.js');
+  let content = `module.exports = require('${relativeTargetFile}')`;
+  content = `#\!/usr/bin/env node\n` + content;
+  await _fs.promises.appendFile(filePath, content, { encoding: 'utf8' });
+};exports.entryointCLI = entryointCLI;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uLy4uLy4uL3NvdXJjZS9mdW5jdGlvbi9tb2R1bGVQcm9qZWN0VGFzay5qcyJdLCJuYW1lcyI6WyJwaXBlbGluZSIsInV0aWwiLCJwcm9taXNpZnkiLCJzdHJlYW0iLCJyaW1yYWYiLCJyaW1yYWZDYWxsYmFjayIsIndpbGRjYXJkUGF0aG5hbWVNYXRjaGVyIiwib3JpZ2luYWxfd2lsZGNhcmRQYXRobmFtZU1hdGNoZXIiLCJwYWNrYWdlRGVwZW5kZW5jeVBhdHRlcm5NYXRjaCIsIm5vZGVNb2R1bGVQYXR0ZXJuTWF0Y2giLCJtb2R1bGVfaW5zdGFsbFlhcm4iLCJub2RlIiwidHJhdmVyc2VyIiwidGFyZ2V0UHJvamVjdENvbmZpZyIsImNvbnRleHQiLCJFcnJvciIsInByb3Zpc2lvbiIsImluc3RhbGxVc2luZ1BhY2thZ2VNYW5hZ2VyIiwiaW5zdGFsbFlhcm4iLCJ5YXJuUGF0aCIsInBhdGgiLCJqb2luIiwiZGlyZWN0b3J5Iiwic291cmNlIiwicmVtb3ZlRGlzdHJpYnV0aW9uRm9sZGVyIiwiZmlsZVN0YXQiLCJmaWxlc3lzdGVtIiwibHN0YXQiLCJkaXN0cmlidXRpb24iLCJjYXRjaCIsImVycm9yIiwiY29kZSIsImNvbnNvbGUiLCJpc0RpcmVjdG9yeSIsImRpc2FibGVHbG9iIiwibWtkaXIiLCJyZWN1cnNpdmUiLCJjb3B5WWFybkxvY2tmaWxlIiwiZmlsZVBhdGgiLCJyb290IiwiaXNGaWxlIiwiZGVzdGluYXRpb24iLCJ0cmFuc3BpbGVQYWNrYWdlRGVwZW5kZW5jeSIsInNvdXJjZVJlbGF0aXZlUGF0aCIsImJhc2VQYXRoIiwidHJhbnNwaWxlVGFyZ2V0IiwicHJvcGVydGllcyIsInJlbGF0aXZlUGF0aCIsImVudHJ5cG9pbnRQcm9ncmFtbWF0aWNBUEkiLCJlbnJ0eXBvaW50S2V5IiwiZW50cnlwb2ludCIsInNjcmlwdFRhcmdldEZpbGUiLCJlbnRyeXBvaW50Rm9sZGVyIiwicmVsYXRpdmVUYXJnZXRGaWxlIiwicmVsYXRpdmUiLCJkZXN0aW5hdGlvbkZvbGRlciIsImNvbnRlbnQiLCJhcHBlbmRGaWxlIiwiZW5jb2RpbmciLCJlbnRyeW9pbnRDTEkiXSwibWFwcGluZ3MiOiJtZEFBQTtBQUNBOztBQUVBO0FBQ0E7OztBQUdBOzs7O0FBSUE7O0FBRUE7QUFDQTs7Ozs7OztBQU9BLDhFQWhCQSxNQUFNQSxRQUFRLEdBQUdDLGNBQUtDLFNBQUwsQ0FBZUMsZ0JBQU9ILFFBQXRCLENBQWpCLENBR0EsTUFBTUksTUFBTSxHQUFHSCxjQUFLQyxTQUFMLENBQWVHLGVBQWYsQ0FBZixDQUlBLE1BQU1DLHVCQUF1QixHQUFHTCxjQUFLQyxTQUFMLENBQWVLLGFBQWYsQ0FBaEM7QUFVQSxNQUFNQyw2QkFBNkIsR0FBRyxtQkFBdEM7QUFDRUMsc0JBQXNCLEdBQUcsc0JBRDNCOztBQUdPLE1BQU1DLGtCQUFrQixHQUFHLENBQUMsRUFBRUMsSUFBRixFQUFRQyxTQUFSLEVBQUQsS0FBeUI7QUFDekQsTUFBSUMsbUJBQW1CLEdBQUdELFNBQVMsQ0FBQ0UsT0FBVixDQUFrQkQsbUJBQWxCLDRCQUErQyxJQUFJRSxLQUFKLENBQVcsZ0dBQVgsQ0FBL0MsQ0FBMUI7QUFDQUMsRUFBQUEsU0FBUyxDQUFDQywwQkFBVixDQUFxQ0MsV0FBckMsQ0FBaUQsRUFBRUMsUUFBUSxFQUFFQyxjQUFLQyxJQUFMLENBQVVSLG1CQUFtQixDQUFDUyxTQUFwQixDQUE4QkMsTUFBeEMsQ0FBWixFQUFqRDtBQUNELENBSE0sQzs7QUFLQSxNQUFNQyx3QkFBd0IsR0FBRyxPQUFPLEVBQUViLElBQUYsRUFBUUMsU0FBUixFQUFQLEtBQStCO0FBQ3JFLE1BQUlDLG1CQUFtQixHQUFHRCxTQUFTLENBQUNFLE9BQVYsQ0FBa0JELG1CQUFsQiw0QkFBK0MsSUFBSUUsS0FBSixDQUFXLGdHQUFYLENBQS9DLENBQTFCOzs7QUFHQSxNQUFJVSxRQUFRLEdBQUcsTUFBTUMsYUFBV0MsS0FBWCxDQUFpQmQsbUJBQW1CLENBQUNTLFNBQXBCLENBQThCTSxZQUEvQyxFQUE2REMsS0FBN0QsQ0FB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bEQsQ0FBdEQsQ0FBeEI7QUFDQSxRQUFNMUIsYUFBV1MsS0FBWCxDQUFpQm9CLGlCQUFqQixFQUFvQyxFQUFFbkIsU0FBUyxFQUFFLElBQWIsRUFBcEMsQ0FBTjs7O0FBR0EsTUFBSUUsUUFBUSxHQUFHbEIsY0FBS0MsSUFBTCxDQUFVa0MsaUJBQVYsRUFBNkIsVUFBN0IsQ0FBZjtBQUNBLE1BQUlDLE9BQU8sR0FBSSw2QkFBNEJILGtCQUFtQixJQUE5RDtBQUNBRyxFQUFBQSxPQUFPLEdBQUksd0JBQUQsR0FBMkJBLE9BQXJDO0FBQ0EsUUFBTTlCLGFBQVcrQixVQUFYLENBQXNCbkIsUUFBdEIsRUFBZ0NrQixPQUFoQyxFQUF5QyxFQUFFRSxRQUFRLEVBQUUsTUFBWixFQUF6QyxDQUFOO0FBQ0QsQ0FwQk0sQyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBwYXRoIGZyb20gJ3BhdGgnXG5pbXBvcnQgeyBwcm9taXNlcyBhcyBmaWxlc3lzdGVtIH0gZnJvbSAnZnMnXG5pbXBvcnQgYXNzZXJ0IGZyb20gJ2Fzc2VydCdcbmltcG9ydCB1dGlsIGZyb20gJ3V0aWwnXG5pbXBvcnQgc3RyZWFtIGZyb20gJ3N0cmVhbSdcbmNvbnN0IHBpcGVsaW5lID0gdXRpbC5wcm9taXNpZnkoc3RyZWFtLnBpcGVsaW5lKVxuaW1wb3J0IG1lcmdlU3RyZWFtIGZyb20gJ21lcmdlLXN0cmVhbSdcbmltcG9ydCByaW1yYWZDYWxsYmFjayBmcm9tICdyaW1yYWYnXG5jb25zdCByaW1yYWYgPSB1dGlsLnByb21pc2lmeShyaW1yYWZDYWxsYmFjaylcbi8vIGh0dHBzOi8vZ2l0aHViLmNvbS9ndWxwanMvdmlueWwtZnMjZGVzdGZvbGRlci1vcHRpb25zICYgaHR0cHM6Ly9ndWxwanMuY29tL2RvY3MvZW4vYXBpL3NyY1xuaW1wb3J0IHsgc3JjIGFzIHJlYWRGaWxlQXNPYmplY3RTdHJlYW0sIGRlc3QgYXMgd3JpdGVGaWxlRnJvbU9iamVjdFN0cmVhbSB9IGZyb20gJ3ZpbnlsLWZzJ1xuaW1wb3J0IG9yaWdpbmFsX3dpbGRjYXJkUGF0aG5hbWVNYXRjaGVyIGZyb20gJ2dsb2InIC8vIEFsdGVybmF0aXZlIG1vZHVsZXMgLSBgZ2xvYmJ5YCwgYGdsb2JgLCBgZ2xvYi1zdHJlYW1gXG5jb25zdCB3aWxkY2FyZFBhdGhuYW1lTWF0Y2hlciA9IHV0aWwucHJvbWlzaWZ5KG9yaWdpbmFsX3dpbGRjYXJkUGF0aG5hbWVNYXRjaGVyKVxuaW1wb3J0ICogYXMgcHJvdmlzaW9uIGZyb20gJ0BkZXBsb3ltZW50L2RlcGxveW1lbnRQcm92aXNpb25pbmcnXG5pbXBvcnQgeyBjb3B5RmlsZUFuZFN5bWxpbmsgfSBmcm9tICdAZGVwZW5kZW5jeS9oYW5kbGVGaWxlc3lzdGVtT3BlcmF0aW9uJ1xuaW1wb3J0IHsgcGlwZWxpbmUgYXMgaHRtbFBpcGVsaW5lIH0gZnJvbSAnLi4vdHJhbnNmb3JtUGlwZWxpbmUvaHRtbC5qcydcbmltcG9ydCB7IHBpcGVsaW5lIGFzIGltYWdlUGlwZWxpbmUgfSBmcm9tICcuLi90cmFuc2Zvcm1QaXBlbGluZS9pbWFnZS5qcydcbmltcG9ydCB7IGNsaWVudEpTUGlwZWxpbmUsIHNlcnZlckpTUGlwZWxpbmUgfSBmcm9tICcuLi90cmFuc2Zvcm1QaXBlbGluZS9qYXZhc2NyaXB0LmpzJ1xuaW1wb3J0IHsgcGlwZWxpbmUgYXMganNvblBpcGVsaW5lIH0gZnJvbSAnLi4vdHJhbnNmb3JtUGlwZWxpbmUvanNvbi5qcydcbmltcG9ydCB7IHBpcGVsaW5lIGFzIHN0eWxlc2hlZXRQaXBlbGluZSB9IGZyb20gJy4uL3RyYW5zZm9ybVBpcGVsaW5lL3N0eWxlc2hlZXQuanMnXG5pbXBvcnQgeyBjb252ZXJ0QXJyYXlUb011bHRpcGxlUGF0dGVybkdsb2IgfSBmcm9tICcuLi91dGlsaXR5L2NvbnZlcnRBcnJheVRvTXVsdGlwbGVQYXR0ZXJuR2xvYi5qcydcbmltcG9ydCB7IHRyYW5zcGlsZVNvdXJjZVBhdGggfSBmcm9tICdAZGVwbG95bWVudC9qYXZhc2NyaXB0VHJhbnNwaWxhdGlvbidcbmNvbnN0IHBhY2thZ2VEZXBlbmRlbmN5UGF0dGVybk1hdGNoID0gJyoqL0BwYWNrYWdlKi8qKi8qJywgLy8gYEBwYWNrYWdlLy4uLmAgYEBwYWNrYWdlLXgvLi4uYFxuICBub2RlTW9kdWxlUGF0dGVybk1hdGNoID0gJyoqL25vZGVfbW9kdWxlcy8qKi8qJ1xuXG5leHBvcnQgY29uc3QgbW9kdWxlX2luc3RhbGxZYXJuID0gKHsgbm9kZSwgdHJhdmVyc2VyIH0pID0+IHtcbiAgbGV0IHRhcmdldFByb2plY3RDb25maWcgPSB0cmF2ZXJzZXIuY29udGV4dC50YXJnZXRQcm9qZWN0Q29uZmlnIHx8IHRocm93IG5ldyBFcnJvcihg4oCiIHRyYXZlcnNlci5jb250ZXh0IFwidGFyZ2V0UHJvamVjdENvbmZpZ1wiIHZhcmlhYmxlIGlzIHJlcXVpcmVkIHRvIHJ1biBwcm9qZWN0IGRlcGVuZGVudCB0YXNrcy5gKVxuICBwcm92aXNpb24uaW5zdGFsbFVzaW5nUGFja2FnZU1hbmFnZXIuaW5zdGFsbFlhcm4oeyB5YXJuUGF0aDogcGF0aC5qb2luKHRhcmdldFByb2plY3RDb25maWcuZGlyZWN0b3J5LnNvdXJjZSkgfSlcbn1cblxuZXhwb3J0IGNvbnN0IHJlbW92ZURpc3RyaWJ1dGlvbkZvbGRlciA9IGFzeW5jICh7IG5vZGUsIHRyYXZlcnNlciB9KSA9PiB7XG4gIGxldCB0YXJnZXRQcm9qZWN0Q29uZmlnID0gdHJhdmVyc2VyLmNvbnRleHQudGFyZ2V0UHJvamVjdENvbmZpZyB8fCB0aHJvdyBuZXcgRXJyb3IoYOKAoiB0cmF2ZXJzZXIuY29udGV4dCBcInRhcmdldFByb2plY3RDb25maWdcIiB2YXJpYWJsZSBpcyByZXF1aXJlZCB0byBydW4gcHJvamVjdCBkZXBlbmRlbnQgdGFza3MuYClcbiAgLy8gaHR0cHM6Ly9wdWJzLm9wZW5ncm91cC5vcmcvb25saW5lcHVicy85Njk5OTE5Nzk5L2Z1bmN0aW9ucy9ybWRpci5odG1sXG4gIC8vIGh0dHBzOi8vd3d3LnVuaXguY29tL21hbi1wYWdlL3Bvc2l4LzNwb3NpeC9ybWRpci9cbiAgbGV0IGZpbGVTdGF0ID0gYXdhaXQgZmlsZXN5c3RlbS5sc3RhdCh0YXJnZXRQcm9qZWN0Q29uZmlnLmRpcmVjdG9yeS5kaXN0cmlidXRpb24pLmNhdGNoKGVycm9yID0+IChlcnJvci5jb2RlID09ICdFTk9FTlQnID8gZmFsc2UgOiBjb25zb2xlLmVycm9yKGVycm9yKSkpXG4gIGlmIChmaWxlU3RhdCAmJiBmaWxlU3RhdC5pc0RpcmVjdG9yeSgpKSBhd2FpdCByaW1yYWYodGFyZ2V0UHJvamVjdENvbmZpZy5kaXJlY3RvcnkuZGlzdHJpYnV0aW9uLCB7IGRpc2FibGVHbG9iOiBmYWxzZSB9KVxuICAvLyBjcmVhdGUgYW4gZW1wdHkgZGlzdHJpYnV0aW9uIGZvbGRlclxuICBhd2FpdCBmaWxlc3lzdGVtLm1rZGlyKHRhcmdldFByb2plY3RDb25maWcuZGlyZWN0b3J5LmRpc3RyaWJ1dGlvbiwgeyByZWN1cnNpdmU6IHRydWUgfSlcbn1cblxuZXhwb3J0IGNvbnN0IGNvcHlZYXJuTG9ja2ZpbGUgPSBhc3luYyAoeyBub2RlLCB0cmF2ZXJzZXIgfSkgPT4ge1xuICBsZXQgdGFyZ2V0UHJvamVjdENvbmZpZyA9IHRyYXZlcnNlci5jb250ZXh0LnRhcmdldFByb2plY3RDb25maWcgfHwgdGhyb3cgbmV3IEVycm9yKGDigKIgdHJhdmVyc2VyLmNvbnRleHQgXCJ0YXJnZXRQcm9qZWN0Q29uZmlnXCIgdmFyaWFibGUgaXMgcmVxdWlyZWQgdG8gcnVuIHByb2plY3QgZGVwZW5kZW50IHRhc2tzLmApXG4gIGxldCBmaWxlUGF0aCA9IHBhdGguam9pbih0YXJnZXRQcm9qZWN0Q29uZmlnLmRpcmVjdG9yeS5yb290LCAneWFybi5sb2NrJylcbiAgbGV0IGZpbGVTdGF0ID0gYXdhaXQgZmlsZXN5c3RlbS5sc3RhdChmaWxlUGF0aCkuY2F0Y2goZXJyb3IgPT4gKGVycm9yLmNvZGUgPT0gJ0VOT0VOVCcgPyBmYWxzZSA6IGNvbnNvbGUuZXJyb3IoZXJyb3IpKSlcbiAgaWYgKGZpbGVTdGF0ICYmIGZpbGVTdGF0LmlzRmlsZSgpKSBhd2FpdCBjb3B5RmlsZUFuZFN5bWxpbmsoeyBzb3VyY2U6IGZpbGVQYXRoLCBkZXN0aW5hdGlvbjogdGFyZ2V0UHJvamVjdENvbmZpZy5kaXJlY3RvcnkuZGlzdHJpYnV0aW9uIH0pXG59XG5cbmV4cG9ydCBjb25zdCB0cmFuc3BpbGVQYWNrYWdlRGVwZW5kZW5jeSA9IGFzeW5jICh7IG5vZGUsIHRyYXZlcnNlciB9KSA9PiB7XG4gIGxldCB0YXJnZXRQcm9qZWN0Q29uZmlnID0gdHJhdmVyc2VyLmNvbnRleHQudGFyZ2V0UHJvamVjdENvbmZpZyB8fCB0aHJvdyBuZXcgRXJyb3IoYOKAoiB0cmF2ZXJzZXIuY29udGV4dCBcInRhcmdldFByb2plY3RDb25maWdcIiB2YXJpYWJsZSBpcyByZXF1aXJlZCB0byBydW4gcHJvamVjdCBkZXBlbmRlbnQgdGFza3MuYClcbiAgbGV0IHNvdXJjZVJlbGF0aXZlUGF0aCA9ICcuL3BhY2thZ2UuanNvbidcbiAgYXdhaXQgdHJhbnNwaWxlU291cmNlUGF0aCh7IHNvdXJjZTogc291cmNlUmVsYXRpdmVQYXRoLCBkZXN0aW5hdGlvbjogdGFyZ2V0UHJvamVjdENvbmZpZy5kaXJlY3RvcnkuZGlzdHJpYnV0aW9uLCBiYXNlUGF0aDogdGFyZ2V0UHJvamVjdENvbmZpZy5kaXJlY3Rvcnkucm9vdCB9KVxuICAvLyByZW1vdmUgZGV2IGRlcGVuZGVuaWNlc1xuICAvLyBUT0RPOiAtIHJlbW92ZSBkZXYgZGVwZW5kZW5jaWVzIGZyb20gcGFja2FnZS5qc29uLlxufVxuXG5leHBvcnQgY29uc3QgdHJhbnNwaWxlVGFyZ2V0ID0gYXN5bmMgKHsgbm9kZSwgdHJhdmVyc2VyIH0pID0+IHtcbiAgbGV0IHRhcmdldFByb2plY3RDb25maWcgPSB0cmF2ZXJzZXIuY29udGV4dC50YXJnZXRQcm9qZWN0Q29uZmlnIHx8IHRocm93IG5ldyBFcnJvcihg4oCiIHRyYXZlcnNlci5jb250ZXh0IFwidGFyZ2V0UHJvamVjdENvbmZpZ1wiIHZhcmlhYmxlIGlzIHJlcXVpcmVkIHRvIHJ1biBwcm9qZWN0IGRlcGVuZGVudCB0YXNrcy5gKVxuICBsZXQgc291cmNlUmVsYXRpdmVQYXRoID0gbm9kZS5wcm9wZXJ0aWVzPy5yZWxhdGl2ZVBhdGggfHwgdGhyb3cgbmV3IEVycm9yKGDigKIgcmVsYXRpdmVQYXRoIG11c3QgZXhpc3Qgb24gc3RhZ2Ugbm9kZSB0aGF0IHVzZXMgdGhpcyBjb25kaXRpb24gZm9yIGV2YWx1YXRpb24uYClcbiAgcmV0dXJuIGF3YWl0IHRyYW5zcGlsZVNvdXJjZVBhdGgoeyBzb3VyY2U6IHNvdXJjZVJlbGF0aXZlUGF0aCwgZGVzdGluYXRpb246IHRhcmdldFByb2plY3RDb25maWcuZGlyZWN0b3J5LmRpc3RyaWJ1dGlvbiwgYmFzZVBhdGg6IHRhcmdldFByb2plY3RDb25maWcuZGlyZWN0b3J5LnJvb3QgfSlcbn1cblxuZXhwb3J0IGNvbnN0IGVudHJ5cG9pbnRQcm9ncmFtbWF0aWNBUEkgPSBhc3luYyAoeyBub2RlLCB0cmF2ZXJzZXIgfSkgPT4ge1xuICBsZXQgdGFyZ2V0UHJvamVjdENvbmZpZyA9IHRyYXZlcnNlci5jb250ZXh0LnRhcmdldFByb2plY3RDb25maWcgfHwgdGhyb3cgbmV3IEVycm9yKGDigKIgdHJhdmVyc2VyLmNvbnRleHQgXCJ0YXJnZXRQcm9qZWN0Q29uZmlnXCIgdmFyaWFibGUgaXMgcmVxdWlyZWQgdG8gcnVuIHByb2plY3QgZGVwZW5kZW50IHRhc2tzLmApXG5cbiAgbGV0IGVucnR5cG9pbnRLZXkgPSAncHJvZ3JhbW1hdGljQVBJJ1xuICBpZiAoIXRhcmdldFByb2plY3RDb25maWc/LmVudHJ5cG9pbnQgfHwgIXRhcmdldFByb2plY3RDb25maWc/LmVudHJ5cG9pbnRbZW5ydHlwb2ludEtleV0pIHJldHVyblxuXG4gIGxldCBzY3JpcHRUYXJnZXRGaWxlID0gcGF0aC5qb2luKHRhcmdldFByb2plY3RDb25maWcuZGlyZWN0b3J5LnNvdXJjZSwgdGFyZ2V0UHJvamVjdENvbmZpZy5lbnRyeXBvaW50W2VucnR5cG9pbnRLZXldKVxuICBsZXQgZW50cnlwb2ludEZvbGRlciA9IHBhdGguam9pbih0YXJnZXRQcm9qZWN0Q29uZmlnLmRpcmVjdG9yeS5yb290LCBgLi9lbnRyeXBvaW50LyR7ZW5ydHlwb2ludEtleX1gKVxuXG4gIC8vIHBhdGggdG8gdGhlIHRhcmdldCBzY3JpcHQgZmlsZSBmcm9tIHRoZSBlbnRyeXBvaW50IGZpbGUuXG4gIGxldCByZWxhdGl2ZVRhcmdldEZpbGUgPSBwYXRoLnJlbGF0aXZlKGVudHJ5cG9pbnRGb2xkZXIsIHNjcmlwdFRhcmdldEZpbGUpXG5cbiAgbGV0IGRlc3RpbmF0aW9uRm9sZGVyID0gcGF0aC5qb2luKHRhcmdldFByb2plY3RDb25maWcuZGlyZWN0b3J5LmRpc3RyaWJ1dGlvbiwgcGF0aC5yZWxhdGl2ZSh0YXJnZXRQcm9qZWN0Q29uZmlnLmRpcmVjdG9yeS5yb290LCBlbnRyeXBvaW50Rm9sZGVyKSlcbiAgYXdhaXQgZmlsZXN5c3RlbS5ta2RpcihkZXN0aW5hdGlvbkZvbGRlciwgeyByZWN1cnNpdmU6IHRydWUgfSkgLy8gY3JlYXRlIGZvbGRlciByZWN1cnNpdmVseVxuXG4gIC8vIGNyZWF0ZSBlbnRyeXBvaW50XG4gIGxldCBmaWxlUGF0aCA9IHBhdGguam9pbihkZXN0aW5hdGlvbkZvbGRlciwgJ2luZGV4LmpzJylcbiAgbGV0IGNvbnRlbnQgPSBgbW9kdWxlLmV4cG9ydHMgPSByZXF1aXJlKCcke3JlbGF0aXZlVGFyZ2V0RmlsZX0nKWBcbiAgYXdhaXQgZmlsZXN5c3RlbS5hcHBlbmRGaWxlKGZpbGVQYXRoLCBjb250ZW50LCB7IGVuY29kaW5nOiAndXRmOCcgfSlcbn1cblxuZXhwb3J0IGNvbnN0IGVudHJ5b2ludENMSSA9IGFzeW5jICh7IG5vZGUsIHRyYXZlcnNlciB9KSA9PiB7XG4gIGxldCB0YXJnZXRQcm9qZWN0Q29uZmlnID0gdHJhdmVyc2VyLmNvbnRleHQudGFyZ2V0UHJvamVjdENvbmZpZyB8fCB0aHJvdyBuZXcgRXJyb3IoYOKAoiB0cmF2ZXJzZXIuY29udGV4dCBcInRhcmdldFByb2plY3RDb25maWdcIiB2YXJpYWJsZSBpcyByZXF1aXJlZCB0byBydW4gcHJvamVjdCBkZXBlbmRlbnQgdGFza3MuYClcblxuICBsZXQgZW5ydHlwb2ludEtleSA9ICdjbGknXG4gIGlmICghdGFyZ2V0UHJvamVjdENvbmZpZz8uZW50cnlwb2ludCB8fCAhdGFyZ2V0UHJvamVjdENvbmZpZz8uZW50cnlwb2ludFtlbnJ0eXBvaW50S2V5XSkgcmV0dXJuXG5cbiAgbGV0IHNjcmlwdFRhcmdldEZpbGUgPSBwYXRoLmpvaW4odGFyZ2V0UHJvamVjdENvbmZpZy5kaXJlY3Rvcnkuc291cmNlLCB0YXJnZXRQcm9qZWN0Q29uZmlnLmVudHJ5cG9pbnRbZW5ydHlwb2ludEtleV0pXG4gIGxldCBlbnRyeXBvaW50Rm9sZGVyID0gcGF0aC5qb2luKHRhcmdldFByb2plY3RDb25maWcuZGlyZWN0b3J5LnJvb3QsIGAuL2VudHJ5cG9pbnQvJHtlbnJ0eXBvaW50S2V5fWApXG5cbiAgLy8gcGF0aCB0byB0aGUgdGFyZ2V0IHNjcmlwdCBmaWxlIGZyb20gdGhlIGVudHJ5cG9pbnQgZmlsZS5cbiAgbGV0IHJlbGF0aXZlVGFyZ2V0RmlsZSA9IHBhdGgucmVsYXRpdmUoZW50cnlwb2ludEZvbGRlciwgc2NyaXB0VGFyZ2V0RmlsZSlcblxuICBsZXQgZGVzdGluYXRpb25Gb2xkZXIgPSBwYXRoLmpvaW4odGFyZ2V0UHJvamVjdENvbmZpZy5kaXJlY3RvcnkuZGlzdHJpYnV0aW9uLCBwYXRoLnJlbGF0aXZlKHRhcmdldFByb2plY3RDb25maWcuZGlyZWN0b3J5LnJvb3QsIGVudHJ5cG9pbnRGb2xkZXIpKVxuICBhd2FpdCBmaWxlc3lzdGVtLm1rZGlyKGRlc3RpbmF0aW9uRm9sZGVyLCB7IHJlY3Vyc2l2ZTogdHJ1ZSB9KSAvLyBjcmVhdGUgZm9sZGVyIHJlY3Vyc2l2ZWx5XG5cbiAgLy8gY3JlYXRlIGVudHJ5cG9pbnRcbiAgbGV0IGZpbGVQYXRoID0gcGF0aC5qb2luKGRlc3RpbmF0aW9uRm9sZGVyLCAnaW5kZXguanMnKVxuICBsZXQgY29udGVudCA9IGBtb2R1bGUuZXhwb3J0cyA9IHJlcXVpcmUoJyR7cmVsYXRpdmVUYXJnZXRGaWxlfScpYFxuICBjb250ZW50ID0gYCNcXCEvdXNyL2Jpbi9lbnYgbm9kZVxcbmAgKyBjb250ZW50XG4gIGF3YWl0IGZpbGVzeXN0ZW0uYXBwZW5kRmlsZShmaWxlUGF0aCwgY29udGVudCwgeyBlbmNvZGluZzogJ3V0ZjgnIH0pXG59XG4iXX0=
