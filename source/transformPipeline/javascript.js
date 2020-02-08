@@ -1,50 +1,51 @@
-import path from 'path'
-import sourcemaps from 'gulp-sourcemaps'
-import concat from 'gulp-concat'
-import { FragmentIndentation } from '@dependency/fragmentIndentationObjectStream'
-import babel from 'gulp-babel'
-import debug from 'gulp-debug'
-import size from 'gulp-size'
-import jsMinify from 'gulp-uglify'
-import { getBabelConfig } from '@deployment/javascriptTranspilation'
+"use strict";var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.fragmentPipeline = fragmentPipeline;exports.clientJSPipeline = clientJSPipeline;exports.serverJSPipeline = serverJSPipeline;exports.jsFileRegex = void 0;
+var _gulpSourcemaps = _interopRequireDefault(require("gulp-sourcemaps"));
 
-export const jsFileRegex = /\.js$/
+var _fragmentIndentationObjectStream = require("@dependency/fragmentIndentationObjectStream");
+var _gulpBabel = _interopRequireDefault(require("gulp-babel"));
+var _gulpDebug = _interopRequireDefault(require("gulp-debug"));
+var _gulpSize = _interopRequireDefault(require("gulp-size"));
 
-export function fragmentPipeline({
+var _javascriptTranspilation = require("@deployment/javascriptTranspilation");
+
+const jsFileRegex = /\.js$/;exports.jsFileRegex = jsFileRegex;
+
+function fragmentPipeline({
   babelPreset,
-  babelPlugin, // babel configurations
-  shouldSourceMap = true,
-}) {
+  babelPlugin,
+  shouldSourceMap = true })
+{
   let pipeline = [
-    babel({
-      presets: babelPreset,
-      plugins: babelPlugin,
-      babelrc: false,
-    }),
-    // jsMinify() // causes issues with some non-native syntax. Using babel minify preset instead.
-  ]
+  (0, _gulpBabel.default)({
+    presets: babelPreset,
+    plugins: babelPlugin,
+    babelrc: false })];
+
+
+
 
   if (shouldSourceMap) {
-    pipeline.unshift(sourcemaps.init())
-    pipeline.push(sourcemaps.write('.'))
+    pipeline.unshift(_gulpSourcemaps.default.init());
+    pipeline.push(_gulpSourcemaps.default.write('.'));
   }
 
-  return pipeline
+  return pipeline;
 }
 
-export function clientJSPipeline({ babelConfigFileName = 'nativeClientSideBuild.BabelConfig.js' } = {}) {
-  const babelConfig = getBabelConfig(babelConfigFileName)
+function clientJSPipeline({ babelConfigFileName = 'nativeClientSideBuild.BabelConfig.js' } = {}) {
+  const babelConfig = (0, _javascriptTranspilation.getBabelConfig)(babelConfigFileName);
   let pipeline = [
-    debug({ title: 'clientJS:' }),
-    FragmentIndentation.TransformToFragmentKeys(),
-    ...fragmentPipeline({ babelPreset: babelConfig.presets, babelPlugin: babelConfig.plugins, shouldSourceMap: true }), // previous error handling - .pipe().on('error', function(e) { console.log('>>> ERROR', e); this.emit('end'); })
-    FragmentIndentation.TransformBackToFragment(),
-    size({ title: `JAVASCRIPT - clientJS using ${babelConfigFileName}` }),
-  ]
-  return pipeline
+  (0, _gulpDebug.default)({ title: 'clientJS:' }),
+  _fragmentIndentationObjectStream.FragmentIndentation.TransformToFragmentKeys(),
+  ...fragmentPipeline({ babelPreset: babelConfig.presets, babelPlugin: babelConfig.plugins, shouldSourceMap: true }),
+  _fragmentIndentationObjectStream.FragmentIndentation.TransformBackToFragment(),
+  (0, _gulpSize.default)({ title: `JAVASCRIPT - clientJS using ${babelConfigFileName}` })];
+
+  return pipeline;
 }
 
-export function serverJSPipeline({ babelConfigFileName = 'serverBuild.BabelConfig.js', includeSourceMap = true } = {}) {
-  const babelConfig = getBabelConfig(babelConfigFileName)
-  return [...fragmentPipeline({ babelPreset: babelConfig.presets, babelPlugin: babelConfig.plugins, shouldSourceMap: includeSourceMap }), size({ title: 'Javascript - serverJS' })]
+function serverJSPipeline({ babelConfigFileName = 'serverBuild.BabelConfig.js', includeSourceMap = true } = {}) {
+  const babelConfig = (0, _javascriptTranspilation.getBabelConfig)(babelConfigFileName);
+  return [...fragmentPipeline({ babelPreset: babelConfig.presets, babelPlugin: babelConfig.plugins, shouldSourceMap: includeSourceMap }), (0, _gulpSize.default)({ title: 'Javascript - serverJS' })];
 }
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uLy4uLy4uL3NvdXJjZS90cmFuc2Zvcm1QaXBlbGluZS9qYXZhc2NyaXB0LmpzIl0sIm5hbWVzIjpbImpzRmlsZVJlZ2V4IiwiZnJhZ21lbnRQaXBlbGluZSIsImJhYmVsUHJlc2V0IiwiYmFiZWxQbHVnaW4iLCJzaG91bGRTb3VyY2VNYXAiLCJwaXBlbGluZSIsInByZXNldHMiLCJwbHVnaW5zIiwiYmFiZWxyYyIsInVuc2hpZnQiLCJzb3VyY2VtYXBzIiwiaW5pdCIsInB1c2giLCJ3cml0ZSIsImNsaWVudEpTUGlwZWxpbmUiLCJiYWJlbENvbmZpZ0ZpbGVOYW1lIiwiYmFiZWxDb25maWciLCJ0aXRsZSIsIkZyYWdtZW50SW5kZW50YXRpb24iLCJUcmFuc2Zvcm1Ub0ZyYWdtZW50S2V5cyIsIlRyYW5zZm9ybUJhY2tUb0ZyYWdtZW50Iiwic2VydmVySlNQaXBlbGluZSIsImluY2x1ZGVTb3VyY2VNYXAiXSwibWFwcGluZ3MiOiI7QUFDQTs7QUFFQTtBQUNBO0FBQ0E7QUFDQTs7QUFFQTs7QUFFTyxNQUFNQSxXQUFXLEdBQUcsT0FBcEIsQzs7QUFFQSxTQUFTQyxnQkFBVCxDQUEwQjtBQUMvQkMsRUFBQUEsV0FEK0I7QUFFL0JDLEVBQUFBLFdBRitCO0FBRy9CQyxFQUFBQSxlQUFlLEdBQUcsSUFIYSxFQUExQjtBQUlKO0FBQ0QsTUFBSUMsUUFBUSxHQUFHO0FBQ2IsMEJBQU07QUFDSkMsSUFBQUEsT0FBTyxFQUFFSixXQURMO0FBRUpLLElBQUFBLE9BQU8sRUFBRUosV0FGTDtBQUdKSyxJQUFBQSxPQUFPLEVBQUUsS0FITCxFQUFOLENBRGEsQ0FBZjs7Ozs7QUFTQSxNQUFJSixlQUFKLEVBQXFCO0FBQ25CQyxJQUFBQSxRQUFRLENBQUNJLE9BQVQsQ0FBaUJDLHdCQUFXQyxJQUFYLEVBQWpCO0FBQ0FOLElBQUFBLFFBQVEsQ0FBQ08sSUFBVCxDQUFjRix3QkFBV0csS0FBWCxDQUFpQixHQUFqQixDQUFkO0FBQ0Q7O0FBRUQsU0FBT1IsUUFBUDtBQUNEOztBQUVNLFNBQVNTLGdCQUFULENBQTBCLEVBQUVDLG1CQUFtQixHQUFHLHNDQUF4QixLQUFtRSxFQUE3RixFQUFpRztBQUN0RyxRQUFNQyxXQUFXLEdBQUcsNkNBQWVELG1CQUFmLENBQXBCO0FBQ0EsTUFBSVYsUUFBUSxHQUFHO0FBQ2IsMEJBQU0sRUFBRVksS0FBSyxFQUFFLFdBQVQsRUFBTixDQURhO0FBRWJDLHVEQUFvQkMsdUJBQXBCLEVBRmE7QUFHYixLQUFHbEIsZ0JBQWdCLENBQUMsRUFBRUMsV0FBVyxFQUFFYyxXQUFXLENBQUNWLE9BQTNCLEVBQW9DSCxXQUFXLEVBQUVhLFdBQVcsQ0FBQ1QsT0FBN0QsRUFBc0VILGVBQWUsRUFBRSxJQUF2RixFQUFELENBSE47QUFJYmMsdURBQW9CRSx1QkFBcEIsRUFKYTtBQUtiLHlCQUFLLEVBQUVILEtBQUssRUFBRywrQkFBOEJGLG1CQUFvQixFQUE1RCxFQUFMLENBTGEsQ0FBZjs7QUFPQSxTQUFPVixRQUFQO0FBQ0Q7O0FBRU0sU0FBU2dCLGdCQUFULENBQTBCLEVBQUVOLG1CQUFtQixHQUFHLDRCQUF4QixFQUFzRE8sZ0JBQWdCLEdBQUcsSUFBekUsS0FBa0YsRUFBNUcsRUFBZ0g7QUFDckgsUUFBTU4sV0FBVyxHQUFHLDZDQUFlRCxtQkFBZixDQUFwQjtBQUNBLFNBQU8sQ0FBQyxHQUFHZCxnQkFBZ0IsQ0FBQyxFQUFFQyxXQUFXLEVBQUVjLFdBQVcsQ0FBQ1YsT0FBM0IsRUFBb0NILFdBQVcsRUFBRWEsV0FBVyxDQUFDVCxPQUE3RCxFQUFzRUgsZUFBZSxFQUFFa0IsZ0JBQXZGLEVBQUQsQ0FBcEIsRUFBaUksdUJBQUssRUFBRUwsS0FBSyxFQUFFLHVCQUFULEVBQUwsQ0FBakksQ0FBUDtBQUNEIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHBhdGggZnJvbSAncGF0aCdcbmltcG9ydCBzb3VyY2VtYXBzIGZyb20gJ2d1bHAtc291cmNlbWFwcydcbmltcG9ydCBjb25jYXQgZnJvbSAnZ3VscC1jb25jYXQnXG5pbXBvcnQgeyBGcmFnbWVudEluZGVudGF0aW9uIH0gZnJvbSAnQGRlcGVuZGVuY3kvZnJhZ21lbnRJbmRlbnRhdGlvbk9iamVjdFN0cmVhbSdcbmltcG9ydCBiYWJlbCBmcm9tICdndWxwLWJhYmVsJ1xuaW1wb3J0IGRlYnVnIGZyb20gJ2d1bHAtZGVidWcnXG5pbXBvcnQgc2l6ZSBmcm9tICdndWxwLXNpemUnXG5pbXBvcnQganNNaW5pZnkgZnJvbSAnZ3VscC11Z2xpZnknXG5pbXBvcnQgeyBnZXRCYWJlbENvbmZpZyB9IGZyb20gJ0BkZXBsb3ltZW50L2phdmFzY3JpcHRUcmFuc3BpbGF0aW9uJ1xuXG5leHBvcnQgY29uc3QganNGaWxlUmVnZXggPSAvXFwuanMkL1xuXG5leHBvcnQgZnVuY3Rpb24gZnJhZ21lbnRQaXBlbGluZSh7XG4gIGJhYmVsUHJlc2V0LFxuICBiYWJlbFBsdWdpbiwgLy8gYmFiZWwgY29uZmlndXJhdGlvbnNcbiAgc2hvdWxkU291cmNlTWFwID0gdHJ1ZSxcbn0pIHtcbiAgbGV0IHBpcGVsaW5lID0gW1xuICAgIGJhYmVsKHtcbiAgICAgIHByZXNldHM6IGJhYmVsUHJlc2V0LFxuICAgICAgcGx1Z2luczogYmFiZWxQbHVnaW4sXG4gICAgICBiYWJlbHJjOiBmYWxzZSxcbiAgICB9KSxcbiAgICAvLyBqc01pbmlmeSgpIC8vIGNhdXNlcyBpc3N1ZXMgd2l0aCBzb21lIG5vbi1uYXRpdmUgc3ludGF4LiBVc2luZyBiYWJlbCBtaW5pZnkgcHJlc2V0IGluc3RlYWQuXG4gIF1cblxuICBpZiAoc2hvdWxkU291cmNlTWFwKSB7XG4gICAgcGlwZWxpbmUudW5zaGlmdChzb3VyY2VtYXBzLmluaXQoKSlcbiAgICBwaXBlbGluZS5wdXNoKHNvdXJjZW1hcHMud3JpdGUoJy4nKSlcbiAgfVxuXG4gIHJldHVybiBwaXBlbGluZVxufVxuXG5leHBvcnQgZnVuY3Rpb24gY2xpZW50SlNQaXBlbGluZSh7IGJhYmVsQ29uZmlnRmlsZU5hbWUgPSAnbmF0aXZlQ2xpZW50U2lkZUJ1aWxkLkJhYmVsQ29uZmlnLmpzJyB9ID0ge30pIHtcbiAgY29uc3QgYmFiZWxDb25maWcgPSBnZXRCYWJlbENvbmZpZyhiYWJlbENvbmZpZ0ZpbGVOYW1lKVxuICBsZXQgcGlwZWxpbmUgPSBbXG4gICAgZGVidWcoeyB0aXRsZTogJ2NsaWVudEpTOicgfSksXG4gICAgRnJhZ21lbnRJbmRlbnRhdGlvbi5UcmFuc2Zvcm1Ub0ZyYWdtZW50S2V5cygpLFxuICAgIC4uLmZyYWdtZW50UGlwZWxpbmUoeyBiYWJlbFByZXNldDogYmFiZWxDb25maWcucHJlc2V0cywgYmFiZWxQbHVnaW46IGJhYmVsQ29uZmlnLnBsdWdpbnMsIHNob3VsZFNvdXJjZU1hcDogdHJ1ZSB9KSwgLy8gcHJldmlvdXMgZXJyb3IgaGFuZGxpbmcgLSAucGlwZSgpLm9uKCdlcnJvcicsIGZ1bmN0aW9uKGUpIHsgY29uc29sZS5sb2coJz4+PiBFUlJPUicsIGUpOyB0aGlzLmVtaXQoJ2VuZCcpOyB9KVxuICAgIEZyYWdtZW50SW5kZW50YXRpb24uVHJhbnNmb3JtQmFja1RvRnJhZ21lbnQoKSxcbiAgICBzaXplKHsgdGl0bGU6IGBKQVZBU0NSSVBUIC0gY2xpZW50SlMgdXNpbmcgJHtiYWJlbENvbmZpZ0ZpbGVOYW1lfWAgfSksXG4gIF1cbiAgcmV0dXJuIHBpcGVsaW5lXG59XG5cbmV4cG9ydCBmdW5jdGlvbiBzZXJ2ZXJKU1BpcGVsaW5lKHsgYmFiZWxDb25maWdGaWxlTmFtZSA9ICdzZXJ2ZXJCdWlsZC5CYWJlbENvbmZpZy5qcycsIGluY2x1ZGVTb3VyY2VNYXAgPSB0cnVlIH0gPSB7fSkge1xuICBjb25zdCBiYWJlbENvbmZpZyA9IGdldEJhYmVsQ29uZmlnKGJhYmVsQ29uZmlnRmlsZU5hbWUpXG4gIHJldHVybiBbLi4uZnJhZ21lbnRQaXBlbGluZSh7IGJhYmVsUHJlc2V0OiBiYWJlbENvbmZpZy5wcmVzZXRzLCBiYWJlbFBsdWdpbjogYmFiZWxDb25maWcucGx1Z2lucywgc2hvdWxkU291cmNlTWFwOiBpbmNsdWRlU291cmNlTWFwIH0pLCBzaXplKHsgdGl0bGU6ICdKYXZhc2NyaXB0IC0gc2VydmVySlMnIH0pXVxufVxuIl19
